@@ -41,6 +41,8 @@ var CSS = `
 #view-feed .tx.article .tx-badge{ background:rgba(44,212,242,.14); color:var(--cyan); border-color:rgba(44,212,242,.4); }
 #view-feed .tx-date{ font-family:var(--term); font-size:17px; color:var(--paper-dim); letter-spacing:1px; }
 #view-feed .tx-num{ margin-left:auto; font-family:var(--mono); font-size:10px; color:var(--paper-dim); opacity:.6; }
+#view-feed .tx-cover{ display:block; margin:2px 0 12px; border-radius:8px; overflow:hidden; border:1px solid var(--hair); }
+#view-feed .tx-cover img{ display:block; width:100%; height:auto; max-height:340px; object-fit:cover; }
 #view-feed .tx-title{ font-family:var(--serif); font-size:24px; line-height:1.2; color:var(--paper); margin:2px 0 10px; }
 #view-feed .tx-body{ font-family:var(--serif); font-size:17px; line-height:1.6; color:var(--paper); }
 #view-feed .tx-body p{ margin:0 0 10px; }
@@ -76,6 +78,7 @@ function card(item, idx){
       '<span class="tx-date">'+fmtDate(item.date)+'</span>'+
       '<span class="tx-num">#'+String(idx+1).padStart(2,'0')+'</span>'+
     '</div>'+
+    (item.img ? '<a class="tx-cover" href="'+esc(item.img)+'" target="_blank" rel="noopener"><img src="'+esc(item.img)+'" alt="" loading="lazy"></a>' : '')+
     (isArt && item.title ? '<h2 class="tx-title">'+esc(item.title)+'</h2>' : '')+
     '<div class="tx-body'+(long?' clip':'')+'">'+body+'</div>'+
     (long?'<button class="tx-more" data-more>▸ Expand transmission</button>':'')+
