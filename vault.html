@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectB59 — The Vault</title>
+<style>
+  /* ── Reset & Tokens ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0a0c0f;
+    --bg2:       #111418;
+    --bg3:       #191e24;
+    --border:    #1e2530;
+    --accent:    #00ff88;
+    --accent2:   #00ccff;
+    --accent3:   #ff6b35;
+    --gold:      #ffd700;
+    --text:      #c8d0dc;
+    --text-dim:  #5a6472;
+    --text-hi:   #ffffff;
+    --hal:       #ff6b35;   /* Hal Finney highlight */
+    --cypher:    #00ff88;   /* Cypherpunk highlight */
+    --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+    --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+    --radius:    6px;
+    --sidebar:   300px;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow: hidden;
+  }
+
+  /* ── Scanline overlay ──────────────────────────── */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.03) 0px,
+      rgba(0,0,0,0.03) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  /* ── Layout ────────────────────────────────────── */
+  #app {
+    display: grid;
+    grid-template-rows: 48px 1fr;
+    grid-template-columns: var(--sidebar) 1fr 360px;
+    grid-template-areas:
+      "header header header"
+      "sidebar main  detail";
+    height: 100vh;
+  }
+
+  /* ── Header ────────────────────────────────────── */
+  #header {
+    grid-area: header;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 20px;
+  }
+
+  #header .logo {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    text-shadow: 0 0 20px rgba(0,255,136,0.4);
+    white-space: nowrap;
+  }
+
+  #header .logo span { color: var(--text-dim); }
+
+  #search-wrap {
+    flex: 1;
+    max-width: 480px;
+    position: relative;
+  }
+
+  #search {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    padding: 6px 12px 6px 32px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #search:focus { border-color: var(--accent); }
+
+  #search-wrap::before {
+    content: "⌕";
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--text-dim); font-size: 16px; pointer-events: none;
+  }
+
+  .header-stat {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .header-stat b { color: var(--accent); }
+
+  #filter-btns {
+    display: flex; gap: 6px; margin-left: auto;
+  }
+
+  .fbtn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .fbtn:hover { border-color: var(--accent2); color: var(--accent2); }
+  .fbtn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+
+  /* ── Sidebar ───────────────────────────────────── */
+  #sidebar {
+    grid-area: sidebar;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+
+  .sidebar-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
+
+  .sidebar-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0 16px 8px;
+  }
+
+  /* Author list */
+  .author-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: background 0.1s;
+    border-left: 2px solid transparent;
+  }
+
+  .author-item:hover { background: var(--bg3); }
+  .author-item.active {
+    background: rgba(0,255,136,0.06);
+    border-left-color: var(--accent);
+  }
+
+  .author-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .avatar-hal   { background: rgba(255,107,53,0.2); color: var(--hal); border: 1px solid var(--hal); }
+  .avatar-cypher{ background: rgba(0,255,136,0.1); color: var(--cypher); border: 1px solid rgba(0,255,136,0.3); }
+  .avatar-other { background: var(--bg3); color: var(--text-dim); border: 1px solid var(--border); }
+
+  .author-info { flex: 1; min-width: 0; }
+
+  .author-name {
+    font-size: 13px; font-weight: 500;
+    color: var(--text-hi);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .author-count {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--text-dim);
+  }
+
+  .author-badge {
+    font-family: var(--font-mono);
+    font-size: 9px; padding: 1px 5px; border-radius: 2px;
+    background: rgba(255,215,0,0.1); color: var(--gold); border: 1px solid rgba(255,215,0,0.3);
+    white-space: nowrap;
+  }
+
+  /* Timeline nav */
+  .month-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 16px;
+    cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--text-dim);
+    transition: color 0.15s;
+  }
+
+  .month-item:hover { color: var(--accent2); }
+  .month-item.active { color: var(--accent2); font-weight: 700; }
+
+  .month-bar {
+    height: 4px; border-radius: 2px;
+    background: var(--bg3); position: relative; overflow: hidden;
+    width: 60px; flex-shrink: 0;
+  }
+
+  .month-bar-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    transition: width 0.3s;
+  }
+
+  /* ── Main thread list ──────────────────────────── */
+  #main {
+    grid-area: main;
+    overflow-y: auto;
+    background: var(--bg);
+  }
+
+  .thread-item {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+    position: relative;
+  }
+
+  .thread-item:hover { background: var(--bg2); }
+
+  .thread-item.active {
+    background: rgba(0,204,255,0.05);
+    border-left: 2px solid var(--accent2);
+  }
+
+  .thread-item.priority {
+    border-left: 3px solid var(--hal);
+    padding-left: 17px;
+  }
+
+  .thread-item.priority.active {
+    border-left-color: var(--hal);
+    background: rgba(255,107,53,0.05);
+  }
+
+  .thread-meta {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+  }
+
+  .thread-month {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-dim);
+    background: var(--bg3); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 2px;
+  }
+
+  .thread-count {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--accent); margin-left: auto;
+  }
+
+  .priority-tag {
+    font-family: var(--font-mono); font-size: 9px;
+    padding: 1px 5px; border-radius: 2px;
+    background: rgba(255,107,53,0.15); color: var(--hal);
+    border: 1px solid rgba(255,107,53,0.3);
+  }
+
+  .thread-subject {
+    font-size: 13px; font-weight: 500; color: var(--text-hi);
+    margin-bottom: 3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .thread-authors {
+    font-size: 11px; color: var(--text-dim);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .thread-authors .hl { color: var(--hal); font-weight: 600; }
+
+  /* Empty / loading states */
+  .state-empty {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; height: 60vh;
+    color: var(--text-dim); gap: 12px;
+    font-family: var(--font-mono);
+  }
+
+  .state-empty .icon { font-size: 40px; opacity: 0.3; }
+
+  /* ── Detail panel ──────────────────────────────── */
+  #detail {
+    grid-area: detail;
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+
+  #detail-placeholder {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 16px; padding: 40px;
+    text-align: center;
+  }
+
+  .placeholder-glyph {
+    font-family: var(--font-mono); font-size: 48px;
+    color: var(--border); line-height: 1;
+  }
+
+  .placeholder-text { color: var(--text-dim); font-size: 13px; max-width: 220px; }
+
+  /* Thread detail */
+  #thread-detail { display: none; flex-direction: column; }
+
+  .detail-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg2); z-index: 10;
+  }
+
+  .detail-subject {
+    font-size: 14px; font-weight: 600; color: var(--text-hi);
+    margin-bottom: 6px; line-height: 1.4;
+  }
+
+  .detail-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    font-family: var(--font-mono); font-size: 10px; color: var(--text-dim);
+  }
+
+  .detail-meta span { display: flex; align-items: center; gap: 4px; }
+
+  /* Message cards in detail */
+  .msg-card {
+    margin: 0;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .msg-card.priority-msg { border-left: 3px solid var(--hal); }
+
+  .msg-header {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 16px 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .msg-header:hover { background: rgba(255,255,255,0.02); }
+
+  .msg-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  .msg-from { font-size: 12px; font-weight: 600; color: var(--text-hi); }
+  .msg-from.is-hal { color: var(--hal); }
+  .msg-from.is-cypher { color: var(--cypher); }
+
+  .msg-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); }
+
+  .msg-collapse-btn {
+    margin-left: auto; font-size: 16px; color: var(--text-dim);
+    line-height: 1; flex-shrink: 0; padding: 2px;
+  }
+
+  .msg-body {
+    padding: 0 16px 16px 58px;
+    font-family: var(--font-mono); font-size: 11px;
+    line-height: 1.8; color: var(--text);
+    white-space: pre-wrap; word-break: break-word;
+    max-height: 600px; overflow-y: auto;
+  }
+
+  .msg-body.collapsed { display: none; }
+
+  .msg-body .quote {
+    color: var(--text-dim); border-left: 2px solid var(--border);
+    padding-left: 8px; margin: 2px 0;
+  }
+
+  .msg-orig-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--accent2); text-decoration: none; margin: 0 16px 12px 58px;
+    opacity: 0.7; transition: opacity 0.15s;
+  }
+
+  .msg-orig-link:hover { opacity: 1; }
+
+  /* ── Author spotlight card ─────────────────────── */
+  .author-spotlight {
+    margin: 12px 16px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px;
+  }
+
+  .spotlight-title {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px;
+  }
+
+  .spotlight-name { font-size: 15px; font-weight: 700; color: var(--text-hi); margin-bottom: 4px; }
+  .spotlight-bio  { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  /* ── Responsive collapse ───────────────────────── */
+  @media (max-width: 900px) {
+    #app {
+      grid-template-columns: 240px 1fr;
+      grid-template-areas: "header header" "sidebar main";
+    }
+    #detail { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="logo">B59<span>::</span>VAULT</div>
+
+    <div id="search-wrap">
+      <input id="search" type="text" placeholder="search messages, authors, subjects …" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="header-stat">Messages: <b id="stat-msgs">–</b></div>
+    <div class="header-stat">Threads: <b id="stat-threads">–</b></div>
+    <div class="header-stat">Authors: <b id="stat-authors">–</b></div>
+
+    <div id="filter-btns">
+      <button class="fbtn active" data-filter="all">ALL</button>
+      <button class="fbtn" data-filter="priority">HAL + CYPHERPUNKS</button>
+      <button class="fbtn" data-filter="threads">THREADS ONLY</button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+
+    <!-- Priority author spotlight -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">Key Figures</div>
+      <div id="author-list"></div>
+    </div>
+
+    <!-- Timeline / month nav -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">Timeline</div>
+      <div id="month-list"></div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN THREAD LIST -->
+  <main id="main">
+    <div id="thread-list"></div>
+  </main>
+
+  <!-- DETAIL PANEL -->
+  <aside id="detail">
+    <div id="detail-placeholder">
+      <div class="placeholder-glyph">⊻</div>
+      <div class="placeholder-text">Select a thread to read the conversation</div>
+    </div>
+    <div id="thread-detail"></div>
+  </aside>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  ProjectB59 Vault Reader
+//  Reads vault_data/index.json + vault_data/authors.json
+//  produced by vault_scraper.py
+// ═══════════════════════════════════════════════════════════
+
+const BIOS = {
+  "hal finney": {
+    badge: "Pioneer",
+    bio: "First Bitcoin transaction recipient (Jan 3, 2009). PGP developer, cryptographer, and long-time extropian. One of the most technically rigorous voices on both the Cypherpunks and Extropy lists. Battled ALS from 2009 until his death in 2014."
+  },
+  "nick szabo": {
+    badge: "Architect",
+    bio: "Inventor of Bit Gold (1998) and smart contracts. Legal scholar and cryptographer whose work directly prefigured Bitcoin. Created the concept of digital property rights through cryptographic proofs."
+  },
+  "wei dai": {
+    badge: "Pioneer",
+    bio: "Proposed b-money (1998), a predecessor to Bitcoin explicitly cited by Satoshi. Cryptographer and philosopher, creator of the Crypto++ library."
+  },
+  "adam back": {
+    badge: "Cypherpunk",
+    bio: "Inventor of Hashcash (1997), the proof-of-work scheme adapted directly into Bitcoin's mining. CEO of Blockstream. Sent Satoshi the b-money reference."
+  },
+  "tim may": {
+    badge: "Founder",
+    bio: "Co-founder of the Cypherpunks mailing list. Author of the Crypto Anarchist Manifesto (1988). Intellectual godfather of crypto-anarchism and privacy-first digital money."
+  },
+  "eric hughes": {
+    badge: "Founder",
+    bio: "Co-founder of the Cypherpunks. Author of A Cypherpunk's Manifesto (1993): 'Privacy is necessary for an open society in the electronic age.'"
+  },
+  "max more": {
+    badge: "Extropian",
+    bio: "Founder of the Extropy Institute and originator of transhumanist philosophy. Ran the Extropy lists that became a key overlap node between cypherpunks, AI researchers, and life-extensionists."
+  },
+  "robin hanson": {
+    badge: "Thinker",
+    bio: "Economist and futurist. Early advocate of prediction markets. Closely associated with both the extropian and rationalist communities."
+  },
+  "eliezer yudkowsky": {
+    badge: "AI Safety",
+    bio: "AI safety researcher, founder of MIRI. Prolific Extropy-list contributor in the early 2000s on topics ranging from intelligence explosion to decision theory."
+  }
+};
+
+// ── Author classification ────────────────────────
+
+const HAL_NAMES = ["hal finney", "finney, hal", "hal@finney", "hal@rain"];
+
+const CYPHER_NAMES = [
+  "nick szabo", "szabo", "wei dai", "adam back", "tim may", "tcmay",
+  "eric hughes", "john gilmore", "whitfield diffie", "ralph merkle",
+  "len sassaman", "ian grigg", "phil zimmermann", "zooko",
+  "cypherpunk"
+];
+
+function classifyAuthor(name) {
+  const n = name.toLowerCase();
+  if (HAL_NAMES.some(h => n.includes(h))) return "hal";
+  if (CYPHER_NAMES.some(c => n.includes(c))) return "cypher";
+  return "other";
+}
+
+function authorInitials(name) {
+  return name.split(/\s+/).slice(0,2).map(w => w[0]?.toUpperCase() || "").join("");
+}
+
+function findBio(name) {
+  const n = name.toLowerCase();
+  for (const [key, val] of Object.entries(BIOS)) {
+    if (n.includes(key)) return { ...val, name };
+  }
+  return null;
+}
+
+// ── State ─────────────────────────────────────────
+
+let allThreads = [];
+let allAuthors = {};
+let activeFilter = "all";
+let activeAuthor = null;
+let activeMonth = null;
+let activeThreadId = null;
+let searchQuery = "";
+
+// ── Load data ─────────────────────────────────────
+
+async function loadVault() {
+  try {
+    const [idxRes, authRes] = await Promise.all([
+      fetch("vault_data/index.json"),
+      fetch("vault_data/authors.json")
+    ]);
+
+    if (!idxRes.ok) throw new Error("vault_data/index.json not found");
+
+    const idx = await idxRes.json();
+    allThreads = idx.threads || [];
+    allAuthors = authRes.ok ? await authRes.json() : {};
+
+    document.getElementById("stat-msgs").textContent =
+      idx.total_messages?.toLocaleString() ?? "–";
+    document.getElementById("stat-threads").textContent =
+      allThreads.length.toLocaleString();
+    document.getElementById("stat-authors").textContent =
+      Object.keys(allAuthors).length.toLocaleString();
+
+    renderSidebar();
+    renderThreads();
+
+  } catch (e) {
+    // Demo mode — show sample data when vault_data/ isn't present yet
+    loadDemoData();
+  }
+}
+
+function loadDemoData() {
+  // Sample data so the UI renders without scraping first
+  allThreads = [
+    {
+      thread_id: "demo-1",
+      subject: "Re: digital cash and privacy",
+      month: "2004-January",
+      message_count: 7,
+      has_priority: true,
+      messages: [
+        {
+          id: "demo-1-1", author: "Hal Finney <hal@finney.org>", author_short: "Hal Finney",
+          subject: "Re: digital cash and privacy",
+          date: "Sat, 03 Jan 2004 14:22:00 -0800",
+          body: `This is a fascinating area where cryptography meets economics.
+
+The key insight from Chaum's original work is that you can have
+*unconditional* payer anonymity while still preventing double-spending.
+The mint learns nothing about who spent what — only that a coin
+was redeemed.
+
+> But doesn't the mint still learn something about aggregate flows?
+
+Yes, but aggregate statistics are a much weaker disclosure than
+individual transaction graphs. Compare: knowing that 10,000 people
+bought coffee today vs. knowing that Alice bought coffee at 8:14am.
+
+The real challenge is the mint itself. If the mint fails or turns
+malicious, the whole system collapses. This is why I find Wei Dai's
+b-money idea so interesting — the mint is replaced by proof-of-work...
+
+Hal`,
+          url: "#", priority: true
+        },
+        {
+          id: "demo-1-2", author: "Nick Szabo <szabo@foo.net>", author_short: "Nick Szabo",
+          subject: "Re: digital cash and privacy",
+          date: "Sat, 03 Jan 2004 18:45:00 -0500",
+          body: `Hal raises an important point about mint centralization.
+
+In my Bit Gold proposal I tried to address this with a property
+registry maintained by the same Byzantine-fault-tolerant mechanism.
+The key is separating the proof-of-work (objective) from the
+valuation/exchange (subjective social layer).
+
+The property rights angle matters here too — without clear ownership
+semantics baked into the protocol, you end up relying on social/legal
+enforcement, which is exactly what digital cash should transcend.
+
+Nick`,
+          url: "#", priority: true
+        },
+        {
+          id: "demo-1-3", author: "Max More <max@maxmore.com>", author_short: "Max More",
+          subject: "Re: digital cash and privacy",
+          date: "Sun, 04 Jan 2004 09:12:00 -0700",
+          body: `Both of you are touching on something that the extropian community has
+been circling since the early 90s: the infrastructure of freedom.
+
+Financial privacy is not a luxury. It's a prerequisite for political
+autonomy in any society where economic participation is unavoidable.
+
+I recall Tim's point at the first cypherpunks meeting — you can pass
+all the privacy laws you want, but if the payment layer is legible,
+you have no real privacy. The architecture *is* the policy.
+
+Max`,
+          url: "#", priority: false
+        }
+      ]
+    },
+    {
+      thread_id: "demo-2",
+      subject: "Reusable proofs of work",
+      month: "2004-March",
+      message_count: 12,
+      has_priority: true,
+      messages: [
+        {
+          id: "demo-2-1", author: "Hal Finney <hal@finney.org>", author_short: "Hal Finney",
+          subject: "Reusable proofs of work",
+          date: "Sat, 15 Aug 2004 10:03:00 -0800",
+          body: `I've been thinking about a system I call RPOW — Reusable Proofs of Work.
+
+The basic idea: hashcash tokens are single-use. You mint one by doing
+computational work, but once you hand it to someone, they can't use it
+again without trusting you not to double-spend it.
+
+RPOW fixes this by using a trusted server that holds the private key to
+a well-audited, open-source system running on tamper-evident hardware.
+The client can verify (via remote attestation) exactly what software
+the server is running.
+
+So: you submit a hashcash token → server verifies it → server signs
+and returns a new RPOW token → you can pass that token to anyone →
+they can redeem it at the server for a fresh one.
+
+This is *not* decentralized, but the trust is explicit, auditable,
+and minimized. I see it as a building block.
+
+Code at: https://rpow.net
+
+Hal`,
+          url: "https://lists.extropy.org/pipermail/extropy-chat/2004-August/",
+          priority: true
+        }
+      ]
+    },
+    {
+      thread_id: "demo-3",
+      subject: "[ExI] The long-term future of AI",
+      month: "2004-February",
+      message_count: 23,
+      has_priority: false,
+      messages: [
+        {
+          id: "demo-3-1", author: "Eliezer Yudkowsky <sentience@pobox.com>", author_short: "Eliezer Yudkowsky",
+          subject: "[ExI] The long-term future of AI",
+          date: "Mon, 09 Feb 2004 22:14:00 -0800",
+          body: `The crux of the matter is what happens in the interval between
+human-level AI and whatever comes after.
+
+If that interval is very short — hours, days — then alignment
+properties set at the beginning propagate forward. If it's long —
+years — then you have time for correction, but also time for drift.
+
+My current view is that the interval will be short enough that
+getting it right the first time matters enormously...`,
+          url: "#", priority: false
+        }
+      ]
+    }
+  ];
+
+  allAuthors = {
+    "Hal Finney": { message_count: 847, priority: true, months: ["2004-January","2004-March"] },
+    "Nick Szabo":  { message_count: 312, priority: true, months: ["2004-January"] },
+    "Eliezer Yudkowsky": { message_count: 1204, priority: true, months: ["2004-February"] },
+    "Max More":    { message_count: 503, priority: false, months: ["2004-January"] },
+  };
+
+  document.getElementById("stat-msgs").textContent = "DEMO";
+  document.getElementById("stat-threads").textContent = allThreads.length;
+  document.getElementById("stat-authors").textContent = Object.keys(allAuthors).length;
+
+  const notice = document.createElement("div");
+  notice.style.cssText = `
+    background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 4px; margin: 12px; padding: 10px 14px;
+    font-family: var(--font-mono); font-size: 11px; color: #ffd700; line-height: 1.5;
+  `;
+  notice.innerHTML = `⚠ DEMO MODE — run vault_scraper.py first to populate vault_data/<br>
+    <span style="color:var(--text-dim)">python vault_scraper.py --priority-only</span>`;
+  document.getElementById("main").prepend(notice);
+
+  renderSidebar();
+  renderThreads();
+}
+
+// ── Sidebar ───────────────────────────────────────
+
+function renderSidebar() {
+  renderAuthorList();
+  renderMonthList();
+}
+
+function renderAuthorList() {
+  const priorityAuthors = Object.entries(allAuthors)
+    .filter(([, v]) => v.priority)
+    .sort((a, b) => b[1].message_count - a[1].message_count)
+    .slice(0, 20);
+
+  const el = document.getElementById("author-list");
+  el.innerHTML = "";
+
+  for (const [name, data] of priorityAuthors) {
+    const cls = classifyAuthor(name);
+    const bio = findBio(name);
+    const div = document.createElement("div");
+    div.className = "author-item" + (activeAuthor === name ? " active" : "");
+    div.innerHTML = `
+      <div class="author-avatar avatar-${cls}">${authorInitials(name)}</div>
+      <div class="author-info">
+        <div class="author-name">${escHtml(name)}</div>
+        <div class="author-count">${data.message_count} messages</div>
+      </div>
+      ${bio ? `<div class="author-badge">${bio.badge}</div>` : ""}
+    `;
+    div.addEventListener("click", () => toggleAuthorFilter(name));
+    el.appendChild(div);
+  }
+}
+
+function renderMonthList() {
+  const monthCounts = {};
+  for (const t of allThreads) {
+    monthCounts[t.month] = (monthCounts[t.month] || 0) + t.message_count;
+  }
+  const months = Object.entries(monthCounts).sort((a,b) => a[0].localeCompare(b[0]));
+  const maxCount = Math.max(...months.map(m => m[1]), 1);
+
+  const el = document.getElementById("month-list");
+  el.innerHTML = "";
+
+  for (const [month, count] of months) {
+    const div = document.createElement("div");
+    div.className = "month-item" + (activeMonth === month ? " active" : "");
+    div.innerHTML = `
+      <span>${month}</span>
+      <div class="month-bar">
+        <div class="month-bar-fill" style="width:${Math.round(count/maxCount*100)}%"></div>
+      </div>
+    `;
+    div.addEventListener("click", () => toggleMonthFilter(month));
+    el.appendChild(div);
+  }
+}
+
+// ── Thread list ───────────────────────────────────
+
+function filteredThreads() {
+  let threads = allThreads;
+
+  if (activeFilter === "priority") threads = threads.filter(t => t.has_priority);
+  if (activeFilter === "threads")  threads = threads.filter(t => t.message_count > 2);
+
+  if (activeAuthor) {
+    threads = threads.filter(t =>
+      t.messages.some(m => m.author_short === activeAuthor || m.author?.includes(activeAuthor))
+    );
+  }
+
+  if (activeMonth) {
+    threads = threads.filter(t => t.month === activeMonth);
+  }
+
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    threads = threads.filter(t =>
+      t.subject.toLowerCase().includes(q) ||
+      t.messages.some(m =>
+        m.author_short?.toLowerCase().includes(q) ||
+        m.body?.toLowerCase().includes(q)
+      )
+    );
+  }
+
+  return threads;
+}
+
+function renderThreads() {
+  const threads = filteredThreads();
+  const el = document.getElementById("thread-list");
+  el.innerHTML = "";
+
+  if (!threads.length) {
+    el.innerHTML = `<div class="state-empty">
+      <div class="icon">∅</div>
+      <div>No messages match the current filter</div>
+    </div>`;
+    return;
+  }
+
+  for (const t of threads) {
+    const authorNames = [...new Set(t.messages.map(m => m.author_short || m.author || "?"))];
+    const halPresent = authorNames.some(n => classifyAuthor(n) === "hal");
+
+    const displayAuthors = authorNames.slice(0,4).map(n => {
+      const cls = classifyAuthor(n);
+      return cls === "hal" || cls === "cypher"
+        ? `<span class="hl">${escHtml(n)}</span>`
+        : escHtml(n);
+    }).join(", ") + (authorNames.length > 4 ? ` +${authorNames.length - 4} more` : "");
+
+    const div = document.createElement("div");
+    div.className = "thread-item" + (t.has_priority ? " priority" : "") + (activeThreadId === t.thread_id ? " active" : "");
+    div.dataset.threadId = t.thread_id;
+    div.innerHTML = `
+      <div class="thread-meta">
+        <span class="thread-month">${t.month}</span>
+        ${t.has_priority ? '<span class="priority-tag">PRIORITY</span>' : ""}
+        <span class="thread-count">${t.message_count} msgs</span>
+      </div>
+      <div class="thread-subject">${escHtml(t.subject)}</div>
+      <div class="thread-authors">${displayAuthors}</div>
+    `;
+    div.addEventListener("click", () => openThread(t));
+    el.appendChild(div);
+  }
+}
+
+// ── Thread detail ─────────────────────────────────
+
+function openThread(thread) {
+  activeThreadId = thread.thread_id;
+
+  // Update active state in list
+  document.querySelectorAll(".thread-item").forEach(el => {
+    el.classList.toggle("active", el.dataset.threadId === thread.thread_id);
+  });
+
+  document.getElementById("detail-placeholder").style.display = "none";
+  const detail = document.getElementById("thread-detail");
+  detail.style.display = "flex";
+
+  // Find priority authors in this thread for spotlight
+  const authorNames = [...new Set(thread.messages.map(m => m.author_short || m.author || ""))];
+  const spotlightAuthor = authorNames.map(findBio).find(Boolean);
+
+  detail.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-subject">${escHtml(thread.subject)}</div>
+      <div class="detail-meta">
+        <span>📅 ${thread.month}</span>
+        <span>💬 ${thread.message_count} messages</span>
+        <span>👤 ${authorNames.length} participants</span>
+      </div>
+    </div>
+
+    ${spotlightAuthor ? `
+    <div class="author-spotlight">
+      <div class="spotlight-title">Author Spotlight</div>
+      <div class="spotlight-name">${escHtml(spotlightAuthor.name)}</div>
+      ${spotlightAuthor.badge ? `<div class="author-badge" style="display:inline-block;margin:4px 0 8px">${spotlightAuthor.badge}</div>` : ""}
+      <div class="spotlight-bio">${escHtml(spotlightAuthor.bio)}</div>
+    </div>` : ""}
+
+    ${thread.messages.map((msg, i) => renderMessageCard(msg, i)).join("")}
+  `;
+
+  // Bind collapse toggles
+  detail.querySelectorAll(".msg-header").forEach(h => {
+    h.addEventListener("click", () => {
+      const body = h.closest(".msg-card").querySelector(".msg-body");
+      body.classList.toggle("collapsed");
+      h.querySelector(".msg-collapse-btn").textContent = body.classList.contains("collapsed") ? "▸" : "▾";
+    });
+  });
+}
+
+function renderMessageCard(msg, index) {
+  const cls = classifyAuthor(msg.author_short || msg.author || "");
+  const name = msg.author_short || (msg.author || "").split("<")[0].trim();
+  const initials = authorInitials(name);
+  const avatarCls = cls === "hal" ? "avatar-hal" : cls === "cypher" ? "avatar-cypher" : "avatar-other";
+  const fromCls = cls === "hal" ? "is-hal" : cls === "cypher" ? "is-cypher" : "";
+  const isPriority = msg.priority;
+
+  const bodyHtml = formatBody(msg.body || "");
+
+  return `
+    <div class="msg-card ${isPriority ? "priority-msg" : ""}">
+      <div class="msg-header">
+        <div class="msg-avatar ${avatarCls}">${initials}</div>
+        <div style="flex:1;min-width:0">
+          <div class="msg-from ${fromCls}">${escHtml(name)}</div>
+          <div class="msg-date">${escHtml(msg.date)}</div>
+        </div>
+        <div class="msg-collapse-btn">▾</div>
+      </div>
+      <div class="msg-body">${bodyHtml}</div>
+      ${msg.url && msg.url !== "#"
+        ? `<a class="msg-orig-link" href="${escHtml(msg.url)}" target="_blank" rel="noopener">↗ original archive</a>`
+        : ""}
+    </div>
+  `;
+}
+
+function formatBody(text) {
+  return text.split("\n").map(line => {
+    const escaped = escHtml(line);
+    if (line.startsWith(">")) {
+      return `<span class="quote">${escaped}</span>`;
+    }
+    return escaped;
+  }).join("\n");
+}
+
+// ── Filters & interactions ────────────────────────
+
+function toggleAuthorFilter(name) {
+  activeAuthor = activeAuthor === name ? null : name;
+  renderSidebar();
+  renderThreads();
+}
+
+function toggleMonthFilter(month) {
+  activeMonth = activeMonth === month ? null : month;
+  renderSidebar();
+  renderThreads();
+}
+
+document.querySelectorAll(".fbtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".fbtn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeFilter = btn.dataset.filter;
+    renderThreads();
+  });
+});
+
+const searchEl = document.getElementById("search");
+let searchTimeout;
+searchEl.addEventListener("input", e => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    searchQuery = e.target.value.trim();
+    renderThreads();
+  }, 250);
+});
+
+// ── Utils ─────────────────────────────────────────
+
+function escHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// ── Boot ──────────────────────────────────────────
+
+loadVault();
+</script>
+</body>
+</html>
