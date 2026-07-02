@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-0096 · Pricing via Processing, or Combatting Junk Mail — Dwork & Naor (1992)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../Project B59 - The Vault.html#/record/B59-0096">← back to the vault</a>
+  <div class="call">B59-0096 · WRITING · PROOF-OF-WORK</div>
+  <h1>Pricing via Processing, or Combatting Junk Mail</h1>
+  <div class="by">Cynthia Dwork &amp; Moni Naor · CRYPTO ’92 · August 1992</div>
+
+  <div class="lede">“In order to send a message, the sender must compute some moderately expensive, but not intractable, function of the message and some additional information.”</div>
+
+  <h2>Why it matters</h2>
+  <p>This is the paper that invented <b>proof-of-work</b>. Long before anyone spoke of mining, Cynthia Dwork and Moni Naor asked a narrow, practical question: how do you stop junk mail and the abuse of a shared resource without a central gatekeeper or a payment system?</p>
+  <p>Their answer was economic, not bureaucratic. Make the sender do a small amount of <i>computational work</i> — solve a “pricing function” — before a message is accepted. For a person sending a handful of messages the cost is invisible. For a spammer sending millions, the cost becomes prohibitive. Access is rationed by CPU cycles instead of identity, permission, or money.</p>
+
+  <h2>The mechanism</h2>
+  <p>Dwork and Naor specified pricing functions that are <b>moderately hard to compute but easy to verify</b>, and that can be tied to the specific message and recipient so the work can’t be pre-computed or reused. They even described a <i>shortcut</i> — a trapdoor the authority could use — so that the same scheme could implement more general access control.</p>
+  <p>That asymmetry — hard to produce, trivial to check, bound to its inputs — is the exact property every later system relies on.</p>
+
+  <h2>The lineage it started</h2>
+  <p><b>Hashcash</b> (Adam Back, 1997) turned the idea into a deployable email stamp. <b>b-money</b> (Wei Dai, 1998) and <b>bit gold</b> (Nick Szabo) used proof-of-work to <i>create money</i>. <b>RPOW</b> (Hal Finney, 2004) made the tokens reusable. And in 2008 <b>Bitcoin</b> made proof-of-work the heartbeat of a decentralized ledger. The Bitcoin whitepaper cites Dwork and Naor directly.</p>
+  <p>Every time a miner hashes a block, it is running the descendant of an idea first written down to fight spam.</p>
+
+  <h2>Original abstract (excerpt)</h2>
+  <div class="fn">We present a computational technique for combatting junk mail in particular and controlling access to a shared resource in general. The main idea is to require a user to compute a moderately hard, but not intractable, function in order to gain access to the resource, thus preventing frivolous use.</div>
+
+  <div class="cite">SOURCE — Cynthia Dwork and Moni Naor, “Pricing via Processing, or Combatting Junk Mail,” Advances in Cryptology — CRYPTO ’92, Lecture Notes in Computer Science 740, Springer-Verlag, 1993, pp. 139–147.
+Archived by Modulo 59 · Project B59 for permanent preservation. Full text: search “Dwork Naor Pricing via Processing” — author manuscripts are hosted at the Weizmann Institute and Microsoft Research.</div>
+</main>
+</body>
+</html>
