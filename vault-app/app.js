@@ -159,7 +159,7 @@ function openRecord(id){
     '</dl>'+
     '<div class="d-tags">'+(r.tags||[]).map(function(t){ return '<span>'+esc(t)+'</span>'; }).join('')+'</div>'+
     '<div class="d-actions">'+
-      (r.local?r.local.map(function(p,i){ return '<a class="btn-lime" href="'+encodeURI(p)+'" target="_blank" rel="noopener">Open offline copy'+(r.local.length>1?' '+(i+1):'')+'</a>'; }).join(''):'')+
+      (r.local?r.local.map(function(p,i){ return '<a class="btn-lime" href="'+encodeURI(p)+'" target="_blank" rel="noopener">Read document'+(r.local.length>1?' '+(i+1):'')+' ↗</a>'; }).join(''):'')+
       '<a class="btn-ghost" href="'+gh+'" target="_blank" rel="noopener">Source on GitHub ↗</a>'+
       '<span class="d-sia">Sia upload: queued</span>'+
     '</div></div>';
