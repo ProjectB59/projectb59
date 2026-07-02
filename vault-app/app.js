@@ -37,7 +37,7 @@ R.forEach(function(r){ r._colls = collFor(r); });
 var state = { q:'', type:null, coll:null, view:'archive' };
 
 // ── Routing ────────────────────────────────────────────────
-var VIEWS = ['archive','timeline','extropy','cryptowars','boards','network'];
+var VIEWS = ['archive','timeline','extropy','cryptowars','boards','feed','network'];
 function route(){
   var h = (location.hash||'').replace(/^#\/?/,'');
   var parts = h.split('/');
@@ -54,6 +54,7 @@ function show(v){
     if(nav) nav.classList.toggle('act', x===v);
   });
   if(v==='boards' && window.B59Boards) window.B59Boards.ensure();
+  if(v==='feed' && window.B59Feed) window.B59Feed.init();
   if(v==='timeline' && window.B59Timeline){ window.B59Timeline.init(); } else if(window.B59Timeline){ window.B59Timeline.stop(); }
   window.scrollTo(0,0);
 }
