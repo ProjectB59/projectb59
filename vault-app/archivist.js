@@ -28,12 +28,12 @@ function search(qText){
     var text = recordText(r);
     var score = 0;
     terms.forEach(function(t){
-      if((r.tags||[]).some(function(tag){ return tag.toLowerCase() === t; })) score += 4;
+      if((r.tags||[]).some(function(tag){ return tag.toLowerCase().indexOf(t) !== -1; })) score += 4;
       if((r.title||'').toLowerCase().indexOf(t) !== -1) score += 3;
       if((r.author||'').toLowerCase().indexOf(t) !== -1) score += 3;
-      var re = new RegExp('\\b'+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b', 'g');
-      var hits = text.match(re);
-      if(hits) score += hits.length;
+      var idx = text.indexOf(t), hits = 0;
+      while(idx !== -1){ hits++; idx = text.indexOf(t, idx + t.length); }
+      score += hits;
     });
     return { r: r, score: score };
   }).filter(function(x){ return x.score > 0; })
