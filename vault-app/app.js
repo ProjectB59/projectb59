@@ -361,8 +361,12 @@ document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX
   var LIVE_CHANS = ['#bitcoin','#cryptography','##crypto','#monero','#nostr','#tor'];
   var kiwiLoaded = false, curChan = '#bitcoin';
   function kiwiUrl(ch){
-    // Kiwi nextclient: fragment carries the channel (leading # kept)
-    return 'https://kiwiirc.com/nextclient/irc.libera.chat/' + encodeURIComponent(ch);
+    // Kiwi nextclient: the channel rides in the URL as a literal fragment
+    // (e.g. #bitcoin, ##crypto). Do NOT percent-encode the '#' — Kiwi reads
+    // location.hash, and encoding it to %23 breaks channel + server parsing.
+    var name = ch.replace(/^#+/, '');       // strip leading hashes we control
+    var hashes = (ch.match(/^#+/) || ['#'])[0];
+    return 'https://kiwiirc.com/nextclient/irc.libera.chat/' + hashes + encodeURIComponent(name);
   }
   function loadChan(ch){
     curChan = ch;
