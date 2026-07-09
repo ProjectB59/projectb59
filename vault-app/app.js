@@ -176,6 +176,8 @@ var EXI = window.B59_EXTROPY_INDEX || {base:'https://lists.extropy.org/pipermail
 var exState = { tab:'landmarks', sel:null, selMonth:null, filter:false, monthQ:'' };
 
 function renderExtropy(){
+  // Open with the first landmark selected so the reading pane is never blank.
+  if(exState.sel==null && !exState.selMonth && (EXI.landmarks||[]).length) exState.sel = 0;
   // If a full offline mirror (vault_data/index.json from the scraper) is present,
   // note it — the boards reader and landmark previews upgrade to real bodies.
   fetch('vault_data/index.json').then(function(r){ return r.ok?r.json():null; }).then(function(idx){
@@ -356,35 +358,33 @@ document.getElementById('stat-records').textContent = R.length;
 document.getElementById('stat-offline').textContent = R.filter(function(r){ return r.local; }).length;
 document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX||{}).months||[]).length;
 
-// ── Boards mode toggle + live IRC (Kiwi → Libera.Chat) ─────
+// ── Boards mode toggle + live IRC (Libera.Chat, opens in new tab) ─────
+// Why not embedded: Libera.Chat blocks Kiwi's shared public gateway, and
+// Libera's own webchat (web.libera.chat) sends CSP frame-ancestors 'self',
+// so it cannot legally render in an iframe. New tab is the only path that
+// actually connects.
 (function(){
   var LIVE_CHANS = ['#bitcoin','#cryptography','##crypto','#monero','#nostr','#tor'];
-  var kiwiLoaded = false, curChan = '#bitcoin';
-  function kiwiUrl(ch){
-    // Kiwi nextclient: the channel rides in the URL as a literal fragment
-    // (e.g. #bitcoin, ##crypto). Do NOT percent-encode the '#' — Kiwi reads
-    // location.hash, and encoding it to %23 breaks channel + server parsing.
-    var name = ch.replace(/^#+/, '');       // strip leading hashes we control
-    var hashes = (ch.match(/^#+/) || ['#'])[0];
-    return 'https://kiwiirc.com/nextclient/irc.libera.chat/' + hashes + encodeURIComponent(name);
+  var painted = false;
+  function liberaUrl(ch){
+    // web.libera.chat reads the channel from the literal URL fragment —
+    // keep the '#'s unencoded (##crypto stays ##crypto).
+    return 'https://web.libera.chat/' + ch;
   }
-  function loadChan(ch){
-    curChan = ch;
-    var f = document.getElementById('kiwi');
-    if(f) f.src = kiwiUrl(ch);
-    document.querySelectorAll('.live-chan').forEach(function(b){ b.classList.toggle('act', b.getAttribute('data-ch')===ch); });
+  function openChan(ch){
+    window.open(liberaUrl(ch), '_blank', 'noopener');
   }
   function paintChans(){
     var el = document.getElementById('live-chans');
     if(!el) return;
     el.innerHTML = LIVE_CHANS.map(function(c){
-      return '<button class="live-chan'+(c===curChan?' act':'')+'" data-ch="'+c+'" type="button">'+c+'</button>';
+      return '<button class="live-chan" data-ch="'+c+'" type="button">'+c+' ↗</button>';
     }).join('');
     el.querySelectorAll('.live-chan').forEach(function(b){
-      b.addEventListener('click', function(){ loadChan(b.getAttribute('data-ch')); });
+      b.addEventListener('click', function(){ openChan(b.getAttribute('data-ch')); });
     });
   }
-  function ensureLive(){ if(kiwiLoaded) return; kiwiLoaded = true; paintChans(); loadChan(curChan); }
+  function ensureLive(){ if(painted) return; painted = true; paintChans(); }
 
   document.querySelectorAll('.bmode').forEach(function(b){
     b.addEventListener('click', function(){
@@ -401,7 +401,7 @@ document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX
     var v = document.getElementById('live-input').value.trim();
     if(!v) return;
     if(v.charAt(0)!=='#') v = '#'+v;
-    loadChan(v);
+    openChan(v);
   });
 })();
 
