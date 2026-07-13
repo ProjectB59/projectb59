@@ -358,11 +358,11 @@ document.getElementById('stat-records').textContent = R.length;
 document.getElementById('stat-offline').textContent = R.filter(function(r){ return r.local; }).length;
 document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX||{}).months||[]).length;
 
-// ── Boards mode toggle + live IRC (Libera.Chat, opens in new tab) ─────
-// Why not embedded: Libera.Chat blocks Kiwi's shared public gateway, and
-// Libera's own webchat (web.libera.chat) sends CSP frame-ancestors 'self',
-// so it cannot legally render in an iframe. New tab is the only path that
-// actually connects.
+// ── Boards mode toggle + live IRC ─────
+// Primary: our OWN Modulo59 network, embedded (see vault-app/m59irc.js) —
+// possible because it's our server and allows this origin. Secondary: the
+// wider rooms on Libera.Chat, which forbid embedding, so those open in a
+// new tab.
 (function(){
   var LIVE_CHANS = ['#bitcoin','#cryptography','##crypto','#monero','#nostr','#tor'];
   var painted = false;
@@ -384,7 +384,13 @@ document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX
       b.addEventListener('click', function(){ openChan(b.getAttribute('data-ch')); });
     });
   }
-  function ensureLive(){ if(painted) return; painted = true; paintChans(); }
+  function ensureLive(){
+    if(painted) return; painted = true;
+    paintChans();
+    // Connect + mount our embedded Modulo59 client on first entry to Live IRC.
+    var host = document.getElementById('m59-client');
+    if(host && window.B59M59IRC) window.B59M59IRC.mount(host);
+  }
 
   document.querySelectorAll('.bmode').forEach(function(b){
     b.addEventListener('click', function(){
