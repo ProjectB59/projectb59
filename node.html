@@ -80,9 +80,17 @@
     if(s.ibd){
       state.textContent='online · initial sync in progress';
       var w=document.getElementById('syncwrap');w.style.display='';
-      var p=Math.max(0.1,(s.progress||0)*100);
-      document.getElementById('syncbar').style.width=p.toFixed(2)+'%';
-      document.getElementById('synctext').textContent='verified '+fmt(s.blocks)+' of '+fmt(s.headers)+' known blocks ('+p.toFixed(2)+'%)';
+      // Two honest-but-different measures. Block count is the intuitive one
+      // (and what the bar shows). verificationprogress weights by actual
+      // chain data, which trails badly because 2009-2013 blocks are nearly
+      // empty while recent ones are full — so it's the truer "how done".
+      var blockPct = s.headers ? (s.blocks / s.headers) * 100 : 0;
+      var dataPct = (s.progress || 0) * 100;
+      document.getElementById('syncbar').style.width=Math.max(0.5,blockPct).toFixed(1)+'%';
+      document.getElementById('synctext').innerHTML=
+        'Block '+fmt(s.blocks)+' of '+fmt(s.headers)+' &middot; '+blockPct.toFixed(0)+'% by block count.<br>'+
+        'The earliest blocks are nearly empty, so by actual chain data the node is about '+
+        dataPct.toFixed(0)+'% verified. Full sync is a few days out.';
     }else{
       state.textContent='online · fully synced';
       document.getElementById('syncwrap').style.display='none';
