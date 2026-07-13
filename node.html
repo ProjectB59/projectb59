@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The B59 Node · Project B59</title>
+<meta name="description" content="Project B59 runs its own pruned Bitcoin node. Verify, don't trust.">
+<link rel="icon" href="favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0A0E1A;--navy2:#0D1322;--hair:#1d2740;--lime:#CBEE1B;--cyan:#2CD4F2;--magenta:#FF2D95;--amber:#FFB627;--paper:#E8ECF4;--paper-dim:#9AA5BC;--mono:'IBM Plex Mono',monospace}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--navy);color:var(--paper);font-family:'Newsreader',Georgia,serif;min-height:100vh}
+  a{color:var(--cyan)}
+  .wrap{max-width:860px;margin:0 auto;padding:48px 22px 80px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--lime)}
+  h1{font-size:clamp(34px,6vw,54px);margin:10px 0 14px;font-weight:600}
+  .lead{font-size:19px;line-height:1.65;color:var(--paper-dim);max-width:640px}
+  .back{font-family:var(--mono);font-size:13px;text-decoration:none}
+  .panel{margin-top:38px;border:1px solid var(--hair);border-radius:6px;background:var(--navy2);padding:26px}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-top:6px}
+  .stat .n{font-family:var(--mono);font-size:30px;font-weight:600;color:var(--paper)}
+  .stat .l{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-dim);margin-top:4px}
+  .sync{margin-top:22px}
+  .bar{height:10px;border:1px solid var(--hair);border-radius:99px;overflow:hidden;background:#080c16}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--cyan));width:0%;transition:width .8s}
+  .sync .t{font-family:var(--mono);font-size:13px;color:var(--paper-dim);margin-top:8px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#5b6a85;margin-right:8px;vertical-align:1px}
+  .dot.on{background:var(--lime);box-shadow:0 0 10px rgba(203,238,27,.7)}
+  .prose{margin-top:40px;line-height:1.75;font-size:17.5px}
+  .prose h2{font-size:24px;margin:34px 0 10px}
+  .prose p{margin:0 0 16px;color:#c7cfdf}
+  .mono{font-family:var(--mono);font-size:.92em;color:var(--amber)}
+  footer{margin-top:60px;font-family:var(--mono);font-size:13px;color:var(--paper-dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">&larr; Project B59 · The Vault</a>
+  <div style="margin-top:26px" class="kicker">Infrastructure · Verify, don't trust</div>
+  <h1>The B59 Node</h1>
+  <p class="lead">Project B59 runs its own Bitcoin node. It downloads every block ever mined, checks every rule and every signature itself, and asks nobody's permission to do it. This page reads its live status straight from our machine.</p>
+
+  <div class="panel">
+    <div style="font-family:var(--mono);font-size:13px;margin-bottom:16px"><span class="dot" id="dot"></span><span id="state">contacting node…</span></div>
+    <div class="stat-grid">
+      <div class="stat"><div class="n" id="blocks">—</div><div class="l">blocks verified</div></div>
+      <div class="stat"><div class="n" id="peers">—</div><div class="l">peers connected</div></div>
+      <div class="stat"><div class="n" id="mode">pruned</div><div class="l">node mode</div></div>
+    </div>
+    <div class="sync" id="syncwrap" style="display:none">
+      <div class="bar"><i id="syncbar"></i></div>
+      <div class="t" id="synctext"></div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>Why run one</h2>
+    <p>The entire cypherpunk archive upstairs points at one lesson: trusted third parties are security holes. A Bitcoin node is the working end of that lesson. It does not take an exchange's word, an explorer's word, or our word for what the chain says. It checks.</p>
+    <h2>What "pruned" means</h2>
+    <p>Our node verifies the complete history of Bitcoin, block by block, back to 2009. It then keeps the most recent blocks (about 8&nbsp;GB) and the full record of who owns what, discarding old raw blocks it has already verified. Same rules, same certainty, small enough to live on the same modest server that runs our world. It cannot serve deep history to other nodes. It does not need to.</p>
+    <h2>The hardware</h2>
+    <p>One small cloud machine, run by us, alongside <a href="https://claudecraft.nodeb59.com">World of Claudecraft</a> and the <span class="mono">Modulo59</span> IRC network. No custody, no keys, no wallet on this box. It is a reader of the chain, not a vault.</p>
+    <p>Status updates every five minutes. During the first sync the node is downloading and verifying seventeen years of history, so the block count below the network tip is expected for a few days.</p>
+  </div>
+
+  <footer>Project B59 · Modulo 59 · Signal persists.</footer>
+</div>
+<script>
+(function(){
+  var URL='https://claudecraft.nodeb59.com/node-status.json';
+  function fmt(n){return Number(n).toLocaleString('en-US');}
+  function paint(s){
+    var dot=document.getElementById('dot');
+    var state=document.getElementById('state');
+    if(!s||!s.up){state.textContent='node unreachable right now';return;}
+    dot.className='dot on';
+    document.getElementById('blocks').textContent=fmt(s.blocks);
+    document.getElementById('peers').textContent=fmt(s.peers);
+    if(s.ibd){
+      state.textContent='online · initial sync in progress';
+      var w=document.getElementById('syncwrap');w.style.display='';
+      var p=Math.max(0.1,(s.progress||0)*100);
+      document.getElementById('syncbar').style.width=p.toFixed(2)+'%';
+      document.getElementById('synctext').textContent='verified '+fmt(s.blocks)+' of '+fmt(s.headers)+' known blocks ('+p.toFixed(2)+'%)';
+    }else{
+      state.textContent='online · fully synced';
+      document.getElementById('syncwrap').style.display='none';
+    }
+  }
+  function load(){fetch(URL).then(function(r){return r.json();}).then(paint).catch(function(){paint(null);});}
+  load();setInterval(load,60000);
+})();
+</script>
+</body>
+</html>
