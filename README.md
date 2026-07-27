@@ -13,6 +13,13 @@ The Extropy lists were a key intellectual node in the 1990s–2000s where transh
 
 This archive ensures those conversations survive even if `lists.extropy.org` goes down permanently.
 
+
+# Project B59 Research Archive
+
+Research, documentation, preservation work, website content, and original
+project development by Katja Korhonen.
+
+This repository is maintained as part of the Modulo 59 ecosystem.
 ---
 
 ## Why It Matters
