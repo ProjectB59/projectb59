@@ -1,5 +1,5 @@
-// Project B59 — THE ARCHIVIST: local keyword search over the vault catalog.
-// No external API, no key, no network call — runs entirely client-side.
+// Project B59: THE ARCHIVIST, local keyword search over the vault catalog.
+// No external API, no key, no network call. Runs entirely client-side.
 (function(){
 'use strict';
 var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; });};
@@ -48,7 +48,7 @@ function answerText(qText, matches){
   }
   var lines = matches.map(function(r){
     var bits = [r.id, r.title];
-    if(r.author) bits.push('— '+r.author);
+    if(r.author) bits.push('by '+r.author);
     if(r.date) bits.push('('+String(r.date).slice(0,4)+')');
     return bits.join(' ') + (r.description ? ': '+r.description.slice(0,140) : '');
   });

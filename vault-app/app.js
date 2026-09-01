@@ -1,11 +1,11 @@
-// Project B59 — The Vault : core app (catalog, detail, extropy reader, crypto wars, routing)
+// Project B59: The Vault : core app (catalog, detail, extropy reader, crypto wars, routing)
 (function(){
 'use strict';
 var R = window.B59_RECORDS || [];
 var B59_REDIRECT = {}; // old flat/provisional id -> BDC id (vault-app/id-redirect.json, loaded at boot)
 var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
 
-// Format labels only, no per-type colour coding — the B59 Decimal class (below)
+// Format labels only, no per-type colour coding. The B59 Decimal class (below)
 // is the vault's real taxonomy now; format is a plain mono label everywhere.
 var TYPES = {
   writing:{label:'Writing'},
@@ -170,7 +170,7 @@ function parseQuery(raw){
 // fulltext-index.js from each record's primary HTML file. Fetched once,
 // lazily, the first time a search is attempted; cached in FT thereafter.
 // A static JSON file, so this stays true to the offline-first, no-build-
-// -step client — the index just ships as one more asset in the repo.
+// -step client. The index just ships as one more asset in the repo.
 var FT = null, FT_PROMISE = null;
 function loadFullText(){
   if(FT_PROMISE) return FT_PROMISE;
@@ -323,7 +323,7 @@ function openRecord(id){
       'A result equal to the SHA-256 above means the file is byte-for-byte what the archive holds.'+
     '</div></details>':'')+
     (related.length?'<div class="d-seealso"><span class="lbl">See also</span>'+
-      related.map(function(x){ return '<a href="#/record/'+x.id+'"><b>'+x.id+'</b> — '+esc(x.title)+'</a>'; }).join('')+
+      related.map(function(x){ return '<a href="#/record/'+x.id+'"><b>'+x.id+'</b>: '+esc(x.title)+'</a>'; }).join('')+
     '</div>':'')+
   '</div>';
   ov.classList.add('open');
@@ -354,12 +354,12 @@ function renderExtropy(){
   // Open with the first landmark selected so the reading pane is never blank.
   if(exState.sel==null && !exState.selMonth && (EXI.landmarks||[]).length) exState.sel = 0;
   // If a full offline mirror (vault_data/index.json from the scraper) is present,
-  // note it — the boards reader and landmark previews upgrade to real bodies.
+  // note it: the boards reader and landmark previews upgrade to real bodies.
   fetch('vault_data/index.json').then(function(r){ return r.ok?r.json():null; }).then(function(idx){
     if(idx && idx.threads){
       EX.threads = idx.threads;
       EX.liveCount = (idx.total_messages||0);
-      document.getElementById('ex-note').innerHTML = '● Full offline mirror loaded — '+ (idx.total_messages||EX.threads.length) +' messages across '+ EX.threads.length +' threads.';
+      document.getElementById('ex-note').innerHTML = '● Full offline mirror loaded: '+ (idx.total_messages||EX.threads.length) +' messages across '+ EX.threads.length +' threads.';
     }
   }).catch(function(){});
   paintLandmarks(); paintMonths(); paintExDetail();
@@ -420,7 +420,7 @@ function previewFor(month){
   // Show any shipped reader-preview messages whose month matches (real seed text).
   var t = (EX.threads||[]).filter(function(x){ return x.month===month; });
   if(!t.length) return '';
-  return '<div class="ex-preview"><h5>Reader preview — sample messages</h5>'+
+  return '<div class="ex-preview"><h5>Reader preview: sample messages</h5>'+
     t.map(function(th){
       return th.messages.map(function(m){
         var body = esc(m.body).split('\n').map(function(ln){ return /^\s*&gt;/.test(ln)?'<span class="q">'+ln+'</span>':ln; }).join('\n');
@@ -444,7 +444,7 @@ function paintExDetail(){
         '<a href="'+monthUrl(t.month,'author')+'" target="_blank" rel="noopener">Browse '+esc(t.month)+' by author ↗</a>'+
       '</div>'+
       previewFor(t.month)+
-      '<div class="ex-hint" style="text-align:left;margin-top:10px">Full message text lives on the source archive at lists.extropy.org. Run <span style="color:var(--lime)">vault_scraper.py</span> to pull the complete thread — bodies, headers and all — into this vault for permanent offline reading.</div>';
+      '<div class="ex-hint" style="text-align:left;margin-top:10px">Full message text lives on the source archive at lists.extropy.org. Run <span style="color:var(--lime)">vault_scraper.py</span> to pull the complete thread (bodies, headers and all) into this vault for permanent offline reading.</div>';
     return;
   }
   // month selected
@@ -468,7 +468,7 @@ function paintExDetail(){
     return;
   }
   // nothing selected
-  pane.innerHTML = '<div class="ex-hint">Pick a <b style="color:var(--paper)">landmark thread</b> to read the story and jump to the source — or open <b style="color:var(--paper)">All months</b> to browse the entire run of the boards, '+((EXI.months||[]).length)+' months from '+((EXI.months||[])[0]||{}).label+' to today.<br><br>Every link opens the real Extropy-Chat archive. Run <span style="color:var(--lime)">vault_scraper.py</span> to mirror it all offline.</div>';
+  pane.innerHTML = '<div class="ex-hint">Pick a <b style="color:var(--paper)">landmark thread</b> to read the story and jump to the source, or open <b style="color:var(--paper)">All months</b> to browse the entire run of the boards, '+((EXI.months||[]).length)+' months from '+((EXI.months||[])[0]||{}).label+' to today.<br><br>Every link opens the real Extropy-Chat archive. Run <span style="color:var(--lime)">vault_scraper.py</span> to mirror it all offline.</div>';
 }
 
 document.getElementById('ex-pri').addEventListener('click', function(){
@@ -477,12 +477,12 @@ document.getElementById('ex-pri').addEventListener('click', function(){
 
 // ── Crypto Wars exhibit ────────────────────────────────────
 var CW_EVENTS = [
-  {y:'1976', t:'DES review at Stanford', d:'NBS/NSA meeting transcript — Diffie and Hellman challenge the 56-bit key. The first public battle over deliberately weakened cryptography.', rec:'B59-301.001'},
-  {y:'1991', t:'PGP 1.0 released', d:'Phil Zimmermann publishes Pretty Good Privacy; strong crypto reaches everyone with a modem — and triggers a federal export investigation.', rec:null},
+  {y:'1976', t:'DES review at Stanford', d:'NBS/NSA meeting transcript: Diffie and Hellman challenge the 56-bit key. The first public battle over deliberately weakened cryptography.', rec:'B59-301.001'},
+  {y:'1991', t:'PGP 1.0 released', d:'Phil Zimmermann publishes Pretty Good Privacy; strong crypto reaches everyone with a modem, and triggers a federal export investigation.', rec:null},
   {y:'1992', t:'Cypherpunks convene', d:'Hughes, May and Gilmore start the list; "Cypherpunks write code" becomes the movement\'s answer to policy.', rec:'B59-002.003'},
   {y:'1993', t:'Clipper Chip announced', d:'The White House proposes key-escrow encryption. The backlash unites technologists and civil libertarians.', rec:'B59-302.007'},
-  {y:'1994', t:'Remailer networks mature', d:'Hal Finney operates and documents anonymous remailers — privacy infrastructure built while the law is still hostile.', rec:'B59-303.004'},
-  {y:'1995', t:'The SSL Challenge', d:'Hal Finney\'s challenge to break Netscape\'s export-grade 40-bit SSL is solved in days — proving weak-by-law crypto protects no one.', rec:'B59-106.002'},
+  {y:'1994', t:'Remailer networks mature', d:'Hal Finney operates and documents anonymous remailers: privacy infrastructure built while the law is still hostile.', rec:'B59-303.004'},
+  {y:'1995', t:'The SSL Challenge', d:'Hal Finney\'s challenge to break Netscape\'s export-grade 40-bit SSL is solved in days, proving weak-by-law crypto protects no one.', rec:'B59-106.002'},
   {y:'1995', t:'Bernstein v. DOJ filed', d:'With EFF backing, Daniel Bernstein sues: code is speech. Courts eventually agree.', rec:'B59-305.001'},
   {y:'1996', t:'Export controls loosen', d:'Crypto moves from the Munitions List to Commerce; the wall starts to crack.', rec:null},
   {y:'2000', t:'The wars (mostly) won', d:'US export rules are liberalized. Strong cryptography ships by default in browsers everywhere.', rec:'B59-106.003'}
@@ -511,7 +511,7 @@ function openCh59(){
   var ov = document.getElementById('ch59-overlay');
   ov.innerHTML = '<div class="ch59">'+
     '<button class="d-close" aria-label="Close">×</button>'+
-    '<div class="ch59-head">CHANNEL 59 — LIVE FROM THE NODE</div>'+
+    '<div class="ch59-head">CHANNEL 59: LIVE FROM THE NODE</div>'+
     '<div class="ch59-tv"><iframe src="https://stream.nodeb59.com/embed/video" allowfullscreen title="Channel 59 stream"></iframe></div>'+
     '<div class="ch59-foot"><span>If the signal is down, the mainframe sleeps.</span>'+
     '<a href="https://nodeb59.com/channel59.html" target="_blank" rel="noopener">Open full Channel 59 ↗</a></div></div>';
@@ -524,7 +524,7 @@ document.querySelectorAll('[data-ch59]').forEach(function(b){ b.addEventListener
 // ── Search wiring ──────────────────────────────────────────
 // The hero field doubles as a live-results dropdown: catalogue metadata
 // (title, author, tags, hash, the operators above) plus, once the full-text
-// index has loaded, hits inside the archived document bodies themselves —
+// index has loaded, hits inside the archived document bodies themselves,
 // shown as a second group with the matched paragraph as a snippet.
 var q = document.getElementById('q');
 var drop = document.getElementById('search-drop');
@@ -547,7 +547,7 @@ function paintDrop(){
   var bodyHits = term && FT ? fullTextHits(term, 6) : [];
   var html = '';
   if(metaHits.length){
-    html += '<div class="grp">Catalogue — title, author, tags</div>';
+    html += '<div class="grp">Catalogue: title, author, tags</div>';
     html += metaHits.map(function(r){
       return '<div class="hit" data-id="'+r.id+'">'+
         '<div class="c">'+r.id+'<br><span style="color:#5a6172">'+esc((r.date||'').slice(0,4))+'</span></div>'+
@@ -606,7 +606,7 @@ var footHosted = document.getElementById('foot-hosted'); if(footHosted) footHost
 var offlineDocCount = document.getElementById('offline-doc-count'); if(offlineDocCount) offlineDocCount.textContent = R.filter(function(r){ return r.local; }).length;
 
 // ── Boards mode toggle + live IRC ─────
-// Primary: our OWN Modulo59 network, embedded (see vault-app/m59irc.js) —
+// Primary: our OWN Modulo59 network, embedded (see vault-app/m59irc.js);
 // possible because it's our server and allows this origin. Secondary: the
 // wider rooms on Libera.Chat, which forbid embedding, so those open in a
 // new tab.
@@ -614,7 +614,7 @@ var offlineDocCount = document.getElementById('offline-doc-count'); if(offlineDo
   var LIVE_CHANS = ['#bitcoin','#cryptography','##crypto','#monero','#nostr','#tor'];
   var painted = false;
   function liberaUrl(ch){
-    // web.libera.chat reads the channel from the literal URL fragment —
+    // web.libera.chat reads the channel from the literal URL fragment,
     // keep the '#'s unencoded (##crypto stays ##crypto).
     return 'https://web.libera.chat/' + ch;
   }

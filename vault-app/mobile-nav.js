@@ -1,5 +1,5 @@
 // ============================================================================
-// Project B59 — The Vault · mobile navigation (additive)
+// Project B59: The Vault · mobile navigation (additive)
 // ----------------------------------------------------------------------------
 // The design hides `nav.links` at <=960px with no replacement. This injects a
 // hamburger button + dropdown that mirrors the existing nav links (so hash
@@ -37,7 +37,7 @@
     burger.innerHTML = '&#9776;';
     header.appendChild(burger);
 
-    // Dropdown menu — clone the real links so hrefs/labels stay in sync
+    // Dropdown menu: clone the real links so hrefs/labels stay in sync
     var menu = document.createElement('nav');
     menu.id = 'b59-mnav';
     menu.setAttribute('aria-label', 'Mobile navigation');

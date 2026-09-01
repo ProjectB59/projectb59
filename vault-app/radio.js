@@ -1,6 +1,6 @@
 /**
  * BUCKAZOIDS RADIO
- * Persistent GTA/Fallout-style radio bar — survives page navigation.
+ * Persistent GTA/Fallout-style radio bar. Survives page navigation.
  * State (station, volume, playing) is saved to localStorage.
  * Drop one line at the bottom of any HTML page:
  *   <script src="assets/buckazoids-radio.js"></script>

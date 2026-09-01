@@ -1,8 +1,8 @@
 // ============================================================================
-// Project B59 — The Vault · lightweight cookie / privacy consent banner
+// Project B59: The Vault · lightweight cookie / privacy consent banner
 // ----------------------------------------------------------------------------
 // One-time notice, remembers the choice in localStorage, links to privacy.html.
-// Privacy-preserving by default — nothing extra is loaded on dismiss.
+// Privacy-preserving by default. Nothing extra is loaded on dismiss.
 // ============================================================================
 (function () {
   var KEY = 'b59_vault_consent';

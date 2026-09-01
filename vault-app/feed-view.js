@@ -1,4 +1,4 @@
-// Project B59 — THE FEED: a stream of curated historical writings
+// Project B59: THE FEED, a stream of curated historical writings
 // recovered from the X archive. Data: window.B59_FEED (see feed.js).
 (function(){
 'use strict';
@@ -10,7 +10,7 @@ var TOPIC_COLOR = {
   'Extropians':'var(--cyan)', 'People':'var(--paper-dim)'
 };
 var MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-function fmtDate(d){ if(!d) return '————'; var p=d.split('-'); return p[0]+' · '+MONTHS[(+p[1])-1]+' '+p[2]; }
+function fmtDate(d){ if(!d) return '····'; var p=d.split('-'); return p[0]+' · '+MONTHS[(+p[1])-1]+' '+p[2]; }
 
 var CSS = `
 #view-feed .feed-wrap{ max-width:820px; margin:0 auto; padding:0 20px 80px; }
