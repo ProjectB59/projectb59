@@ -1,4 +1,4 @@
-// Project B59 — THE FEED: a CRT scroller of curated historical writings
+// Project B59 — THE FEED: a stream of curated historical writings
 // recovered from the X archive. Data: window.B59_FEED (see feed.js).
 (function(){
 'use strict';
@@ -24,13 +24,9 @@ var CSS = `
 #view-feed .fchip.on{ background:var(--lime); color:var(--navy); border-color:var(--lime); font-weight:600; }
 #view-feed .feed-stream{ display:flex; flex-direction:column; gap:22px; position:relative; }
 #view-feed .tx{
-  position:relative; background:linear-gradient(180deg,var(--panel),var(--navy2));
-  border:1px solid var(--hair); border-left:3px solid var(--lime); border-radius:10px;
-  padding:18px 20px 16px; overflow:hidden;
-}
-#view-feed .tx::after{ /* CRT scanlines */
-  content:""; position:absolute; inset:0; pointer-events:none; border-radius:10px;
-  background:repeating-linear-gradient(rgba(0,0,0,0) 0 2px, rgba(0,0,0,.05) 2px 4px);
+  position:relative; background:var(--navy2);
+  border:1px solid var(--hair); border-left:2px solid var(--lime);
+  padding:18px 20px 16px;
 }
 #view-feed .tx.article{ border-left-color:var(--cyan); }
 #view-feed .tx-head{ display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }

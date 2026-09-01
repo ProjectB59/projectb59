@@ -14,7 +14,7 @@
 
     var CSS =
       '#b59-burger{display:none;background:none;border:1px solid rgba(203,238,27,.4);border-radius:7px;' +
-      'color:var(--lime,#CBEE1B);font-size:20px;line-height:1;padding:6px 11px;cursor:pointer;' +
+      'color:var(--lime,#AEC44E);font-size:20px;line-height:1;padding:6px 11px;cursor:pointer;' +
       'font-family:var(--mono,monospace);margin-left:auto;flex-shrink:0}' +
       '#b59-mnav{display:none;position:fixed;left:0;right:0;z-index:19;' +
       'background:rgba(10,14,26,.98);backdrop-filter:blur(12px);border-bottom:1px solid rgba(203,238,27,.35);' +
@@ -24,7 +24,7 @@
       'text-transform:uppercase;color:var(--paper,#EDEAE0);text-decoration:none;padding:14px 22px;' +
       'border-bottom:1px solid rgba(237,234,224,.08)}' +
       '#b59-mnav a:last-child{border-bottom:0}' +
-      '#b59-mnav a:active,#b59-mnav a.act{color:var(--lime,#CBEE1B)}' +
+      '#b59-mnav a:active,#b59-mnav a.act{color:var(--lime,#AEC44E)}' +
       '@media(max-width:960px){#b59-burger{display:inline-block}}' +
       '@media(min-width:961px){#b59-mnav{display:none!important}}';
     var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);

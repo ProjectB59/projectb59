@@ -10,70 +10,67 @@
   'use strict';
   var ADDR = 'Dra35HtSDPBPh4cV58jmTuQSWsyHpR7ZVh8HfxM9tSq7';
 
+  // Restyled to the vault's own theme tokens; a quiet pill to match the radio,
+  // opposite corner so the two never overlap.
   var css = `
     #bz-donate-btn {
       position: fixed;
-      right: 18px;
-      bottom: 52px;               /* clears the radio bar */
+      left: 18px;
+      bottom: 18px;
       z-index: 99998;
-      font-family: 'Press Start 2P', 'VT323', monospace;
-      font-size: 11px;
-      letter-spacing: 1px;
-      color: #1a1200;
-      background: linear-gradient(180deg, #ffe14d 0%, #fce803 55%, #d9a900 100%);
-      border: 2px solid #7a5c00;
-      border-radius: 8px;
-      padding: 10px 14px;
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: var(--mono, 'IBM Plex Mono', monospace);
+      font-size: 12px;
+      letter-spacing: .04em;
+      color: var(--paper-dim, #9AA0AE);
+      background: var(--navy2, #0E1426);
+      border: 1px solid var(--hair, rgba(237,234,224,.14));
+      padding: 8px 14px;
       cursor: pointer;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.6);
-      text-transform: uppercase;
-      transition: transform .12s, box-shadow .12s;
+      transition: color .15s, border-color .15s;
     }
-    #bz-donate-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(252,232,3,0.4); }
+    #bz-donate-btn:hover { color: var(--lime, #AEC44E); border-color: var(--lime, #AEC44E); }
     #bz-donate-overlay {
       position: fixed; inset: 0; z-index: 100000;
-      background: rgba(0,0,0,0.78);
+      background: rgba(6,9,18,.82);
       display: none; align-items: center; justify-content: center;
     }
     #bz-donate-overlay.open { display: flex; }
     #bz-donate-modal {
       width: 92%; max-width: 460px;
-      background: linear-gradient(180deg, #0d1220, #060910);
-      border: 2px solid #fce803;
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(252,232,3,0.25);
-      padding: 22px;
-      font-family: 'VT323', 'Courier New', monospace;
-      color: #e6e6e6;
+      background: var(--navy2, #0E1426);
+      border: 1px solid var(--hair, rgba(237,234,224,.14));
+      padding: 30px;
+      font-family: var(--mono, 'IBM Plex Mono', monospace);
+      color: var(--paper, #EDEAE0);
       text-align: center;
     }
     #bz-donate-modal h3 {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 14px; color: #fce803; margin: 0 0 6px;
-      text-transform: uppercase; letter-spacing: 1px;
+      font-size: 13px; color: var(--lime, #AEC44E); margin: 0 0 10px;
+      text-transform: uppercase; letter-spacing: .12em; font-weight: 600;
     }
-    #bz-donate-modal p { font-size: 17px; color: #aab; margin: 0 0 16px; }
+    #bz-donate-modal p { font-size: 13px; color: var(--paper-dim, #9AA0AE); margin: 0 0 18px; line-height: 1.6; }
     #bz-donate-addr {
       display: block; word-break: break-all;
-      background: #000; border: 1px solid #2a3a50; border-radius: 6px;
-      color: #00e8ff; font-size: 16px; padding: 12px; margin-bottom: 14px;
+      background: var(--navy, #0A0E1A); border: 1px solid var(--hair, rgba(237,234,224,.14));
+      color: var(--cyan, #2CD4F2); font-size: 13px; padding: 14px; margin-bottom: 16px;
       user-select: all;
     }
     .bz-donate-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .bz-donate-act {
-      font-family: 'Press Start 2P', monospace; font-size: 10px;
-      padding: 11px 14px; border-radius: 6px; cursor: pointer;
-      text-transform: uppercase; text-decoration: none; border: 2px solid;
+      font-family: inherit; font-size: 12px;
+      padding: 11px 18px; cursor: pointer;
+      text-transform: uppercase; letter-spacing: .04em; text-decoration: none; border: 1px solid;
     }
-    #bz-donate-copy { background: #fce803; color: #000; border-color: #7a5c00; }
+    #bz-donate-copy { background: var(--lime, #AEC44E); color: var(--navy, #0A0E1A); border-color: var(--lime, #AEC44E); font-weight: 600; }
     #bz-donate-copy:hover { filter: brightness(1.08); }
-    #bz-donate-wallet { background: transparent; color: #00e8ff; border-color: #00e8ff; }
-    #bz-donate-wallet:hover { background: rgba(0,232,255,0.12); }
+    #bz-donate-wallet { background: transparent; color: var(--paper, #EDEAE0); border-color: var(--hair, rgba(237,234,224,.14)); }
+    #bz-donate-wallet:hover { border-color: var(--cyan, #2CD4F2); color: var(--cyan, #2CD4F2); }
     #bz-donate-close {
-      margin-top: 16px; font-family: 'VT323', monospace; font-size: 15px;
-      color: #778; background: none; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+      margin-top: 18px; font-family: inherit; font-size: 12px;
+      color: var(--paper-dim, #9AA0AE); background: none; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: .06em;
     }
-    #bz-donate-close:hover { color: #fff; }
+    #bz-donate-close:hover { color: var(--paper, #EDEAE0); }
   `;
   var style = document.createElement('style');
   style.textContent = css;
@@ -81,15 +78,16 @@
 
   var btn = document.createElement('button');
   btn.id = 'bz-donate-btn';
-  btn.innerHTML = '&#9829; DONATE';
+  btn.type = 'button';
+  btn.innerHTML = '&#9829; Support the vault';
   document.body.appendChild(btn);
 
   var overlay = document.createElement('div');
   overlay.id = 'bz-donate-overlay';
   overlay.innerHTML =
     '<div id="bz-donate-modal">' +
-      '<h3>&#9829; Support NodeB59</h3>' +
-      '<p>Send SOL or Buckazoids to keep the arcade running:</p>' +
+      '<h3>&#9829; Support Project B59</h3>' +
+      '<p>Every source in this archive is hosted, hashed, and kept free. Send SOL or Buckazoids to help keep it running:</p>' +
       '<code id="bz-donate-addr">' + ADDR + '</code>' +
       '<div class="bz-donate-row">' +
         '<button id="bz-donate-copy" class="bz-donate-act">Copy Address</button>' +

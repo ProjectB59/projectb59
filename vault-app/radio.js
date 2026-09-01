@@ -44,49 +44,63 @@
   audio.preload = 'none';
 
   // ── Build UI ──────────────────────────────────────────────────────────────
+  // Restyled to the vault's own theme tokens (this stylesheet is injected into
+  // the same document as index.html, so var(--lime) etc. resolve normally).
+  // Collapsed to a small pill by default; opens into the transport bar on click.
+  let openState = LS.get('open', false);
   const css = `
     #bz-radio {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
       z-index: 99999;
-      background: linear-gradient(180deg, #0a0a1a 0%, #000008 100%);
-      border-top: 2px solid #00e8ff;
-      box-shadow: 0 -4px 24px rgba(0,232,255,0.18);
-      font-family: 'VT323', 'Courier New', monospace;
+      font-family: var(--mono, 'IBM Plex Mono', monospace);
       user-select: none;
-      display: flex;
-      flex-direction: column;
     }
+    #bz-radio-pill {
+      position: fixed; right: 18px; bottom: 18px; z-index: 99999;
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid var(--hair, rgba(237,234,224,.14)); background: var(--navy2, #0E1426);
+      color: var(--paper-dim, #9AA0AE);
+      font-size: 12px; letter-spacing: .04em; padding: 8px 14px; cursor: pointer;
+      transition: color .15s, border-color .15s;
+    }
+    #bz-radio-pill:hover { color: var(--paper, #EDEAE0); border-color: var(--lime, #AEC44E); }
+    #bz-radio-pill .g { width: 6px; height: 6px; border-radius: 50%; background: var(--paper-dim, #9AA0AE); flex-shrink:0; }
+    #bz-radio-pill.on .g { background: var(--lime, #AEC44E); }
+    #bz-radio.open #bz-radio-pill { display: none; }
+    #bz-radio:not(.open) #bz-radio-bar,
+    #bz-radio:not(.open) #bz-radio-station-list,
+    #bz-radio:not(.open) #bz-spotify-panel { display: none !important; }
+    #bz-radio.open { bottom: 0; left: 0; right: 0; background: var(--navy2, #0E1426); border-top: 1px solid var(--hair, rgba(237,234,224,.14)); }
     #bz-radio-bar {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 12px;
-      height: 40px;
+      gap: 10px;
+      padding: 8px 14px;
+      height: 42px;
     }
     #bz-radio .bz-logo {
-      color: #00e8ff;
-      font-size: 18px;
+      color: var(--paper-dim, #9AA0AE);
+      font-size: 12px;
       white-space: nowrap;
-      letter-spacing: 1px;
-      text-shadow: 0 0 8px #00e8ff;
+      letter-spacing: .06em;
       flex-shrink: 0;
+      cursor: pointer;
     }
     #bz-radio .bz-btn {
       background: transparent;
-      border: 1px solid #00e8ff44;
-      color: #00e8ff;
+      border: 1px solid var(--hair, rgba(237,234,224,.14));
+      color: var(--paper, #EDEAE0);
       font-family: inherit;
-      font-size: 16px;
-      padding: 0 8px;
+      font-size: 13px;
+      padding: 0 9px;
       height: 26px;
       cursor: pointer;
       line-height: 1;
       transition: background .15s, border-color .15s;
       flex-shrink: 0;
     }
-    #bz-radio .bz-btn:hover { background: #00e8ff22; border-color: #00e8ff; }
-    #bz-radio .bz-btn.active { background: #00e8ff33; border-color: #00e8ff; color: #fff; }
+    #bz-radio .bz-btn:hover { border-color: var(--lime, #AEC44E); color: var(--lime, #AEC44E); }
+    #bz-radio .bz-btn.active { background: var(--lime, #AEC44E); border-color: var(--lime, #AEC44E); color: var(--navy, #0A0E1A); }
     #bz-radio-track {
       flex: 1;
       overflow: hidden;
@@ -98,53 +112,49 @@
       line-height: 1.2;
     }
     #bz-radio-name {
-      color: #00e8ff;
-      font-size: 15px;
+      color: var(--paper, #EDEAE0);
+      font-size: 12.5px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     #bz-radio-dj {
-      color: #00e8ff77;
-      font-size: 12px;
+      color: var(--paper-dim, #9AA0AE);
+      font-size: 11px;
       white-space: nowrap;
     }
     #bz-radio-viz {
       display: flex;
       align-items: flex-end;
       gap: 2px;
-      height: 22px;
+      height: 18px;
       flex-shrink: 0;
     }
     .bz-bar {
       width: 3px;
-      background: #00e8ff;
-      border-radius: 1px;
+      background: var(--lime, #AEC44E);
       transition: height .08s;
-      box-shadow: 0 0 4px #00e8ff88;
     }
     #bz-radio-vol {
       -webkit-appearance: none;
       appearance: none;
-      width: 70px;
-      height: 4px;
-      background: #00e8ff33;
+      width: 60px;
+      height: 3px;
+      background: var(--hair, rgba(237,234,224,.14));
       outline: none;
-      border-radius: 2px;
       cursor: pointer;
       flex-shrink: 0;
     }
     #bz-radio-vol::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 12px; height: 12px;
+      width: 11px; height: 11px;
       border-radius: 50%;
-      background: #00e8ff;
-      box-shadow: 0 0 6px #00e8ff;
+      background: var(--lime, #AEC44E);
     }
     #bz-radio-station-list {
       display: none;
-      background: #050515;
-      border-top: 1px solid #00e8ff33;
+      background: var(--navy, #0A0E1A);
+      border-top: 1px solid var(--hair, rgba(237,234,224,.14));
       max-height: 220px;
       overflow-y: auto;
     }
@@ -153,20 +163,20 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 6px 14px;
+      padding: 7px 14px;
       cursor: pointer;
-      border-bottom: 1px solid #ffffff08;
+      border-bottom: 1px solid var(--hair, rgba(237,234,224,.08));
       transition: background .12s;
     }
-    .bz-station-row:hover { background: #00e8ff11; }
-    .bz-station-row.playing { color: #00e8ff; background: #00e8ff18; }
-    .bz-station-row .bz-s-num { color: #00e8ff66; font-size: 13px; width: 18px; text-align: right; flex-shrink:0; }
-    .bz-station-row .bz-s-name { font-size: 15px; flex: 1; }
-    .bz-station-row .bz-s-dj { font-size: 12px; color: #ffffff44; }
+    .bz-station-row:hover { background: var(--panel, #101A2E); }
+    .bz-station-row.playing { color: var(--lime, #AEC44E); }
+    .bz-station-row .bz-s-num { color: var(--paper-dim, #9AA0AE); font-size: 11px; width: 18px; text-align: right; flex-shrink:0; }
+    .bz-station-row .bz-s-name { font-size: 12.5px; flex: 1; }
+    .bz-station-row .bz-s-dj { font-size: 11px; color: var(--paper-dim, #9AA0AE); }
     #bz-spotify-panel {
       display: none;
-      border-top: 1px solid #00e8ff33;
-      background: #050515;
+      border-top: 1px solid var(--hair, rgba(237,234,224,.14));
+      background: var(--navy, #0A0E1A);
     }
     #bz-spotify-panel.open { display: block; }
     #bz-spotify-panel iframe {
@@ -176,8 +186,8 @@
       border: none;
     }
     #bz-radio-status {
-      font-size: 12px;
-      color: #ffffff44;
+      font-size: 11px;
+      color: var(--paper-dim, #9AA0AE);
       flex-shrink: 0;
     }
   `;
@@ -190,7 +200,7 @@
   root.id = 'bz-radio';
   root.innerHTML = `
     <div id="bz-radio-bar">
-      <div class="bz-logo">📻 BZ</div>
+      <span class="bz-logo" id="bz-collapse" title="Collapse">♪ RADIO</span>
       <button class="bz-btn" id="bz-prev" title="Previous station">⏮</button>
       <button class="bz-btn" id="bz-play" title="Play / Pause">▶</button>
       <button class="bz-btn" id="bz-next" title="Next station">⏭</button>
@@ -211,9 +221,20 @@
   `;
   document.body.appendChild(root);
 
-  // Push page content up so the radio bar doesn't cover the taskbar
-  // (index.html has its own taskbar — add padding to body)
-  document.body.style.paddingBottom = '40px';
+  const pill = document.createElement('button');
+  pill.id = 'bz-radio-pill';
+  pill.type = 'button';
+  pill.innerHTML = '<span class="g"></span>♪ Radio';
+  document.body.appendChild(pill);
+
+  function setOpen(v) {
+    openState = v;
+    LS.set('open', v);
+    root.classList.toggle('open', v);
+    document.body.style.paddingBottom = v ? '42px' : '';
+  }
+  pill.addEventListener('click', () => setOpen(true));
+  setOpen(openState);
 
   // ── Refs ──────────────────────────────────────────────────────────────────
   const playBtn   = document.getElementById('bz-play');
@@ -294,12 +315,14 @@
     playing = true;
     playBtn.textContent = '⏸';
     statusEl.textContent = '► ON AIR';
+    pill.classList.add('on');
     if (!vizTimer) vizTimer = setInterval(tickViz, 90);
   });
   audio.addEventListener('pause', () => {
     playing = false;
     playBtn.textContent = '▶';
     statusEl.textContent = 'PAUSED';
+    pill.classList.remove('on');
   });
   audio.addEventListener('waiting', () => { statusEl.textContent = 'BUFFERING…'; });
   audio.addEventListener('error', () => {
@@ -349,6 +372,7 @@
 
   listBtn.addEventListener('click', () => toggleList());
   spBtn.addEventListener('click', toggleSpotify);
+  document.getElementById('bz-collapse').addEventListener('click', () => setOpen(false));
 
   // ── Init ──────────────────────────────────────────────────────────────────
   loadStation(curIdx, false);   // load metadata but don't autoplay (browser policy)

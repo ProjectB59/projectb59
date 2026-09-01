@@ -4,7 +4,7 @@
 'use strict';
 var built = false;
 var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; });};
-var NICK_COLORS = ['#CBEE1B','#2CD4F2','#FF2D95','#FFB627','#9B6BFF','#7AE8A4','#FF7AB0','#6AA7FF'];
+var NICK_COLORS = ['#AEC44E','#2CD4F2','#FF2D95','#FFB627','#9B6BFF','#7AE8A4','#FF7AB0','#6AA7FF'];
 function nickColor(n){ var h=0; for(var i=0;i<n.length;i++) h=(h*31+n.charCodeAt(i))>>>0; return NICK_COLORS[h%NICK_COLORS.length]; }
 function nickOf(author){
   var a = (author||'archivist').split('<')[0].trim().toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
