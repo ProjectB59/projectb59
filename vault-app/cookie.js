@@ -26,7 +26,7 @@
     '(radio, settings). It loads Google Fonts and, if you open them, third-party embeds ' +
     '(the Channel 59 stream and live IRC) that may set their own cookies. ' +
     '<b>No tracking, no analytics, and we never sell your data.</b> ' +
-    '<a href="privacy.html" style="color:#CBEE1B;text-decoration:underline;">Privacy &amp; Cookie Policy</a>.';
+    '<a href="privacy.html" style="color:#AEC44E;text-decoration:underline;">Privacy &amp; Cookie Policy</a>.';
   bar.appendChild(msg);
 
   function dismiss() {
@@ -37,7 +37,7 @@
   var btn = document.createElement('button');
   btn.textContent = 'Got it';
   btn.style.cssText =
-    'flex:0 0 auto;background:#CBEE1B;color:#0A0E1A;border:none;border-radius:6px;' +
+    'flex:0 0 auto;background:#AEC44E;color:#0A0E1A;border:none;border-radius:6px;' +
     'font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:12px;letter-spacing:1px;' +
     'padding:10px 22px;cursor:pointer;text-transform:uppercase;';
   btn.onclick = dismiss;

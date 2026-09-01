@@ -5,14 +5,39 @@ var R = window.B59_RECORDS || [];
 var B59_REDIRECT = {}; // old flat/provisional id -> BDC id (vault-app/id-redirect.json, loaded at boot)
 var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
 
+// Format labels only, no per-type colour coding — the B59 Decimal class (below)
+// is the vault's real taxonomy now; format is a plain mono label everywhere.
 var TYPES = {
-  writing:{label:'Writing', color:'#CBEE1B'},
-  website:{label:'Website', color:'#2CD4F2'},
-  video:{label:'Video', color:'#FF2D95'},
-  audio:{label:'Audio', color:'#FFB627'},
-  image:{label:'Image', color:'#9B6BFF'},
-  code:{label:'Code', color:'#7AE8A4'}
+  writing:{label:'Writing'},
+  website:{label:'Website'},
+  video:{label:'Video'},
+  audio:{label:'Audio'},
+  image:{label:'Image'},
+  code:{label:'Code'}
 };
+
+// ── B59 Decimal Classification ──────────────────────────────
+var CLASSES = [
+  {id:'0', name:'Reference & archive meta'},
+  {id:'1', name:'Cryptography'},
+  {id:'2', name:'Digital cash & payments'},
+  {id:'3', name:'Cypherpunks & privacy'},
+  {id:'4', name:'Consensus & distributed systems'},
+  {id:'5', name:'Smart contracts & digital law'},
+  {id:'6', name:'Economics & monetary theory'},
+  {id:'7', name:'Extropians & transhumanism'},
+  {id:'8', name:'Artificial intelligence'},
+  {id:'9', name:'Virtual worlds & games'}
+];
+function classOf(rec){
+  if(rec.id==='B59-000') return null; // the keystone, no class
+  var m = /^B59-(\d)/.exec(rec.id);
+  return m ? m[1] : null;
+}
+function classNameOf(rec){
+  var c = classOf(rec);
+  return c ? (CLASSES.filter(function(x){return x.id===c;})[0]||{}).name : (rec.id==='B59-000' ? 'Keystone' : '');
+}
 
 // Curated cross-cuts. Tag lists are kept tight so the sidebar counts stay honest
 // against the full 240-record corpus; the B59 Decimal class (the id prefix) is the
@@ -39,14 +64,16 @@ function collFor(rec){
 }
 R.forEach(function(r){ r._colls = collFor(r); });
 
-var state = { q:'', type:null, coll:null, view:'archive' };
+var state = { q:'', type:null, coll:null, cls:null, view:'archive', sort:'date-desc', yrFrom:null, yrTo:null };
 
 // ── Routing ────────────────────────────────────────────────
-var VIEWS = ['archive','timeline','extropy','cryptowars','boards','feed','network'];
+var VIEWS = ['archive','timeline','extropy','cryptowars','people','boards','feed','network','reader'];
 function route(){
   var h = (location.hash||'').replace(/^#\/?/,'');
   var parts = h.split('/');
   if(parts[0]==='record' && parts[1]){ show('archive'); openRecord(B59_REDIRECT[parts[1]] || parts[1]); return; }
+  if(parts[0]==='people' && parts[1] && window.B59People){ show('people'); window.B59People.openPerson(parts[1]); return; }
+  if(parts[0]==='read' && parts[1] && window.B59Reader){ show('reader'); window.B59Reader.open(B59_REDIRECT[parts[1]] || parts[1]); return; }
   var v = VIEWS.indexOf(parts[0])>=0 ? parts[0] : 'archive';
   show(v);
 }
@@ -60,6 +87,7 @@ function show(v){
   });
   if(v==='boards' && window.B59Boards) window.B59Boards.ensure();
   if(v==='feed' && window.B59Feed) window.B59Feed.init();
+  if(v==='people' && window.B59People) window.B59People.ensure();
   if(v==='timeline' && window.B59Timeline){ window.B59Timeline.init(); } else if(window.B59Timeline){ window.B59Timeline.stop(); }
   window.scrollTo(0,0);
 }
@@ -67,31 +95,42 @@ window.addEventListener('hashchange', route);
 
 // ── Facets ─────────────────────────────────────────────────
 function counts(){
-  var t={}, c={};
+  var t={}, c={}, k={};
   R.forEach(function(r){
     t[r.type]=(t[r.type]||0)+1;
     r._colls.forEach(function(id){ c[id]=(c[id]||0)+1; });
+    var cl = classOf(r); if(cl) k[cl]=(k[cl]||0)+1;
   });
-  return {types:t, colls:c};
+  return {types:t, colls:c, classes:k};
 }
 function renderFacets(){
   var n = counts();
   var el = document.getElementById('facets');
-  var html = '<div class="facet"><h3>Collections</h3><ul>';
+  var html = '<div class="facet"><h3>Class <span style="text-transform:none;letter-spacing:0;color:#5a6172">B59 Decimal</span></h3><ul>';
+  html += '<li data-cls="" class="'+(!state.cls?'act':'')+'">All records <span class="n">'+R.length+'</span></li>';
+  CLASSES.forEach(function(c){
+    if(!n.classes[c.id]) return;
+    html += '<li data-cls="'+c.id+'" class="'+(state.cls===c.id?'act':'')+'"><span class="mono" style="color:var(--lime)">'+c.id+'</span>&nbsp; '+esc(c.name)+' <span class="n">'+(n.classes[c.id]||0)+'</span></li>';
+  });
+  html += '</ul></div>';
+  html += '<div class="facet"><h3>Collections</h3><ul>';
   html += '<li data-coll="" class="'+(!state.coll?'act':'')+'">All records <span class="n">'+R.length+'</span></li>';
   COLLECTIONS.forEach(function(c){
     html += '<li data-coll="'+c.id+'" class="'+(state.coll===c.id?'act':'')+'">'+esc(c.name)+' <span class="n">'+(n.colls[c.id]||0)+'</span></li>';
   });
   html += '</ul></div><div class="facet"><h3>Format</h3><ul>';
   html += '<li data-type="" class="'+(!state.type?'act':'')+'">All formats <span class="n">'+R.length+'</span></li>';
-  Object.keys(TYPES).forEach(function(k){
-    if(!n.types[k]) return;
-    html += '<li data-type="'+k+'" class="'+(state.type===k?'act':'')+'"><span class="tdot" style="background:'+TYPES[k].color+'"></span>'+TYPES[k].label+' <span class="n">'+n.types[k]+'</span></li>';
+  Object.keys(TYPES).forEach(function(k2){
+    if(!n.types[k2]) return;
+    html += '<li data-type="'+k2+'" class="'+(state.type===k2?'act':'')+'">'+TYPES[k2].label+' <span class="n">'+n.types[k2]+'</span></li>';
   });
   html += '</ul></div>';
   html += '<div class="facet"><h3>Availability</h3><ul>'+
-    '<li data-off="1" class="'+(state.off?'act':'')+'">Offline copy in vault <span class="n">'+R.filter(function(r){return r.local;}).length+'</span></li></ul></div>';
+    '<li data-off="1" class="'+(state.off?'act':'')+'">Hosted copy in vault <span class="n">'+R.filter(function(r){return r.local;}).length+'</span></li></ul></div>';
   el.innerHTML = html;
+  el.querySelectorAll('[data-cls]').forEach(function(li){
+    li.addEventListener('click', function(){ state.cls = li.getAttribute('data-cls')||null; renderFacets(); renderResults(); });
+  });
   el.querySelectorAll('[data-coll]').forEach(function(li){
     li.addEventListener('click', function(){ state.coll = li.getAttribute('data-coll')||null; renderFacets(); renderResults(); });
   });
@@ -104,34 +143,112 @@ function renderFacets(){
 }
 
 // ── Results ────────────────────────────────────────────────
+// Query operators: author: tag: year: (single or a-b range) class: has:offline.
+// Anything left over after pulling operators out is a free-text substring match
+// against id/title/author/description/tags/hash.
+function parseQuery(raw){
+  var out = {free:[], author:null, tag:null, year:null, cls:null, has:null, inText:false};
+  (raw||'').split(/\s+/).filter(Boolean).forEach(function(tok){
+    var m = /^(author|tag|year|class|has|in):(.+)$/i.exec(tok);
+    if(!m){ out.free.push(tok); return; }
+    var k = m[1].toLowerCase(), v = m[2].toLowerCase();
+    if(k==='author') out.author = v;
+    else if(k==='tag') out.tag = v;
+    else if(k==='class') out.cls = v;
+    else if(k==='has') out.has = v;
+    else if(k==='in'){ if(v==='text') out.inText = true; }
+    else if(k==='year'){
+      var r = /^(\d{3,4})-(\d{3,4})$/.exec(v);
+      out.year = r ? [+r[1], +r[2]] : [+v, +v];
+    }
+  });
+  out.free = out.free.join(' ');
+  return out;
+}
+// ── Full-text index (vault-app/fulltext-index.json) ─────────
+// Record id -> array of body paragraphs, built offline by tools/build-
+// fulltext-index.js from each record's primary HTML file. Fetched once,
+// lazily, the first time a search is attempted; cached in FT thereafter.
+// A static JSON file, so this stays true to the offline-first, no-build-
+// -step client — the index just ships as one more asset in the repo.
+var FT = null, FT_PROMISE = null;
+function loadFullText(){
+  if(FT_PROMISE) return FT_PROMISE;
+  FT_PROMISE = fetch('vault-app/fulltext-index.json').then(function(r){ return r.ok?r.json():{}; })
+    .then(function(j){ FT = j; return FT; }).catch(function(){ FT = {}; return FT; });
+  return FT_PROMISE;
+}
+function fullTextHits(term, limit){
+  if(!FT || !term) return [];
+  term = term.toLowerCase();
+  var out = [];
+  for(var id in FT){
+    var paras = FT[id];
+    for(var i=0;i<paras.length;i++){
+      var idx = paras[i].toLowerCase().indexOf(term);
+      if(idx>=0){ out.push({id:id, para:i, text:paras[i], at:idx}); break; }
+    }
+    if(limit && out.length>=limit) break;
+  }
+  return out;
+}
+function matchesQuery(r, pq){
+  if(pq.author && !(r.author||'').toLowerCase().includes(pq.author)) return false;
+  if(pq.tag && (r.tags||[]).indexOf(pq.tag)<0 && !(r.tags||[]).some(function(t){return t.indexOf(pq.tag)>=0;})) return false;
+  if(pq.cls && classOf(r)!==pq.cls) return false;
+  if(pq.has==='offline' && !r.local) return false;
+  if(pq.year){
+    var y = +((r.date||'').slice(0,4));
+    if(!y || y<pq.year[0] || y>pq.year[1]) return false;
+  }
+  if(pq.free){
+    if(pq.inText){
+      if(!FT) return false; // index still loading; loadFullText() triggers a re-render when it lands
+      var paras = FT[r.id];
+      if(!paras || !paras.some(function(p){ return p.toLowerCase().indexOf(pq.free.toLowerCase())>=0; })) return false;
+    } else {
+      var hay = (r.id+' '+r.title+' '+(r.author||'')+' '+(r.description||'')+' '+(r.tags||[]).join(' ')+' '+(r.hash||'')).toLowerCase();
+      if(hay.indexOf(pq.free.toLowerCase())<0) return false;
+    }
+  }
+  return true;
+}
 function filtered(){
-  var q = state.q.toLowerCase();
-  return R.filter(function(r){
+  var pq = parseQuery(state.q);
+  var list = R.filter(function(r){
     if(state.type && r.type!==state.type) return false;
     if(state.coll && r._colls.indexOf(state.coll)<0) return false;
+    if(state.cls && classOf(r)!==state.cls) return false;
     if(state.off && !r.local) return false;
-    if(q){
-      var hay = (r.id+' '+r.title+' '+(r.author||'')+' '+(r.description||'')+' '+(r.tags||[]).join(' ')+' '+(r.hash||'')).toLowerCase();
-      if(hay.indexOf(q)<0) return false;
+    if(state.yrFrom || state.yrTo){
+      var y = +((r.date||'').slice(0,4));
+      if(!y) return false;
+      if(state.yrFrom!=null && y<state.yrFrom) return false;
+      if(state.yrTo!=null && y>state.yrTo) return false;
     }
-    return true;
+    return matchesQuery(r, pq);
   });
+  if(state.sort==='id') list.sort(function(a,b){ return a.id<b.id?-1:a.id>b.id?1:0; });
+  else{
+    list.sort(function(a,b){ return (a.date||'').localeCompare(b.date||''); });
+    if(state.sort==='date-desc') list.reverse();
+  }
+  return list;
 }
 function renderResults(){
   var list = filtered();
   document.getElementById('result-count').textContent = list.length + ' of ' + R.length + ' records';
   var el = document.getElementById('results');
   el.innerHTML = list.map(function(r){
-    var tc = (TYPES[r.type]||{}).color || '#9AA0AE';
     var year = (r.date||'').slice(0,4);
     return '<article class="rec" data-id="'+r.id+'">'+
-      '<div class="call">'+r.id+'<span class="era">'+esc(year)+' · <i style="color:'+tc+';font-style:normal">'+esc((TYPES[r.type]||{}).label||r.type)+'</i></span></div>'+
+      '<div class="call">'+r.id+'<span class="era">'+esc(year)+' · '+esc((TYPES[r.type]||{}).label||r.type)+'</span></div>'+
       '<div><div class="title">'+esc(r.title)+'</div>'+
       '<p class="desc">'+esc((r.description||'').slice(0,220))+((r.description||'').length>220?'…':'')+'</p>'+
       '<div class="meta">'+
         '<span><b>'+esc(r.author||'Unknown')+'</b></span>'+
         (r.hash?'<span>hash <b>'+esc(r.hash.slice(0,4))+'…'+esc(r.hash.slice(-4))+'</b></span>':'')+
-        (r.local?'<span class="off-badge">● offline copy</span>':'<span class="pend-badge">○ source pending</span>')+
+        (r.local?'<span class="off-badge">● hosted copy</span>':(r.external_url?'<span class="pend-badge">↗ linked, copyrighted</span>':'<span class="pend-badge">○ source pending</span>'))+
       '</div></div></article>';
   }).join('') || '<div class="empty">Nothing matches. Clear a filter or try the Archivist.</div>';
   el.querySelectorAll('.rec').forEach(function(a){
@@ -140,18 +257,42 @@ function renderResults(){
 }
 
 // ── Record detail ──────────────────────────────────────────
+function plainCitation(r){
+  if(r.citation) return r.citation;
+  var bits = [r.author||'Unknown']; if(r.date) bits.push('('+r.date.slice(0,4)+')');
+  bits.push('"'+r.title+'."'); bits.push(r.id+'.'); bits.push('Project B59 Archive.');
+  if(r.hash) bits.push('SHA-256 '+r.hash.slice(0,8)+'…'+r.hash.slice(-8)+'.');
+  return bits.join(' ');
+}
+function seeAlso(r){
+  if(r.see_also && r.see_also.length){
+    return r.see_also.map(function(id){ id = B59_REDIRECT[id]||id; return R.filter(function(x){return x.id===id;})[0]; }).filter(Boolean);
+  }
+  if(!r.tags || !r.tags.length) return [];
+  var scored = R.filter(function(x){ return x.id!==r.id; }).map(function(x){
+    var n = (x.tags||[]).filter(function(t){ return r.tags.indexOf(t)>=0; }).length;
+    return {x:x, n:n};
+  }).filter(function(s){ return s.n>0; }).sort(function(a,b){ return b.n-a.n; });
+  return scored.slice(0,3).map(function(s){ return s.x; });
+}
 function openRecord(id){
   var r = R.filter(function(x){ return x.id===id; })[0];
   if(!r) return;
   var ov = document.getElementById('detail-overlay');
-  var tc = (TYPES[r.type]||{}).color || '#9AA0AE';
   var gh = 'https://github.com/ProjectB59/projectb59/tree/main/' + (r.content_path || ('content/'+r.id));
   var files = (r.files||[]).map(function(f){
     return '<li>'+esc(f.path)+' <span class="n">'+(f.size>1048576?(f.size/1048576).toFixed(1)+' MB':Math.round(f.size/1024)+' KB')+'</span></li>';
   }).join('');
+  var cls = classOf(r), clsName = classNameOf(r);
+  var related = seeAlso(r);
+  var entryFile = (r.files||[]).filter(function(f){ return f.entry; })[0] || (r.files||[])[0];
+  var raw = (r.files||[]).filter(function(f){ return !f.entry; })[0] || (r.files||[])[0];
+  var readable = !!(entryFile && /\.(html?|mht)$/i.test(entryFile.path));
   ov.innerHTML = '<div class="detail" role="dialog" aria-label="'+esc(r.title)+'">'+
     '<button class="d-close" aria-label="Close">×</button>'+
-    '<div class="d-call">'+r.id+' · <span style="color:'+tc+'">'+esc((TYPES[r.type]||{}).label||r.type)+'</span></div>'+
+    '<div class="d-call">'+r.id+' · '+esc((TYPES[r.type]||{}).label||r.type)+
+      (cls?' <span class="cls-badge">'+cls+' · '+esc(clsName)+'</span>':(r.id==='B59-000'?' <span class="cls-badge">keystone</span>':''))+
+    '</div>'+
     '<h2 class="d-title">'+esc(r.title)+'</h2>'+
     '<div class="d-byline">'+esc(r.author||'Unknown')+' · '+esc(r.date||'')+'</div>'+
     (r.excerpt?'<blockquote class="d-quote">'+esc(r.excerpt)+'</blockquote>':'')+
@@ -160,16 +301,45 @@ function openRecord(id){
       (r.citation?'<dt>Citation</dt><dd>'+esc(r.citation)+'</dd>':'')+
       (r.provenance?'<dt>Provenance</dt><dd>'+esc(r.provenance)+'</dd>':'')+
       (r.hash?'<dt>SHA-256</dt><dd class="d-hash">'+esc(r.hash)+'</dd>':'')+
+      (r.external_url?'<dt>Source</dt><dd><a href="'+esc(r.external_url)+'" target="_blank" rel="noopener" style="color:var(--cyan)">'+esc(r.external_url)+' ↗</a></dd>':'')+
       (files?'<dt>Files</dt><dd><ul class="d-files">'+files+'</ul></dd>':'')+
     '</dl>'+
     '<div class="d-tags">'+(r.tags||[]).map(function(t){ return '<span>'+esc(t)+'</span>'; }).join('')+'</div>'+
     '<div class="d-actions">'+
-      (r.local?r.local.map(function(p,i){ return '<a class="btn-lime" href="'+encodeURI(p)+'" target="_blank" rel="noopener">Read document'+(r.local.length>1?' '+(i+1):'')+' ↗</a>'; }).join(''):'')+
-      '<a class="btn-ghost" href="'+gh+'" target="_blank" rel="noopener">Source on GitHub ↗</a>'+
+      (readable?'<a class="btn-lime" href="#/read/'+r.id+'">Read in the vault</a>':'')+
+      (r.local?r.local.map(function(p,i){ return '<a class="'+(readable?'btn-ghost':'btn-lime')+'" href="'+encodeURI(p)+'" target="_blank" rel="noopener">'+(readable?'Open original':'Read document')+(r.local.length>1?' '+(i+1):'')+' ↗</a>'; }).join(''):'')+
+      (r.local?'<a class="btn-ghost" href="'+gh+'" target="_blank" rel="noopener">Source on GitHub ↗</a>':'')+
+      '<button type="button" id="d-cite-btn">Cite</button>'+
+      '<button type="button" id="d-link-btn">Copy link</button>'+
       '<span class="d-sia">Sia upload: queued</span>'+
-    '</div></div>';
+    '</div>'+
+    '<div class="d-cite" id="d-cite" style="display:none">'+
+      '<div class="ch"><b id="d-cite-copy">Copy citation</b></div>'+
+      '<p id="d-cite-text">'+esc(plainCitation(r))+'</p>'+
+    '</div>'+
+    (raw&&r.hash?'<details class="d-verify"><summary>Verify this file yourself</summary><div class="body">'+
+      'Download <span class="mono">'+esc(raw.path||raw)+'</span>, then run:'+
+      '<code>sha256sum '+esc(raw.path||raw)+'</code>'+
+      'A result equal to the SHA-256 above means the file is byte-for-byte what the archive holds.'+
+    '</div></details>':'')+
+    (related.length?'<div class="d-seealso"><span class="lbl">See also</span>'+
+      related.map(function(x){ return '<a href="#/record/'+x.id+'"><b>'+x.id+'</b> — '+esc(x.title)+'</a>'; }).join('')+
+    '</div>':'')+
+  '</div>';
   ov.classList.add('open');
   ov.querySelector('.d-close').addEventListener('click', closeRecord);
+  var citeBtn = document.getElementById('d-cite-btn'), citeBox = document.getElementById('d-cite');
+  if(citeBtn) citeBtn.addEventListener('click', function(){ citeBox.style.display = citeBox.style.display==='none'?'block':'none'; });
+  var citeCopy = document.getElementById('d-cite-copy');
+  if(citeCopy) citeCopy.addEventListener('click', function(){
+    var t = document.getElementById('d-cite-text').textContent;
+    (navigator.clipboard&&navigator.clipboard.writeText ? navigator.clipboard.writeText(t) : Promise.reject()).then(function(){ citeCopy.textContent='Copied'; setTimeout(function(){ citeCopy.textContent='Copy citation'; },1400); }).catch(function(){});
+  });
+  var linkBtn = document.getElementById('d-link-btn');
+  if(linkBtn) linkBtn.addEventListener('click', function(){
+    var url = location.origin + location.pathname + '#/record/' + r.id;
+    (navigator.clipboard&&navigator.clipboard.writeText ? navigator.clipboard.writeText(url) : Promise.reject()).then(function(){ linkBtn.textContent='Copied'; setTimeout(function(){ linkBtn.textContent='Copy link'; },1400); }).catch(function(){});
+  });
 }
 function closeRecord(){ document.getElementById('detail-overlay').classList.remove('open'); }
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeRecord(); });
@@ -352,16 +522,88 @@ function openCh59(){
 document.querySelectorAll('[data-ch59]').forEach(function(b){ b.addEventListener('click', openCh59); });
 
 // ── Search wiring ──────────────────────────────────────────
+// The hero field doubles as a live-results dropdown: catalogue metadata
+// (title, author, tags, hash, the operators above) plus, once the full-text
+// index has loaded, hits inside the archived document bodies themselves —
+// shown as a second group with the matched paragraph as a snippet.
 var q = document.getElementById('q');
-q.addEventListener('input', function(){ state.q = q.value; renderResults(); });
+var drop = document.getElementById('search-drop');
+var dropSel = -1;
+function snippetFor(text, term){
+  var i = text.toLowerCase().indexOf(term.toLowerCase());
+  if(i<0) return esc(text.slice(0,140));
+  var start = Math.max(0, i-60), end = Math.min(text.length, i+term.length+80);
+  var pre = (start>0?'…':'')+esc(text.slice(start,i));
+  var hit = '<mark>'+esc(text.slice(i,i+term.length))+'</mark>';
+  var post = esc(text.slice(i+term.length,end))+(end<text.length?'…':'');
+  return pre+hit+post;
+}
+function paintDrop(){
+  var v = q.value.trim();
+  if(!v){ drop.classList.remove('open'); drop.innerHTML=''; return; }
+  var pq = parseQuery(v);
+  var metaHits = pq.inText ? [] : R.filter(function(r){ return matchesQuery(r, pq); }).slice(0,6);
+  var term = pq.free;
+  var bodyHits = term && FT ? fullTextHits(term, 6) : [];
+  var html = '';
+  if(metaHits.length){
+    html += '<div class="grp">Catalogue — title, author, tags</div>';
+    html += metaHits.map(function(r){
+      return '<div class="hit" data-id="'+r.id+'">'+
+        '<div class="c">'+r.id+'<br><span style="color:#5a6172">'+esc((r.date||'').slice(0,4))+'</span></div>'+
+        '<div><div class="h">'+esc(r.title)+'</div><div class="a">'+esc(r.author||'')+'</div></div></div>';
+    }).join('');
+  }
+  if(bodyHits.length){
+    html += '<div class="grp">Inside document text'+(!FT?' (loading…)':'')+'</div>';
+    html += bodyHits.map(function(h){
+      var r = R.filter(function(x){return x.id===h.id;})[0];
+      if(!r) return '';
+      return '<div class="hit" data-id="'+r.id+'">'+
+        '<div class="c">'+r.id+'<br><span style="color:#5a6172">'+esc((r.date||'').slice(0,4))+'</span></div>'+
+        '<div><div class="h">'+esc(r.title)+'</div><div class="snip">'+snippetFor(h.text, term)+'</div></div></div>';
+    }).join('');
+  }
+  if(!FT) loadFullText().then(function(){ if(q.value.trim()===v) paintDrop(); });
+  drop.innerHTML = html || '<div class="foot"><span>No catalogue or document-text matches.</span></div>';
+  var hitEls = drop.querySelectorAll('.hit');
+  dropSel = hitEls.length ? 0 : -1;
+  hitEls.forEach(function(h,i){ h.classList.toggle('sel', i===dropSel); });
+  drop.insertAdjacentHTML('beforeend', '<div class="foot"><span>'+hitEls.length+' shown</span><a href="#" id="drop-ask">Ask the Archivist instead →</a></div>');
+  drop.classList.add('open');
+  drop.querySelectorAll('.hit').forEach(function(h){ h.addEventListener('click', function(){ openRecord(h.getAttribute('data-id')); drop.classList.remove('open'); }); });
+  var da = document.getElementById('drop-ask');
+  if(da) da.addEventListener('click', function(e){ e.preventDefault(); drop.classList.remove('open'); document.querySelector('[data-ask-open]').click(); document.getElementById('ask-input').value = v; });
+}
+q.addEventListener('input', function(){ state.q = q.value; renderResults(); paintDrop(); });
+q.addEventListener('focus', function(){ loadFullText(); });
+q.addEventListener('keydown', function(e){
+  var hits = drop.querySelectorAll('.hit');
+  if(e.key==='ArrowDown' && hits.length){ e.preventDefault(); dropSel=(dropSel+1)%hits.length; hits.forEach(function(h,i){h.classList.toggle('sel',i===dropSel);}); }
+  else if(e.key==='ArrowUp' && hits.length){ e.preventDefault(); dropSel=(dropSel-1+hits.length)%hits.length; hits.forEach(function(h,i){h.classList.toggle('sel',i===dropSel);}); }
+  else if(e.key==='Enter' && dropSel>=0 && hits[dropSel]){ openRecord(hits[dropSel].getAttribute('data-id')); drop.classList.remove('open'); }
+  else if(e.key==='Escape'){ drop.classList.remove('open'); q.blur(); }
+});
+document.addEventListener('click', function(e){ if(!drop.contains(e.target) && e.target!==q) drop.classList.remove('open'); });
 document.addEventListener('keydown', function(e){
   if(e.key==='/' && document.activeElement!==q && !/input|textarea/i.test(document.activeElement.tagName)){ e.preventDefault(); location.hash='#/archive'; q.focus(); }
 });
 
+// ── Catalog sort + year-range ────────────────────────────────
+var sortSel = document.getElementById('sort-sel'), yrFrom = document.getElementById('yr-from'), yrTo = document.getElementById('yr-to');
+if(sortSel) sortSel.addEventListener('change', function(){ state.sort = sortSel.value; renderResults(); });
+function readYr(el){ var v = parseInt(el.value,10); return isNaN(v) ? null : v; }
+if(yrFrom) yrFrom.addEventListener('input', function(){ state.yrFrom = readYr(yrFrom); renderResults(); });
+if(yrTo) yrTo.addEventListener('input', function(){ state.yrTo = readYr(yrTo); renderResults(); });
+
 // ── Stats ──────────────────────────────────────────────────
 document.getElementById('stat-records').textContent = R.length;
+var ledgerCount = document.getElementById('ledger-count'); if(ledgerCount) ledgerCount.textContent = R.length;
 document.getElementById('stat-offline').textContent = R.filter(function(r){ return r.local; }).length;
 document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX||{}).months||[]).length;
+var footRecords = document.getElementById('foot-records'); if(footRecords) footRecords.textContent = R.length;
+var footHosted = document.getElementById('foot-hosted'); if(footHosted) footHosted.textContent = R.filter(function(r){ return r.local; }).length;
+var offlineDocCount = document.getElementById('offline-doc-count'); if(offlineDocCount) offlineDocCount.textContent = R.filter(function(r){ return r.local; }).length;
 
 // ── Boards mode toggle + live IRC ─────
 // Primary: our OWN Modulo59 network, embedded (see vault-app/m59irc.js) —
@@ -417,7 +659,7 @@ document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX
 })();
 
 // ── Boot ───────────────────────────────────────────────────
-window.B59 = { openRecord:openRecord, records:R, collections:COLLECTIONS, types:TYPES };
+window.B59 = { openRecord:openRecord, records:R, collections:COLLECTIONS, types:TYPES, classes:CLASSES, classOf:classOf, esc:esc };
 renderFacets(); renderResults(); renderExtropy(); renderCryptoWars(); route();
 fetch('vault-app/id-redirect.json').then(function(r){ return r.ok ? r.json() : null; }).then(function(j){ if(j){ B59_REDIRECT = j; route(); } }).catch(function(){});
 })();

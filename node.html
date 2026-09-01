@@ -5,38 +5,54 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The B59 Node · Project B59</title>
 <meta name="description" content="Project B59 runs its own pruned Bitcoin node. Verify, don't trust.">
-<link rel="icon" href="favicon.ico">
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root{--navy:#0A0E1A;--navy2:#0D1322;--hair:#1d2740;--lime:#CBEE1B;--cyan:#2CD4F2;--magenta:#FF2D95;--amber:#FFB627;--paper:#E8ECF4;--paper-dim:#9AA5BC;--mono:'IBM Plex Mono',monospace}
+  :root{--navy:#0A0E1A;--navy2:#0E1426;--hair:rgba(237,234,224,.16);--lime:#AEC44E;--cyan:#2CD4F2;--amber:#FFB627;--btc:#F7931A;--paper:#EDEAE0;--paper-dim:#9AA0AE;--mono:'IBM Plex Mono',monospace}
   *{box-sizing:border-box}
   body{margin:0;background:var(--navy);color:var(--paper);font-family:'Newsreader',Georgia,serif;min-height:100vh}
-  a{color:var(--cyan)}
+  a{color:var(--lime)}
   .wrap{max-width:860px;margin:0 auto;padding:48px 22px 80px}
+  .mark{display:flex;align-items:center;gap:14px;margin-bottom:34px}
+  .mark svg{filter:drop-shadow(0 0 10px rgba(174,196,78,.4))}
+  .mark .mtext{display:flex;flex-direction:column;gap:1px;font-family:var(--mono)}
+  .mark .p{font-size:11px;color:var(--lime);font-weight:600;letter-spacing:.34em;text-transform:uppercase}
+  .mark .row2{display:flex;align-items:baseline;gap:9px}
+  .mark .b{font-size:26px;font-weight:700;color:var(--paper)}
+  .mark .sub{font-size:11px;color:var(--paper-dim);letter-spacing:.1em;text-transform:uppercase}
   .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--lime)}
   h1{font-size:clamp(34px,6vw,54px);margin:10px 0 14px;font-weight:600}
   .lead{font-size:19px;line-height:1.65;color:var(--paper-dim);max-width:640px}
-  .back{font-family:var(--mono);font-size:13px;text-decoration:none}
-  .panel{margin-top:38px;border:1px solid var(--hair);border-radius:6px;background:var(--navy2);padding:26px}
+  .back{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--paper-dim)}
+  .back:hover{color:var(--lime)}
+  .panel{margin-top:38px;border:1px solid var(--hair);border-radius:3px;background:var(--navy2);padding:26px}
   .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-top:6px}
   .stat .n{font-family:var(--mono);font-size:30px;font-weight:600;color:var(--paper)}
   .stat .l{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-dim);margin-top:4px}
   .sync{margin-top:22px}
   .bar{height:10px;border:1px solid var(--hair);border-radius:99px;overflow:hidden;background:#080c16}
-  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--cyan));width:0%;transition:width .8s}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--btc));width:0%;transition:width .8s}
   .sync .t{font-family:var(--mono);font-size:13px;color:var(--paper-dim);margin-top:8px}
-  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#5b6a85;margin-right:8px;vertical-align:1px}
-  .dot.on{background:var(--lime);box-shadow:0 0 10px rgba(203,238,27,.7)}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#5a6172;margin-right:8px;vertical-align:1px}
+  .dot.on{background:var(--lime);box-shadow:0 0 10px rgba(174,196,78,.6)}
   .prose{margin-top:40px;line-height:1.75;font-size:17.5px}
   .prose h2{font-size:24px;margin:34px 0 10px}
-  .prose p{margin:0 0 16px;color:#c7cfdf}
-  .mono{font-family:var(--mono);font-size:.92em;color:var(--amber)}
+  .prose p{margin:0 0 16px;color:var(--paper-dim)}
+  .mono{font-family:var(--mono);font-size:.92em;color:var(--btc)}
   footer{margin-top:60px;font-family:var(--mono);font-size:13px;color:var(--paper-dim)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="/">&larr; Project B59 · The Vault</a>
+  <a class="mark" href="/">
+    <svg viewBox="0 0 52 52" width="46" height="46" aria-hidden="true">
+      <polygon points="26,3 46,14.5 46,37.5 26,49 6,37.5 6,14.5" fill="none" stroke="var(--lime)" stroke-width="2.4"/>
+      <polygon points="26,10 40,18 40,34 26,42 12,34 12,18" fill="none" stroke="var(--hair)" stroke-width="1"/>
+      <text x="26" y="33" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="17" font-weight="600" fill="var(--paper)">59</text>
+    </svg>
+    <span class="mtext"><span class="p">Project</span><span class="row2"><span class="b">B59</span><span class="sub">· The Vault</span></span></span>
+  </a>
+  <a class="back" href="/">&larr; back to the archive</a>
   <div style="margin-top:26px" class="kicker">Infrastructure · Verify, don't trust</div>
   <h1>The B59 Node</h1>
   <p class="lead">Project B59 runs its own Bitcoin node. It downloads every block ever mined, checks every rule and every signature itself, and reads the chain directly instead of relying on an explorer or exchange. This page reads its live status straight from our machine.</p>

@@ -6,7 +6,7 @@ var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c
 // Strands (categories) — each a colored thread through the story
 var CAT = {
   crypto:  {label:'Cryptography',   color:'#2CD4F2'},
-  cash:    {label:'Digital Cash',   color:'#CBEE1B'},
+  cash:    {label:'Digital Cash',   color:'#AEC44E'},
   cypher:  {label:'Cypherpunks',    color:'#FF2D95'},
   pow:     {label:'Proof-of-Work',  color:'#FFB627'},
   bitcoin: {label:'Bitcoin',        color:'#9B6BFF'}
