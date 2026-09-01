@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-303.001 · Untraceable Electronic Mail, Return Addresses, and Digital Pseudonyms — Chaum (1981)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-303.001">← back to the vault</a>
+  <div class="call">B59-303.001 · WRITING · MIX NETWORKS</div>
+  <h1>Untraceable Electronic Mail, Return Addresses, and Digital Pseudonyms</h1>
+  <div class="by">David L. Chaum · Communications of the ACM, 24(2) · February 1981</div>
+
+  <div class="lede">"A technique... that allows an electronic mail system to hide who a participant communicates with as well as the content of the communication."</div>
+
+  <h2>Why it matters</h2>
+  <p>Encryption hides message content; it does nothing about the pattern of who contacts whom. Chaum was the first to treat that metadata as the harder problem and to give a construction that beats it without a trusted party. The cypherpunk remailer culture is a direct application of this paper.</p>
+
+  <h2>The mechanism</h2>
+  <p>Wrap a message in nested public-key encryption, one layer per mix. Each mix strips its layer, holds messages until it has a batch, shuffles them, and forwards. An observer sees a message go into the first mix and a different-looking message come out, with no way to match them. Return addresses work the same way in reverse. Anonymity holds as long as at least one mix in the path is honest.</p>
+
+  <h2>The lineage it started</h2>
+  <p>Type I (cypherpunk) and Type II (Mixmaster) remailers, Mixminion, onion routing, and Tor are all mix-network designs. Digital pseudonyms, the idea of a persistent unlinkable identity you control, run from here through Chaum’s credential work (B59-203.001) into modern anonymous-credential systems.</p>
+
+  <h2>Original abstract</h2>
+  <div class="fn">A technique based on public key cryptography is presented that allows an electronic mail system to hide who a participant communicates with as well as the content of the communication -- in spite of an unsecured underlying telecommunication system. The technique does not require a universally trusted authority. One correspondent can remain anonymous to a second, while allowing the second to respond via an untraceable return address. The technique can also be used to form rosters of untraceable digital pseudonyms from selected applications.</div>
+
+  <div class="cite">SOURCE: David L. Chaum, "Untraceable Electronic Mail, Return Addresses, and Digital Pseudonyms," Communications of the ACM, vol. 24, no. 2, February 1981, pp. 84-88.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="untraceable-electronic-mail-return-addresses-digital-pseudonyms-source.pdf">untraceable-electronic-mail-return-addresses-digital-pseudonyms-source.pdf</a>, retrieved from <a href="https://www.freehaven.net/anonbib/cache/chaum-mix.pdf">https://www.freehaven.net/anonbib/cache/chaum-mix.pdf</a> on 2026-08-31. SHA-256 of the snapshot: f7996dbb8496c100a67db1f627342d0187a1f6625afc021f24610520adc7e1c6.</div>
+</main>
+</body>
+</html>

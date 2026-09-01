@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-505.005 · Tahoe - The Least-Authority Filesystem</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap;overflow-x:auto}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-505.005">&larr; back to the vault</a>
+  <div class="call">B59-505.005 · WRITING · OBJECT-CAPABILITY · STORAGE</div>
+  <h1>Tahoe - The Least-Authority Filesystem</h1>
+  <div class="by">Zooko Wilcox-O'Hearn &amp; Brian Warner · 31 October 2008</div>
+
+  <div class="lede">Tahoe is a system for secure, distributed storage. It uses capabilities for access control, cryptography for confidentiality and integrity, and erasure coding for fault-tolerance.</div>
+
+  <p><a href="tahoe-least-authority-filesystem.pdf">&darr; Read the full document (PDF, primary source)</a></p>
+
+  <h2>Abstract / opening (full text in the linked PDF)</h2>
+  <div class="fn">Tahoe - The Least-Authority Filesystem
+
+Zooko Wilcox-O'Hearn
+allmydata.com 555 De Haro St. San Francisco, CA 94107
+zooko@zooko.com
+
+Brian Warner
+allmydata.com 555 De Haro St. San Francisco, CA 94107
+warner@allmydata.com
+
+ABSTRACT
+Tahoe is a system for secure, distributed storage. It uses capabilities for access control, cryptography for confidentiality and integrity, and erasure coding for fault-tolerance. It has been deployed in a commercial backup service and is currently operational. The implementation is Open Source.
+Categories and Subject Descriptors: D.4.6 [Security and Protection]: Access controls; E.3 [Data Encryption]: Public key cryptosystems; H.3 [Information Systems]: Information Storage and Retrieval; E.4 [Coding and Information Theory]: Error control codes
+General Terms: Design, Human Factors, Reliability, Security
+Keywords: capabilities, fault-tolerance, open source, peerto-peer
+1. INTRODUCTION
+Tahoe is a storage grid designed to provide secure, longterm storage, such as for backup applications. It consists of userspace processes running on commodity PC hardware and communicating with one another over TCP/IP. Tahoe was designed following the Principle of Least Authority [21] - each user or process that needs to accomplish a task should be able to perform that task without having or wielding more authority than is necessary.
+Tahoe was developed by allmydata.com to serve as the storage backend for their backup service. It is now in operation and customers are relying on the Tahoe grid for the safety of their data. Allmydata.com has released the complete Tahoe implementation under open source software licences [1].
+The data and metadata in the filesystem is distributed among servers using erasure coding and cryptography. The erasure coding parameters determine how many servers are used to store each file - denoted N , and how many of them are necessary for the file to be available - denoted K. The default settings for those parameters, and the settings which
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. To copy otherwise, to republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. StorageSS'08, October 31, 2008, Fairfax, Virginia, USA. Copyright 2008 ACM 978-1-60558-299-3/08/10 ...$5.00.
+
+are used in the allmydata.com service, are K = 3, N = 10, so each file is shared across 10 different servers, and the correct function of any 3 of those servers is sufficient to access the file.
+The combination of cryptography and erasure coding minimizes the user's vulnerability to these servers. It is an unavoidable fact of life that servers can fail, or can turn against their clients. This can happen if the server is compromised through a remote exploit, subverted by insider attack, or if the owners of the server are required by their government to change its behavior, as in the case of Hushmail in 2007 [29].
+Tahoe's cryptography ensures that even if the servers fail or turn against the client they cannot violate confidentiality by reading the plaintext, nor can they violate integrity by forging file contents. In addition, the servers cannot violate freshness by causing file contents to rollback to an earlier state without a collusion of multiple servers.
+2. ACCESS CONTROL
+Tahoe uses the capability access control model [6] to manage access to files and directories. In Tahoe, a capability is a short string of bits which uniquely identifies one file or directory. Knowledge of that identifier is necessary and sufficient to gain access to the object that it identifies. The strings must be short enough to be convenient to store and transmit, but must be long enough that they are unguessable (this requires them to be at least 96 bits).
+Such an access scheme is known as "capabilities as keys" or "cryptographic capabilities" [22]. This approach allows fine-grained and dynamic sharing of files or directories.
+The Tahoe filesystem consists of files and directories. Files can be mutable, such that their contents can change, including their size, or immutable, such that they are writable only once.
+Each immutable file has two capabilities associated with it, a read capability or read-cap for short, which identifies the immutable file and grants the ability to read its content, and a verify capability or verify-cap, which identifies the immutable file and grants the ability to check its integrity but not to read its contents.
+For mutable files, there are three capabilities, the readwrite-cap, the read-only-cap, and the verify-cap.
+Users who have access to a file or directory can delegate that access to other users simply by sharing the capability. Users can also produce a verify-cap from a read-cap, or produce a read-only-cap from a read-write-cap. This is called diminishing a capability.
+
+3. ERASURE CODING
+All data is erasure coded using Reed-Solomon codes over GF (28) [28]. When writing, a writer chooses erasure coding parameters N - the total number of shares that will be written - and K - the number of shares to be used on read.
+Using this codec allows an efficient byte-wise implementation of encoding and decoding, and constrains the choice of erasure coding parameters to be 1 &lt;= N &lt;= 256 and 1 &lt;= K &lt;= N .
+Compared to erasure codes such as Tornado Codes [5], Reed-Solomon codes offer optimal storage overheard - exactly b blocks of erasure code data (plus metadata - the index number of each block) are necessary to decode a b-block file. On the other hand, Reed-Solomon codes suffer from asymptotically worse computational complexity - the time to encode or decode a file with a Reed-Solomon codec is in the worst case proportional to N 2 where N is the number of erasure code blocks. Other codes offer asymptotically faster encoding and decoding - O(N ) computational complexity - but they impose storage overhead - more than b blocks are necessary to reconstruct a b block file. Also, many of these faster codes are patented.
+In Tahoe we have learned that since K and N are small and since our implementation of Reed-Solomon ("zfec") is fast [25], the measured computational cost of erasure coding is low, and in fact is lower than the cost of the encryption and secure hash algorithms.
+4. CRYPTOGRAPHY
+4.1 Requirements
+Tahoe is designed to run in software without requiring "Trusted Computing" (also called "Treacherous Computing" [2]) hardware. Therefore, the only robust way to constrain users or administrators from certain behavior such as unauthorizedly reading or altering files is to make such behavior require secrets, and to withhold those secrets from people who are not authorized to perform those behaviors. Thus, cryptography.
+In this section we will describe the access control requirements of the different kinds of capabilities and how Tahoe satisfies those requirements using cryptographic techniques.
+We want a verify-cap to enable its wielder to check the integrity of a file, but not to enable its wielder to learn the file's plaintext. This way a user can delegate to some other entity (such as a backup service) the job of checking that a file is still correctly stored, without sacrificing confidentiality.
+A read-only-cap to a file has to give the ability to read the plaintext of the file and also to verify its integrity. We also require that a holder of a read-only-cap to a file is able to diminish it to produce a verify-cap to the same file.
+A read-write-cap is meaningful only for mutable files. A read-write-cap grants its wielder the ability to write new contents to a file, and to produce a read-only-cap to the same file.
+It is essential that these powers can not be gained by someone who has not been granted the appropriate capability. In particular, knowing a read-only-cap to a mutable file must not allow a user to change the contents of that file. This imposes an asymmetric cryptographic requirement on mutable file capabilities: users who hold a read-only-cap but not a read-write-cap must be able to check the integrity of the file
+
+data (plaintext)
+AES
+data (ciphertext)
+FEC
+shares
+
+read-cap
+
+encryption verify
+
+key
+
+cap
+
+ciphertext Merkle tree
+
+sha256d
+
+share Merkle tree
+
+ciphertext root share root Capability Extension
+Block
+
+Figure 1: immutable file
+without being able to produce texts which would pass the integrity check. This excludes symmetric integrity primitives such as Message Authentication Codes [19], and requires us to use the more computationally expensive digital signatures [19].
+An additional requirement that we impose on read-onlycaps and read-write-caps is that they are short enough to be conveniently used by humans, for example by being embedded in URLs. This requirement is not common in cryptography, and satisfying it turns out to require some careful cryptographic constructions.
+4.2 Cryptographic Preliminaries
+In the description that follows a "secure hash", denoted H, always means SHA256d [8]. SHA256d(x) is equal to SHA256(SHA256(x)). This construction prevents lengthextension attacks [26].
+In addition, each time we use a secure hash function for a particular purpose (for example hashing a block of data to form a small identifer for that block, or hashing a master key to form a sub-key), we prepend to the input a tag specific to that purpose. This ensures that two uses of a secure hash function for different purposes cannot result in the same value. This is necessary to ensure that the root of a Merkle Tree can match at most one file, and it is a good hygienic practice in any case [15] [23].
+"Merkle Tree" always means a binary Merkle Tree [20] using SHA256d as its secure hash, using one tag for the secure hash function to generate an internal node from its children and another tag for the secure hash function to generate a leaf from a segment of the file that the tree covers.
+"Encrypt" always means encrypt using AES-128 in CTR mode [18].
+4.3 Immutable Files
+An immutable file (Figure 1) is created exactly once and can be read repeatedly. To create an immutable file, a client chooses a symmetric encryption key, uses that key to encrypt the file, chooses erasure coding parameters K and N , erasure codes the ciphertext into N shares, and writes each share to a different server.
+Users may opt to derive the encryption key from the secure hash of the plaintext of the file itself, a technique known as convergent encryption [7]. Convergent encryption allows</div>
+
+  <div class="cite">SOURCE - Zooko Wilcox-O'Hearn and Brian Warner, "Tahoe - The Least-Authority Filesystem," Proceedings of the 4th ACM International Workshop on Storage Security and Survivability (StorageSS'08), Fairfax, Virginia, 31 October 2008, pp. 21-26. Archived by Modulo 59 / Project B59 for permanent preservation. Retrieved 2026-08-31 from https://papers.agoric.com/assets/pdf/papers/tahoe-the-least-authority-filesystem.pdf. SHA-256 (PDF): e1eeb7c7440d6eac082393c87b704e4b0db8efe05e188d1f18c168eaca151b9b</div>
+</main>
+</body>
+</html>

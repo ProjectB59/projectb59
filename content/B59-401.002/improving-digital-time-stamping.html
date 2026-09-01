@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-401.002 · Improving the Efficiency and Reliability of Digital Time-Stamping</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  ul{color:#cfd3dc;margin:0 0 16px 22px;font-size:16.5px}
+  li{margin-bottom:8px}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-401.002">&larr; back to the vault</a>
+  <div class="call">B59-401.002 · PAPER · TIMESTAMPING · MERKLE TREE</div>
+  <h1>Improving the Efficiency and Reliability of Digital Time-Stamping</h1>
+  <div class="by">Dave Bayer, Stuart Haber &amp; W. Scott Stornetta · 1993</div>
+
+  <div class="lede">Combine an interval’s documents into a hash tree; one root value witnesses them all, and each proof is just the path to the root.</div>
+
+  <p>Two years after "How to Time-Stamp a Digital Document," the same authors — now with mathematician Dave Bayer — make the scheme practical. Instead of a single linked list of certificates, the documents submitted in each time period are combined with a Merkle hash tree.</p>
+  <p>That gives two things Bitcoin uses directly: one compact "witness" value (the tree root) fixes every document in the interval at once, and any individual document’s timestamp proof shrinks to the O(log n) sibling hashes on its path to the root. The paper also suggests publishing each period’s root value somewhere public and hard to alter — the authors’ later commercial service famously printed it in a newspaper.</p>
+  <p>A Bitcoin block is this construction: transactions committed by a Merkle root in the header, the header chained to its predecessor and witnessed by the whole network’s proof-of-work. The full PDF, from co-author Dave Bayer’s Columbia page, is attached.</p>
+  <p>Provenance / rights note: staged as host+hash from an author copy; flagged with B59-401.001 for a consistent decision on academic-publisher material.</p>
+
+  <h2>About this file</h2>
+  <p>The attached file haber-stornetta-1993-improving-timestamping.pdf is the paper as hosted on co-author Dave Bayer’s Columbia University faculty page. See the provenance note about copyright handling.</p>
+
+  <div class="cite">SOURCE &mdash; D. Bayer, S. Haber &amp; W. S. Stornetta, &ldquo;Improving the Efficiency and Reliability of Digital Time-Stamping,&rdquo; in Sequences II, Springer, 1993, pp. 329&ndash;334. Author copy: math.columbia.edu/~bayer/papers/Timestamp_BHS93.pdf.<br>Archived by Modulo 59 · Project B59 for permanent preservation. Rights review pending &mdash; see provenance.</div>
+</main>
+</body>
+</html>

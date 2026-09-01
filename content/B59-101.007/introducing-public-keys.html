@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-101.007 · Introducing Public Keys</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap;overflow-x:auto}
+  a{color:var(--cyan)}
+  .note{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);background:rgba(44,212,242,.05);border:1px solid var(--hair);padding:12px 16px;line-height:1.6;margin:18px 0}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-101.007">← back to the vault</a>
+  <div class="call">B59-101.007 · WRITING · KEY DISTRIBUTION</div>
+  <h1>Introducing Public Keys</h1>
+  <div class="by">Eric Hughes · 1992-10-04</div>
+
+  <div class="lede">Remember, no one has ever set up a non-hierarchical public key distribution system to the general public. This is research.</div>
+
+  <p>This is Hughes stating a problem that is still not fully solved: how strangers get each other's public keys with enough assurance to rely on them, without a central authority. His answer in 1992, bootstrap from physical contact, certify generously, treat the whole thing as research, is close to how PGP's web of trust actually worked in practice, and to why it never scaled to the general public.</p>
+
+  <h2>Full text</h2>
+  <div class="fn">From: Eric Hughes &lt;hughes@soda.berkeley.edu&gt;
+Date: Sun, 4 Oct 92 19:15:03 PDT
+To: cypherpunks@toad.com
+Subject: introducing public keys
+In-Reply-To: &lt;2554.2ACD2FF0@fidogate.FIDONET.ORG&gt;
+Message-ID: &lt;9210050222.AA21567@soda.berkeley.edu&gt;
+MIME-Version: 1.0
+Content-Type: text/plain
+
+
+
+&gt;I am considering becoming and "introducer" for parts of FidoNet. I
+&gt;can't seem to get past the problems of how to assign reliability to
+&gt;public keys I receive over an unsecured email channel to begin with.
+&gt;No other method is practical.
+
+Building a key distribution system takes time.  Start off by having
+people mail you diskettes.  Or if you don't mind typing, printouts.
+Carry copies of your public key to give to people in person.
+
+Get good security is not free, especially in terms of time.
+
+If you can personally receive via out-of-band channels the public key
+of another introducer, you can exchange all the certified keys you
+each possess.  And then exchange those with another introducer you know.
+
+Introducers are not a special breed.  Most people should certify
+others public keys, if only for redundancy.
+
+Remember, no one has ever set up a non-hierarchical public key
+distribution system to the general public.  This is research.
+
+Eric
+</div>
+
+  <div class="cite">SOURCE — Eric Hughes, message to cypherpunks@toad.com, 4 October 1992. Archived at mailing-list-archive.cryptoanarchy.wiki.<br>Archived by Modulo 59 · Project B59 for permanent preservation. SHA-256 of the source snapshot is recorded in the vault entry for B59-101.007.</div>
+</main>
+</body>
+</html>

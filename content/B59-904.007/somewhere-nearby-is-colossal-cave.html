@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-904.007 · Somewhere Nearby is Colossal Cave</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-904.007">← back to the vault</a>
+  <div class="call">B59-904.007 · WRITING · GAME &amp; ARCADE HISTORY</div>
+  <h1>Somewhere Nearby is Colossal Cave</h1>
+  <div class="by">Dennis G. Jerz · Digital Humanities Quarterly 1:2, 2007</div>
+
+  <div class="lede">Will Crowther based his program on a real cave in Kentucky; Don Woods expanded this version significantly.</div>
+
+  <p>For thirty years the history of Adventure was told from memory and got the details wrong: dates, authorship, what Crowther wrote versus what Woods added. Jerz went back to the sources: the FORTRAN listing recovered from Woods account (catalogued here as B59-904.002), the people involved, and the cave itself.</p>
+  <p>The article establishes the record that later histories rely on: Crowther original was a smaller, less puzzle-heavy game written after his divorce, partly to share with his daughters; Woods 1977 expansion added the scoring and much of the fantasy content; and the game geography is a recognisable map of the Bedquilt entrance to Mammoth Cave, which Crowther had surveyed.</p>
+  <p>The full article, with its photographs and code excerpts, is preserved in the archived source snapshot; the opening is reproduced below.</p>
+
+  <h2>From the document — abstract and opening</h2>
+  <div class="fn">Abstract
+
+Because so little primary historical work has been done on the classic text computer
+game “Colossal Cave Adventure”, academic and popular
+references to it frequently perpetuate inaccuracies. “Adventure” was the first in a series of text-based games
+(“interactive fiction”) that emphasize exploring, puzzles, and
+story, typically in a fantasy setting; these games had a significant cultural
+impact
+in the late 1970s and a significant commercial presence in the early 1980s. Will
+Crowther based his program on a real cave in Kentucky; Don Woods expanded this
+version significantly. The expanded work has been examined as an occasion for
+narrative encounters [Buckles 1985] and as an aesthetic masterpiece of
+logic and utility [Knuth 1998]; however, previous attempts to assess
+the significance of “Adventure” remain incomplete without
+access to Crowther's original source code and Crowther's original source cave.
+Accordingly, this paper analyzes previously unpublished files recovered from a
+backup of Woods's student account at Stanford, and documents an excursion to the
+real Colossal Cave in Kentucky in 2005. In addition, new interviews with Crowther,
+Woods, and their associates (particularly members of Crowther's family) provide
+new
+insights on the precise nature of Woods's significant contributions. Real locations
+in the cave and several artifacts (such as an iron rod and an axe head) correspond
+to their representation in Crowther's version; however, by May of 1977, Woods
+had
+expanded the game to include numerous locations that he invented, along with
+significant technical innovations (such as scorekeeping and a player inventory).
+Sources that incorrectly date Crowther's original to 1972 or 1974, or that identify
+it as a cartographic data file with no game or fantasy elements, are sourced thinly
+if at all. The new evidence establishes that Crowther wrote the game during the
+1975-76 academic year and probably abandoned it in early 1976. The original game
+employed magic, humor, simple combat, and basic puzzles, all of which Woods greatly
+expanded. While Crowther remained largely faithful to the geography of the real
+cave, his original did introduce subtle changes to the environment in order to
+improve the gameplay.
+
+Introduction
+
+1
+
+Will Crowther's “Colossal Cave Adventure” was neither the
+first computer game nor the first program to emulate conversation[1]; nevertheless, “Adventure” — an interactive
+textual simulation of a caving expedition, augmented by fantasy-themed puzzles
+–
+inspired a generation of hackers. Playing “Adventure”
+involves reading prose descriptions of the setting, and typing brief commands
+(i.e.
+“light lamp”) in order to solve puzzles and collect
+treasure. Similar text games representing environments defined both by story and
+rules were extremely popular during the 80s and (with the addition of graphics)
+through the 90s. Text-adventures, also known as “interactive fiction”
+(IF),[2] attracted modest scholarly attention as an emerging
+literary form in the 80s;[3] yet “[m]ost commentators and critics of the adventure game
+genre… fail to mention the original Adventure
+at all, and those who do usually date it far off the mark… and often neglect
+to mention its creators”
+[Aarseth 1997, 107]. The resulting vacuum has attracted memes, some so firmly lodged in our
+inventory of digital lore that they regularly appear without citation. In order
+to
+map out the groundwork for a more accurate assessment of “Adventure”, its innovations, and its legacy, this study draws on two
+crucial resources previously unexamined by digital scholars: Crowther’s original
+source code and Kentucky’s original source cave.
+
+2
+
+Levy observes that “like any significant program, Adventure was expressive of
+the personality and environment of the authors”
+[Levy 1984, 133]. Due to Crowther's personal choice to keep a low profile,[4]
+analysis of “Adventure”
+[5] must
+rely more heavily on the environment — both professional and natural. We know
+Crowther's coding environment was collaborative and highly technical,[6]
+but so far we have only known Crowther's “Adventure”
+indirectly, through a version greatly expanded by Don Woods. Section 2 of this article is a formal examination of
+Crowther's original source code files, offering, for the first time, a clear
+understanding of Crowther's innovative blend of simulation and fantasy, as well
+as a
+better appreciation of the creative contributions of Woods. Section 3 compares the game to maps of the cave site, presents
+photographs of an excursion to Colossal Cave, and offers testimony from experienced
+cavers. These key sources — the code and the cave, analyzed here for the first
+time
+– establish that Crowther's original was not only faithful to the geography of
+the
+real Colossal Cave, but was also a fantasy remediation of that site. Section 4 offers a revision of the “Adventure” timeline in an attempt to correct common
+misconceptions and encourage further scholarship, and a brief conclusion compiles the major formalist observations,
+as a gesture towards encouraging further research.
+
+Taking Inventory of “Adventure”
+
+3
+
+While today's young computer professionals may have only passing familiari
+
+[...]</div>
+
+  <div class="cite">SOURCE &mdash; Dennis G. Jerz, "Somewhere Nearby is Colossal Cave," Digital Humanities Quarterly 1:2, 2007.<br>Archived by Modulo 59 · Project B59. Text mirrored from digitalhumanities.org/dhq/vol/1/2/000009/000009.html.</div>
+</main>
+</body>
+</html>

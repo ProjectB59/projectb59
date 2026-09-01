@@ -1,0 +1,559 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD><LINK rev="made" href="mailto:webmaster@eff.org">
+<LINK rel="home" href="/">
+<LINK rel="toc" href="/archives.html">
+<LINK rel="index" href="/links2.html">
+<LINK rel="copyright" href="/copyr.html">
+<LINK rel="help" href="/howtouse.html">
+<TITLE>The Electronic Frontier Foundation</TITLE></HEAD>
+<BODY bgcolor="#fffaeb" text="#000000" link="#0000ee" vlink="#03066A" alink="#FF0000" background="/Icons/home/bkg.gif">
+<A NAME="top">&nbsp;</A>
+ 
+     <DIV align="CENTER">
+          <A HREF="/EFFdocs/about_eff.html"><IMG BORDER=0 SRC="/Icons/home/electronic.gif" ALT="ELECTRONIC "
+          width="122" height="23"><IMG BORDER=0 SRC="/Icons/home/frontier.gif" width="91" 
+          height="23" ALT="FRONTIER "><IMG ALT="FOUNDATION"
+          BORDER=0 SRC="/Icons/home/foundation.gif" width="136" 
+          height="23"></A><BR>
+          
+          <A HREF="/join/join_eff.html"><IMG BORDER=0 SRC="/Icons/home/joineff.gif" width="59" height="79" ALT="[Join EFF] "></A><A HREF="/blueribbon.html"><IMG 
+          BORDER=0 SRC="/Icons/home/actnow.gif" width="62" height="79" ALT="[Act Now] "></A><A HREF="/"><IMG 
+          BORDER=0 SRC="/Icons/home/efflogo.gif" width="90" height="60" ALT=""></A><A HREF="/signup.html"><IMG 
+          BORDER=0 SRC="/Icons/home/signup.gif" width="73" height="79" ALT="[Sign Up] "></A><A HREF="/EFFdocs/about_eff.html"><IMG 
+          BORDER=0 SRC="/Icons/home/abouteff.gif" width="64" height="79" ALT="[About EFF]"></A><BR></DIV>
+
+<BLOCKQUOTE>
+ <DIV align="CENTER">
+<H1><IMG SRC="/Icons/crackingdes_banner.gif" ALT="Cracking DES: Secrets of
+Encryption Research, Wiretap Politics &amp; Chip Design - How Federal
+Agencies Subvert Privacy" HEIGHT=95 WIDTH=626></H1>
+
+<H1>Frequently Asked Questions (FAQ)<BR>
+About the Electronic Frontier Foundation's<BR>
+"DES Cracker" Machine</H1></DIV>
+
+
+<H2>Table of Contents</H2>
+
+<UL TYPE=DISC>
+<LI><A HREF="#intro">Introduction</A>
+<LI><A HREF="#terms">What are cryptography, encryption and cryptanalysis?</A>
+<LI><A HREF="#whatsdes">What is DES?</A>
+<LI><A HREF="#whouses">Who uses DES?</A>
+<LI><A HREF="#claims">What claims have been made about DES?</A>
+<LI><A HREF="#howsitwork">What is the 'EFF DES Cracker' and how does it work?</A>
+<LI><A HREF="#whobuilt">Who built the EFF DES Cracker?</A>
+<LI><A HREF="#doesitwork">Does the EFF DES Cracker really work?</A>
+<LI><A HREF="#cost">How much did the EFF DES Cracker cost to build?</A>
+<LI><A HREF="#why">Why was the EFF DES Cracker built?</A>
+<LI><A HREF="#help">What should those who depend on DES do now that we are clear on its
+insecurity?</A>
+<LI><A HREF="#keylength">How long should cipher keys be to avoid these attacks?</A>
+<LI><A HREF="#howlong">How long does the EFF DES Cracker take to crack DES?</A>
+<LI><A HREF="#algorithms">How does this affect cryptographic algorithms other than DES?</A>
+<LI><A HREF="#replacements">What standards are replacing DES?</A>
+<LI><A HREF="#sneakers">How does this relate to the movie "Sneakers?"</A>
+<LI><A HREF="#practicality">Is the EFF DES Cracker practical or a laboratory curiosity?</A>
+<LI><A HREF="#export">What has been the impact of export controls on cryptography?</A>
+<LI><A HREF="#priorart">Have other groups studied the implications of controls over the
+research and application of cryptography?</A>
+<LI><A HREF="#eff">What is the Electronic Frontier Foundation (EFF)?</A>
+<LI><A HREF="#sources">Sources</A>
+</UL>
+
+
+<H3><A NAME="intro">Introduction</A></H3>
+
+<P>
+The Electronic Frontier Foundation began its investigation into DES
+cracking in 1997 to determine just how easily and cheaply a
+hardware-based DES Cracker could be constructed. EFF set out to design and
+build a DES Cracker to counter the claim made by U.S. government
+officials that American industry or foreign governments cannot decrypt
+information when protected by DES or weaker encryption, or that it
+would take multimillion-dollar networks or computers months to decrypt
+one message.  Less than one year later and for well under US $250,000,
+EFF's DES Cracker entered and won the RSA DES Challenge II-2
+competition in less than 3 days, proving that DES is not secure and
+that such a machine is inexpensive to design and build.  The following
+FAQ answers questions about the government's Data Encryption Standard
+and the EFF DES Cracker.
+</P>
+
+
+<H3><A NAME="terms">What are cryptography, encryption and cryptanalysis?</A></H3>
+
+<P>
+CRYPTOGRAPHY is the science of code writing, and cryptographic
+research explores and develops theories and methodologies for
+rendering messages or information unintelligible to others. Up until
+the early 1970s, cryptography was the almost exclusive concern of
+governments. During the past 15 years, however, there has been an
+explosion of academic and private sector interest in the field. The
+widespread use of computers and electronic data storage and
+transmission, marked most recently by the privatization and rapid
+growth of the Internet, has generated strong demand for scientific and
+technical solutions to ensure the security of information and
+computer-mediated communications.  ENCRYPTION is applied cryptography
+- the use of cryptographic products or processes, e.g. to protect data
+or to authenticate a transaction.  CRYPTANALYSIS is code-breaking,
+that is, the "cracking" of an encryption algorithm or system to reveal
+the hidden data ("plaintext"), either to get at the data for its own
+sake, or to test the strength of the encryption being used.
+</P>
+
+
+<H3><A NAME="whatsdes">What is DES?</A></H3>
+
+<P>
+The Data Encryption Standard (DES) is a published federal encryption
+standard created to protect unclassified computer data and
+communications.  DES has been incorporated into numerous industry and
+international standards since the Secretary of Commerce first approved
+DES as a Federal Information Processing Standard during the height of
+the Cold War in the late 1970s.  The encryption algorithm specified by
+DES is a symmetric, secret-key algorithm.  Thus it uses one key to
+encrypt and decrypt messages, on which both the sending and receiving
+parties must agree before communicating.  It uses a 56-bit key, which
+means that a user must correctly employ 56 binary numbers, or bits, to
+produce the key to decode information encrypted with DES.
+</P>
+
+
+<H3><A NAME="whouses">Who uses DES?</A></H3>
+
+<P>
+Promulgation of DES as a stable and certified technology stimulated
+supply and demand, and DES is now generally believed to be the most
+widely used general-purpose cryptosystem in the world.  Although the
+initial selection of the algorithm was controversial since the NSA was
+involved in its design, DES has gained wide acceptance and has been
+the basis for several industry standards, mainly because it is a
+public standard and can be freely evaluated and implemented.  DES
+technology is readily available worldwide, and several international
+standards have adopted the algorithm.  The process by which DES was
+developed and evaluated also stimulated private sector interest in
+cryptographic research, ultimately increasing the variety of
+commercial security technologies. By 1993, 40 manufacturers were
+producing about 50 implementations of DES in hardware and firmware
+that the National Institute for Standards (NIST) had validated for
+federal use.  Another estimated 60 companies were producing software
+implementations of DES.  A 1993 industry estimate of U.S. sales of DES
+hardware and software products was between $75 million and $125
+million annually (OTA, 1994).  In April 1994, a survey of products
+using cryptography in the United States and abroad conducted by the
+Software Publishers Association identified 245 domestic encryption
+products using DES. Trusted Information Systems reported that DES was
+found in 281 foreign and 466 domestic encryption products -- between a
+third and half of the market -- as of December 1997.
+</P>
+
+
+<H3><A NAME="claims">What claims have been made about DES?</A></H3>
+
+<P>
+The U.S. government has increasingly exaggerated both the strength of
+DES and the time and cost it would take to crack a single
+DES-encrypted message.  For instance, at a June 26, 1997, U.S. House
+of Representatives' Committee on International Relations hearing on
+the encryption issue, both the Director of the FBI, Louis Freeh, and
+the Deputy Director of the NSA, William Crowell, testified that the
+government does not have the technology or the "brute force"
+capability to break into encrypted information.  In fact, they cite
+the winners of last year's challenge by RSA Laboratories, who cracked
+a message encrypted with 56-bit DES in five months using the
+distributed computing power of the Internet, as evidence of the
+impracticality of accessing information encoded with DES.  In
+addition, they also asserted that American industry could not decrypt
+real-time encryption over a very minimal level of robustness.  At one
+point, Freeh turned to Crowell and asked, "If you gave me $3 million
+to buy a Cray computer, it would take me how many years to do one
+message bit?"  Crowell replied, "64 bits, 7,000 years."  (See
+<A HREF="http://jya.com/hir-hear.htm">http://jya.com/hir-hear.htm</A>&nbsp;).  Earlier this year, the Principal
+Associate Deputy Attorney General Robert S. Litt testified before the
+U.S. Senate Judiciary Committee's Subcommittee on the Constitution,
+Federalism, and Property that brute force decryption takes too long to
+be useful to protect the public safety.  He went on to say,
+"decrypting one single message that had been encrypted with a 56-bit
+key took 14,000 Pentium-level computers over four months; obviously
+these kinds of resources are not available to the FBI."  (See
+<A HREF="http://www.computerprivacy.org/archive/03171998-4.shtml">http://www.computerprivacy.org/archive/03171998-4.shtml</A>&nbsp;).
+</P>
+
+
+<H3><A NAME="howsitwork">What is the 'EFF DES Cracker' and how does it work?</A></H3>
+
+<P>
+A 'DES Cracker' is a machine that can read information encrypted with
+DES by finding the key that was used to encrypt that data. The easiest
+known way to build a practical DES Cracker is to have it try every key
+until it finds the right one. The design of the EFF DES Cracker is
+simple in concept. It consists of an ordinary personal computer with a
+large array of custom "Deep-Crack" chips. Software in the personal
+computer instructs the custom chips to begin searching for the key,
+and also functions to interface with the user. The software
+periodically polls the chips to find any potentially interesting keys
+that they have located. The hardware's job is not to find the answer,
+but rather to eliminate most incorrect answers. The software can then
+quickly search the remaining potentially correct keys, winnowing the
+"false positives" from the real answer. The strength of the machine is
+that it repeats a search circuit thousands of times, allowing the
+software to find the answer by searching only a tiny fraction of the
+key space. With software to coordinate the effort, the problem of
+searching for a DES key is "highly parallelizable." A single
+DES-Cracker chip could find a key by searching for many years. A
+thousand DES-Cracker chips can solve the same problem in one
+thousandth of the time. A million DES-Cracker chips could
+theoretically solve the same problem in about a millionth of the time.
+The actual machine EFF built contains about 1,500 chips.
+</P>
+
+
+<H3><A NAME="whobuilt">Who built the EFF DES Cracker?</A></H3>
+
+<P>
+The Electronic Frontier Foundation organized and funded the project to
+build the EFF DES Cracker.  Paul Kocher of Cryptography Research
+(&nbsp;<A HREF="http://www.cryptography.com">http://www.cryptography.com</A>&nbsp;) led the architecture and software team,
+which also included John Gilmore of EFF.  The hardware was designed
+and built by Advanced Wireless Technologies (&nbsp;<A HREF="http://www.awti.com">http://www.awti.com</A>&nbsp;),
+with assistance from Mike Cheponis of California Wireless
+(&nbsp;<A HREF="http://www.wireless.com">http://www.wireless.com</A>&nbsp;) and Mitch Bradley and Mark Insley of
+FirmWorks (&nbsp;<A HREF="http://www.firmworks.com">http://www.firmworks.com</A>&nbsp;).  The software uses the very fast
+DES library "libdes-4.01", created by Eric Young
+(&nbsp;<A HREF="http://www.cryptsoft.com/%7Eeay/">http://www.cryptsoft.com/~eay/</A>&nbsp;).  John Gilmore provided overall
+project management and edited a book, Cracking DES, published by
+O'Reilly and Associates. Bruce Schneier (&nbsp;<A HREF="http://www.counterpane.com">http://www.counterpane.com</A>&nbsp;)
+provided test problems for the machine.  Clif Cox provided the remote
+communications infrastructure. 
+Levi Kruger designed the project's "crumbling stone letters" logo.
+Lee Tien (&nbsp;<A HREF="mailto:mailto:tien@well.com">mailto:tien@well.com</A>&nbsp;) and John
+Liebman (&nbsp;<A HREF="http://www.McKennaCuneo.com">http://www.McKennaCuneo.com</A> ) provided legal assistance. Phil
+Zimmermann of Network Associates provided software for printing and
+scanning source code.  Jean-Jacques Quisquater, Yvo Desmedt, Ian
+Goldberg, David Wagner, and Michael J. Wiener provided their technical
+papers on cracking DES for the book. O'Reilly and Associates assisted
+in organizing, completing, producing, and distributing the book.
+</P>
+
+
+<H3><A NAME="doesitwork">Does the EFF DES Cracker really work?</A></H3>
+
+<P>
+The EFF DES Cracker first solved a challenge posed more than a year
+ago by world-renowned cryptographer and AT&T Labs research scientist,
+Matt Blaze.  The "Blaze Challenge" was designed to only be solvable by
+"brute force" cryptanalysis of DES.  Mr. Blaze challenged the world to
+find matching pairs of plaintext and ciphertext numbers, consisting of
+nothing but repeated digits.  Blaze himself was unaware of any such
+pairs until the EFF DES Cracker revealed the first known pair.  It
+found that a hexadecimal key of 0E 32 92 32 EA 6D 0D 73 turns a
+plaintext of 8787878787878787 into the ciphertext 0000000000000000.
+</P>
+
+<P>
+The DES Cracker's second problem was to win the DES-cracking speed
+competition posed by RSA Laboratories (&nbsp;<A HREF="http://www.rsa.com/rsalabs/">http://www.rsa.com/rsalabs/</A>&nbsp;). 
+Two previous RSA challenges proved that massive collections of
+computers coordinated over the Internet could successfully crack DES. 
+The DES Cracker faced tough competition from the massively parallel
+software effort of www.distributed.net.  This combined effort is, in
+effect, "the fastest computer in the world," and it won the previous
+RSA contest in January 1998.
+</P>
+
+<P>
+Starting at 9:00 AM PST, Monday, July 13, 1998, the EFF DES Cracker
+began searching for the right key.  The machine found the answer at
+5:03 PM Pacific PST, Wednesday, July 15.  Coincidentally, it took the
+EFF DES Cracker 56 hours to find a 56-bit key.  When the EFF team
+started the search on Monday morning, they had 35868 search units
+running on 26 boards (each search unit examines 2.5 million keys per
+second).  The team stopped the search for a few minutes on Tuesday
+night to improve the software and then again for a few minutes on
+Wednesday to add a 27th board, which sped up the machine slightly (to
+37050 search units).  The EFF DES Cracker searched
+17,902,806,669,197,312 keys to find the correct answer, which averages
+out to a rate of 88,803,604,509 keys tested per second (88 billion). 
+The machine was examining 92,625,000,000 keys per second when it found
+the answer.  The key was found after searching almost exactly a
+quarter of the key space (24.8%).
+</P>
+
+<P>
+The PC that controls the machine originally ran Windows 95, but the
+EFF team replaced it with Linux so it could be operated remotely over
+the Internet.  The EFF DES Cracker's control software runs on either
+Win95 or Linux.  The team has run it on a Linux laptop as well, using
+a PCMCIA interface card to attach it to the EFF DES Cracker chassis.
+</P>
+
+
+<H3><A NAME="cost">How much did the EFF DES Cracker cost to build?</A></H3>
+
+<P>
+The whole project was budgeted at about US $210,000. Of this, $80,000
+was used to design, integrate, and test the EFF DES Cracker. The other
+$130,000 was for materials including chips, boards and all other
+components on the boards, card cages, power supplies, cooling, and a
+PC.  The software for controlling the EFF DES Cracker was written
+separately as a volunteer project that took 4-5 weeks.  The entire
+project was completed within about eighteen months, with much of that
+time being used for preliminary research. The core team contained
+fewer than ten people, none of whom worked full-time on the project. 
+The final cost came in at well under $250,000.
+</P>
+
+
+<H3><A NAME="why">Why was the EFF DES Cracker built?</A></H3>
+
+<P>
+EFF designed and built the EFF DES Cracker to counter the claim made
+by U.S. Government officials that American industry or governments
+cannot decrypt information when protected by DES or weaker encryption,
+or that it would take multi-million dollar networks of computers
+months to decrypt one message. EFF's machine is not classified and EFF
+has donated the design to the public domain, thereby ensuring that
+there is no doubt about whether the machine actually exists or can be
+built by anyone. Press releases and technical papers alone are clearly
+insufficient.  As a theoretical model, the publishing of plans
+for a million-dollar DES Cracker in renowned Bell-Northern Research
+cryptographer Michael Wiener's 1993 paper, "Efficient DES Key Search,"
+did not propel this issue into the public debate over encryption. 
+People still deploy DES, and Congressmen blindly accept assurances
+about its strength.
+</P>
+
+<P>
+EFF hopes that this machine will stimulate interest in how such a
+machine works and how one can be built for only about $200,000.
+EFF's book, <I>Cracking DES</I>, contains the complete specifications and design
+documents for the DES Cracker, as well as circuit diagrams for its
+board, and full listings of its software and its gate array design.
+The publication of EFF's design should enable other teams to rapidly
+reproduce, validate, and/or improve on its design.
+</P>
+
+
+<H3><A NAME="help">What should those who depend on DES do now that we are clear on its
+insecurity?</A></H3>
+
+<P>
+EFF suggests that users and developers of cryptography should not
+design anything else that depends on single DES.  Furthermore, these
+parties should remove systems that use permanently fixed single-DES
+keys from service, or superencrypt the traffic at a higher level. 
+Finally, users and developers should begin to change software and/or
+hardware over to a stronger algorithm than DES.  Three-key Triple-DES
+is an obvious choice, since it uses the same block size and can
+possibly use the same hardware; it just uses three keys and runs DES
+three times (encrypting each block with the first key, decrypting it
+with the second, then encrypting it with the third). The strength of
+Triple-DES is not known with any certainty, but it is certainly no
+weaker than single DES, and is likely to be substantially stronger.
+</P>
+
+
+<H3><A NAME="keylength">How long should cipher keys be to avoid these attacks?</A></H3>
+ 
+<P>
+According to 1996 study by cryptographay experts, "Minimal Key Lengths
+for Symmetric Ciphers to Provide Adequate Commercial Security"
+( <A HREF="ftp://research.att.com/dist/mab/keylength.txt">ftp://research.att.com/dist/mab/keylength.txt</A> ),
+secret-key ciphers used to protect data over the next 20 years should
+have an effective key length of at least 90 bits.  (Public key
+ciphers, such as RSA and Diffie-Hellman, need longer keys). </P>
+
+
+<H3><A NAME="howlong">How long does the EFF DES Cracker take to crack DES?</A></H3>
+
+<P>
+It was designed to crack DES in an average of 4.5 days.  However,
+fabrication defects in the first round of chips make it up to three
+times as slow on some problems.  These problems are unique to the
+physical chips we used and would not affect future machines.  Faster
+machines can easily be built by spending more money, with roughly
+linear speedups (twice the money = twice the speed).
+</P>
+
+
+<H3><A NAME="algorithms">How does this affect cryptographic algorithms other than DES?</A></H3>
+
+<P>
+Few of them are directly affected.  The same or similar design
+techniques can be used to attack other popular algorithms, such as A5
+(used in GSM cellphones), RC2, and RC4.  Algorithms with long keys,
+say 90 bits or more, are unaffected by the existence of DES Crackers,
+at least in the medium term.  (RC2 and RC4 have variable-size keys; if
+in a particular product, too-small keys were used, those products are
+vulnerable.)  The security of 128-bit IDEA, used in PGP, and of
+168-bit Triple-DES, a popular DES replacement, is unaffected because
+the number of keys to be tried in them is too huge.  Few other
+cryptographic algorithms have been as well-studied as DES, so there is
+a higher risk of undiscovered flaws in other common algorithms, but in
+many cases that risk is low enough to allow other algorithms to be
+used.
+</P>
+
+
+<H3><A NAME="replacements">What standards are replacing DES?</A></H3>
+
+<P>
+Many DES users realized years ago that it was nearing the end of its
+useful life.  Financial standards committee X9F1 has been working on a
+Triple-DES standard for financial use.  Internet Engineering Task
+Force standards specify the use of Triple-DES, RC2, and RC4 as well as
+DES.  NIST has started the process of developing an "Advanced
+Encryption Standard" or AES, which is designed to last for a decade or
+more after its adoption.  It will be years from now before the AES is
+ready for public use.
+</P>
+
+
+<H3><A NAME="sneakers">How does this relate to the movie "Sneakers?"</A></H3>
+
+<P>
+The EFF DES Cracker is much larger and more cumbersome to use than the
+decoding device shown in the movie.  But the idea is similar; it
+allows you to feed in ciphertext and get out the key that unlocks the
+plaintext.
+</P>
+
+
+<H3><A NAME="practicality">Is the EFF DES Cracker practical or a laboratory curiosity?</A></H3>
+
+<P>
+The EFF DES Cracker has already run test problems, crafted by Bruce
+Schneier, which enabled it to find the key for DES-encoded Microsoft
+Excel, Eudora, and MS-Word files, without knowing anything about the
+files except what program had created them.  It can be used directly
+to recover lost DES keys from stored files or encrypted communications
+sessions.  We also expect to allow United States cryptographers to use
+the machine over the Internet in their research.  The arbitrary way
+that the U.S. Commerce Department administers U.S. export controls may
+prevent us from granting non-US researchers access to the machine,
+though they are free to build their own from the design information we
+have printed in the Cracking DES book.
+</P>
+
+
+<H3><A NAME="export">What has been the impact of export controls on cryptography?</A></H3>
+
+<P>
+Due to deep-seated Cold War fears, encryption is highly regulated by
+the U.S. Departments of State and Commerce, which refuse to license
+any secure encryption product for export unless it utilizes key
+recovery, a law enforcement code word for the ability to easily
+decrypt information by third-parties not originally intended to
+receive the message.  The results have been debilitating for the
+software industry and networked communications.  Since computer
+networks like the Internet are international in scope, strong
+encryption cannot be widely deployed in new software products to
+secure passwords and privatize messages, leaving them virtually
+unprotected from those who would gain unauthorized access or make
+unauthorized copies.  Export controls have also greatly hampered
+groundbreaking work in the field of cryptography, preventing myriad
+academic cryptographers, computer scientists, mathematicians, and
+electrical engineers in this country and abroad, from developing the
+security that an ever-more global information infrastructure urgently
+demands.  When undue regulation burdens and even prevents worldwide
+discourse concerning cryptography, new encryption methods cannot be
+tested adequately, workable international encryption standards cannot
+be developed, and cryptographers -- unable to publish or obtain
+essential peer review without fear of prosecution -- cannot be
+persuaded to enter the field of cryptography at all.
+</P>
+
+
+<H3><A NAME="priorart">Have other groups studied the implications of controls over the
+research and application of cryptography?</A></H3>
+
+<P>
+Over the past 15 years, many groups both inside and outside the
+government have conducted studies on the implications of export
+controls on cryptography.  Although all but one of these studies has
+recommended loosening these restrictions, little has changed since the
+Cold War era. In 1981, the Public Cryptography Study Group, formed by
+the American Council on Education (ACE) under a grant from the
+National Science Foundation (NSF), issued a report recommending that
+the National Security Agency conduct, on a trial basis, voluntary,
+prepublication review of manuscripts on cryptography. The report met
+with fierce opposition by the scientific community because members of
+the group accepted the government's national security claims as valid
+in lieu of receiving the necessary security clearances to validate
+such claims independently.  The Office of Technology Assessment
+conducted a study in 1994 to flesh out the spectrum of policy issues
+and legislative options for Congress. OTA reported that "an important
+outcome...would be the development of more open processes to determine
+how cryptography will be deployed throughout society."  The
+Association for Computing Machinery also published a report in 1994 that
+concluded "all who have thought seriously about the issues of
+communications security -- from civil libertarians to law enforcement
+officials to the computer industry and national security experts --
+agree that strong cryptography is necessary for protecting
+confidentiality, integrity, and authenticity of the information
+infrastructure."  The National Research Council (NRC) conducted a
+study in 1996, which determined that "the overall interests of the
+government and the nation would best be served by a policy that
+fosters a judicious transition toward the broad use of cryptography." 
+Unlike the earlier ACE study, members of NRC study group received
+security clearances to review the government's claims and still opted
+for a change in the government's approach to cryptography policy. Most
+recently, an ad hoc group of cryptographers and computer scientists
+reviewed the technical feasibility of government proposals for
+cryptographic systems that would allow government officials access to
+messages linked with ongoing criminal investigations.  They concluded
+in two seperate reports that the deployment of encryption technologies
+with backdoors for covert surveillance "will result in substantial
+sacrifices in security and greatly increased costs to the end user."
+</P>
+
+
+<H3><A NAME="eff">What is the Electronic Frontier Foundation (EFF)?</A></H3>
+
+<P>
+The Electronic Frontier Foundation is one of the leading civil
+liberties organizations devoted to ensuring that the Internet remains
+the world's first truly global vehicle for free speech, and that the
+privacy and security of all on-line communication is preserved. 
+Founded in 1990 as a nonprofit, public interest organization, EFF is
+based in San Francisco, California.  EFF maintains an extensive
+archive of information on encryption policy, privacy, and free speech
+at its award-winning Web site (&nbsp;<A HREF="http://www.eff.org">http://www.eff.org</A>&nbsp;).
+</P>
+
+
+<H3><A NAME="sources">Sources</A></H3>
+
+<P>
+<I>Cracking DES</I>, John Gilmore, Editor, The Electronic Frontier Foundation
+(San Francisco, CA: O'Reilly and Associates, 1998); see:<BR>
+<A HREF="http://www.ora.com">http://www.ora.com</A>
+</P>
+
+<P>
+<I>Information Security and Privacy in Network Environments</I>, U.S. Office
+of Technology Assessment, Congress of the United States (Washington,
+DC: U.S. Government Printing Office, September 1994).
+</P>
+
+<P>
+"'What is DES?' FAQ 3.0 on Cryptography", RSA Laboratories; see:<BR>
+<A HREF="http://www.rsa.com/rsalabs/newfaq/q64.html">http://www.rsa.com/rsalabs/newfaq/q64.html</A>
+</P>
+
+<P>
+<FONT SIZE="2">Last updated on July 16, 1998.</FONT>
+</P>
+
+
+<HR>
+<P>Please send any questions or comments to <A
+href="mailto:webmaster@eff.org"><I>webmaster@eff.org</I></A></P>
+<DIV ALIGN="CENTER"><P><A href="/index.html">Return to</A> &nbsp; 
+<A href="/index.html"><IMG
+src="http://www.eff.org/Icons/home/efflogomini.gif" width="45" 
+height="30" align="MIDDLE" border="0" alt="EFF"></A> &nbsp; <A
+href="/index.html"> Welcome
+Page</A></P></DIV>
+</BLOCKQUOTE></BODY></HTML>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-400.003 · The Bitcoin Genesis Block</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+  .msg{border:1px solid var(--hair);background:var(--panel);padding:14px 16px;margin:0 0 14px}
+  .msg.satoshi{border-left:2px solid var(--lime)}
+  .msg.sirius{border-left:2px solid var(--cyan)}
+  .msg .mh{font-family:ui-monospace,monospace;font-size:12px;color:var(--dim);margin-bottom:8px;line-height:1.5}
+  .msg pre{font-family:ui-monospace,monospace;font-size:13px;color:#cfd3dc;white-space:pre-wrap;word-wrap:break-word}
+  .toc{font-family:ui-monospace,monospace;font-size:12px;color:var(--dim);columns:2;margin-bottom:24px}
+  table.kv{border-collapse:collapse;font-family:ui-monospace,monospace;font-size:13px;margin:8px 0 20px;width:100%}
+  table.kv td{border:1px solid var(--hair);padding:6px 10px;vertical-align:top;color:#cfd3dc}
+  table.kv td:first-child{color:var(--dim);white-space:nowrap;width:1%}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-400.003">← back to the vault</a>
+  <div class="call">B59-400.003 · CODE · CONSENSUS &amp; DISTRIBUTED SYSTEMS · 4.00 BITCOIN CORE</div>
+  <h1>The Bitcoin Genesis Block</h1>
+  <div class="by">Satoshi Nakamoto · block 0 · timestamp 3 January 2009</div>
+
+  <div class="lede">The Times 03/Jan/2009 Chancellor on brink of second bailout for banks</div>
+
+  <p>Block 0 of the Bitcoin blockchain, mined by Satoshi Nakamoto. The <span class="mono">time</span> field is 2009-01-03 18:15:05 UTC; the block was not broadcast until the network started six days later, and its 50 BTC coinbase reward is permanently unspendable because Bitcoin Core never adds it to the UTXO set.</p>
+  <p>The coinbase input carries an arbitrary-data field. Satoshi used it to embed a line of text:</p>
+  <div class="lede" style="border-color:var(--lime);background:rgba(203,238,27,.06)">The Times 03/Jan/2009 Chancellor on brink of second bailout for banks</div>
+  <p>That is the front-page headline of <em>The Times</em> of London for Saturday 3 January 2009 (story by Francis Elliott on Chancellor Alistair Darling and a possible second bank bailout). It fixes the block no earlier than that day and reads as a comment on the crisis Bitcoin was built in response to.</p>
+  <h2>Block header</h2>
+  <table class="kv"><tr><td>block hash</td><td>000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f</td></tr><tr><td>height</td><td>0</td></tr><tr><td>version</td><td>1</td></tr><tr><td>prev block</td><td>0000000000000000000000000000000000000000000000000000000000000000</td></tr><tr><td>merkle root</td><td>4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b</td></tr><tr><td>time</td><td>1231006505  (2009-01-03T18:15:05Z)</td></tr><tr><td>bits</td><td>486604799  (0x1d00ffff)</td></tr><tr><td>nonce</td><td>2083236893</td></tr><tr><td>difficulty</td><td>1</td></tr><tr><td>size / weight</td><td>285 bytes / 1140 WU</td></tr><tr><td>tx count</td><td>1</td></tr></table>
+  <h2>Coinbase transaction</h2>
+  <table class="kv"><tr><td>txid</td><td>4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b</td></tr><tr><td>input scriptSig (hex)</td><td>04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73</td></tr><tr><td>embedded message</td><td>The Times 03/Jan/2009 Chancellor on brink of second bailout for banks</td></tr><tr><td>output value</td><td>5000000000 sats  (50 BTC, unspendable)</td></tr><tr><td>output scriptPubKey</td><td>4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac</td></tr><tr><td>output type</td><td>p2pk (pay-to-pubkey)</td></tr></table>
+  <h2>Raw serialized block (285 bytes)</h2>
+  <div class="fn">0100000000000000000000000000000000000000000000000000000000000000000000003ba3edfd7a7b12b27ac72c3e67768f617fc81bc3888a51323a9fb8aa4b1e5e4a29ab5f49ffff001d1dac2b7c0101000000010000000000000000000000000000000000000000000000000000000000000000ffffffff4d04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73ffffffff0100f2052a01000000434104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac00000000</div>
+  <h2>Files</h2>
+  <p><a href="genesis-block.json">genesis-block.json</a> — the assembled canonical record (the hashed snapshot).<br>
+  <a href="genesis-block-raw.hex">genesis-block-raw.hex</a> — the 285-byte block, hex.<br>
+  <a href="blockstream-genesis-block.json">blockstream-genesis-block.json</a>, <a href="blockstream-genesis-coinbase-tx.json">blockstream-genesis-coinbase-tx.json</a>, <a href="blockchaininfo-genesis-rawblock.json">blockchaininfo-genesis-rawblock.json</a> — the explorer API responses this record was assembled from.</p>
+
+  <div class="cite">SOURCE — Bitcoin block 0, hash 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f. Header and coinbase data assembled from the Blockstream Esplora API and cross-checked against the Blockchain.com API and Bitcoin Core chainparams.cpp, 31 August 2026. Headline: The Times (London), front page, 3 January 2009, "Chancellor Alistair Darling on brink of second bailout for banks," by Francis Elliott.<br>Archived by Modulo 59 · Project B59. SHA-256 is computed over the assembled genesis-block.json snapshot.</div>
+</main>
+</body>
+</html>

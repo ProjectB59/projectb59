@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-201.001 · Blind Signatures for Untraceable Payments — Chaum (1982)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-201.001">← back to the vault</a>
+  <div class="call">B59-201.001 · WRITING · BLIND SIGNATURES</div>
+  <h1>Blind Signatures for Untraceable Payments</h1>
+  <div class="by">David Chaum · Advances in Cryptology, Proceedings of CRYPTO ’82 · Santa Barbara, August 1982</div>
+
+  <div class="lede">A signature you can obtain on a message without the signer seeing the message, the cryptographic core of anonymous digital cash.</div>
+
+  <h2>Why it matters</h2>
+  <p>Chaum’s mix networks (B59-303.001) anonymized communication. This paper anonymizes money. It is the first construction that lets a bank issue currency it cannot trace, and it defined the problem, payer anonymity with issuer control and double-spend detection, that digital cash has worked on ever since.</p>
+
+  <h2>The mechanism</h2>
+  <p>The user multiplies the coin value by a random blinding factor before sending it to the bank. The bank signs the blinded value (debiting the account) and returns it. The user divides out the blinding factor, leaving a genuine bank signature on the original coin. The bank has never seen that coin and cannot recognize it at deposit, but the signature is valid and unforgeable.</p>
+
+  <h2>The lineage it started</h2>
+  <p>Chaum founded DigiCash in 1989 to commercialize this; its ecash system ran trials with several banks before the company failed in 1998 (see B59-001.005). The idea outlived the company: Chaumian ecash is being actively rebuilt today in Bitcoin mints such as Cashu and Fedimint.</p>
+
+  <h2>Note on the source</h2>
+  <div class="fn">The archived primary source is a scanned image of the printed paper (CRYPTO ’82 proceedings, pp. 199-203). No verified machine-readable text was available in the archiving environment, so no passage is transcribed here. Consult the source snapshot linked below for Chaum’s wording.</div>
+
+  <div class="cite">SOURCE: David Chaum, "Blind Signatures for Untraceable Payments," in D. Chaum, R. L. Rivest, and A. T. Sherman (eds.), Advances in Cryptology: Proceedings of CRYPTO ’82, Plenum Press, 1983, pp. 199-203.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="blind-signatures-for-untraceable-payments-source.pdf">blind-signatures-for-untraceable-payments-source.pdf</a>, retrieved from <a href="https://www.hit.bme.hu/~buttyan/courses/BMEVIHIM219/2009/Chaum.BlindSigForPayment.1982.PDF">https://www.hit.bme.hu/~buttyan/courses/BMEVIHIM219/2009/Chaum.BlindSigForPayment.1982.PDF</a> on 2026-08-31. SHA-256 of the snapshot: 1f251b9d511ac8951e673cdc5d775e12b5181ad32f8af122af6decbea970ff09.</div>
+</main>
+</body>
+</html>

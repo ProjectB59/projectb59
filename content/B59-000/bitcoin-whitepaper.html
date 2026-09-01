@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-000 · Bitcoin: A Peer-to-Peer Electronic Cash System</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+  .msg{border:1px solid var(--hair);background:var(--panel);padding:14px 16px;margin:0 0 14px}
+  .msg.satoshi{border-left:2px solid var(--lime)}
+  .msg.sirius{border-left:2px solid var(--cyan)}
+  .msg .mh{font-family:ui-monospace,monospace;font-size:12px;color:var(--dim);margin-bottom:8px;line-height:1.5}
+  .msg pre{font-family:ui-monospace,monospace;font-size:13px;color:#cfd3dc;white-space:pre-wrap;word-wrap:break-word}
+  .toc{font-family:ui-monospace,monospace;font-size:12px;color:var(--dim);columns:2;margin-bottom:24px}
+  table.kv{border-collapse:collapse;font-family:ui-monospace,monospace;font-size:13px;margin:8px 0 20px;width:100%}
+  table.kv td{border:1px solid var(--hair);padding:6px 10px;vertical-align:top;color:#cfd3dc}
+  table.kv td:first-child{color:var(--dim);white-space:nowrap;width:1%}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-000">← back to the vault</a>
+  <div class="call">B59-000 · WRITING · THE ANCHOR</div>
+  <h1>Bitcoin: A Peer-to-Peer Electronic Cash System</h1>
+  <div class="by">Satoshi Nakamoto · 31 October 2008</div>
+
+  <div class="lede">A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution.</div>
+
+  <p>This is the founding document of the vault. Every other record here is a precursor to it, a parallel lineage that fed it, or a consequence that followed from it.</p>
+  <p>Nine pages, posted to the Cryptography Mailing List on 31 October 2008 by a pseudonymous author, "Satoshi Nakamoto". It proposes a purely peer-to-peer electronic cash system in which the double-spending problem is solved without any trusted third party: transactions are timestamped by hashing them into an ongoing chain of hash-based proof-of-work, and the longest such chain represents both the majority decision and the record that is computationally hardest to rewrite.</p>
+  <p>The canonical PDF is the one released and served by bitcoin.org, which distributes it under the MIT licence. Its SHA-256 is recorded below and can be reproduced with <span class="mono">sha256sum bitcoin.pdf</span>. A snapshot of the bitcoin.org/en/bitcoin-paper landing page is archived alongside it.</p>
+  <h2>Abstract</h2>
+  <div class="fn">A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending. We propose a solution to the double-spending problem using a peer-to-peer network. The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work, forming a record that cannot be changed without redoing the proof-of-work. The longest chain not only serves as proof of the sequence of events witnessed, but proof that it came from the largest pool of CPU power. As long as a majority of CPU power is controlled by nodes that are not cooperating to attack the network, they'll generate the longest chain and outpace attackers. The network itself requires minimal structure. Messages are broadcast on a best effort basis, and nodes can leave and rejoin the network at will, accepting the longest proof-of-work chain as proof of what happened while they were gone.</div>
+  <h2>Read the paper</h2>
+  <p><a href="bitcoin.pdf">bitcoin.pdf</a> — canonical PDF, 9 pages, as served by bitcoin.org (MIT licence).<br>
+  <a href="bitcoin-org-bitcoin-paper.html">bitcoin-org-bitcoin-paper.html</a> — archived snapshot of the bitcoin.org paper page (links to translations and the LaTeX re-typeset editions).</p>
+
+  <div class="cite">SOURCE — Satoshi Nakamoto, "Bitcoin: A Peer-to-Peer Electronic Cash System," bitcoin.org, 31 October 2008. Canonical PDF served at https://bitcoin.org/bitcoin.pdf under the MIT licence; paper page at https://bitcoin.org/en/bitcoin-paper.<br>Archived by Modulo 59 · Project B59 for permanent preservation. SHA-256 is computed over the canonical bitcoin.org PDF.</div>
+</main>
+</body>
+</html>

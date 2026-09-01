@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html40/strict.dtd">
+<html>
+	<head> 
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+		<style type="text/css"> 
+			p.center {
+				text-align:center;
+				}
+		</style>
+		<title>The Cypherpunk Program</title>
+	</head>
+<body>
+
+<p><A href="./"> To Home page</A> </p>
+
+<h1>The Cypherpunk Program</h1><p>
+
+Timothy C. May summerized the plan as</p>
+<blockquote><p>
+
+“Crypto Anarchy: encryption, digital money, anonymous
+networks, digital pseudonyms, zero knowledge,
+reputations, information markets,  black markets,
+collapse of government.  </p></blockquote><p>
+
+Which is intentionally obscure.  The plan is to strike
+at the state from the jungle of complexity, to strike at
+the state from beyond the state’s intellectual and
+temporal horizons.  The evil minions of the state will
+not be coming after cypherpunks, because they will not
+understand what cypherpunks are doing, and because when
+things start going bad for them the will not be able to
+link cause and effect.  </p><p>
+
+Cryptography alone is insufficient to implement
+crypto-anarchy.  Correct understanding and
+implementation of cryptography has proven to be hard, as
+numerous embarrassing failures have demonstrated, but
+correct understanding and implementation of cryptography
+turned out to be only the beginning of what was
+needed.  </p><p>
+
+Often secure cryptographic algorithms have been used to
+construct insecure cryptographic protocols, but worse
+than that, correct cryptographic protocols, such as
+SSL, have resulted in insecure behavior.  </p><p>
+
+Successfully designing such systems requires a whole
+system viewpoint – cryptographic protocols <em>and</em>
+user interface <em>and</em> business models
+<em>and</em> accounting principles <em>and</em>
+economic understanding <em>and</em> understanding of
+computer mediated social networking.  </p><p>
+
+The cypherpunk movement collapsed in the realization that
+the problem was harder than it seemed, that mere 
+cryptography was insufficient.  </p><p>
+
+The cypherpunk movement produced a lot of cryptographic
+tools, among them by own Crypto Kong, only to realize
+that no one wanted  <em>cryptographic</em> tools.  To
+use a <em>cryptographic</em> tool, you have to
+understand and think about what it is doing, understand
+and think about the cryptographic primitives involved
+every time you use it.  Unfortunately, even committees
+of experts tend to screw up when they attempt to
+specify correct use of cryptographic primitives.   For
+example the Wifi consortium got it badly wrong, then
+having discovered their error as large numbers of
+people started freeloading on other people's wifi,
+proceeded to get it wrong again.   Then they yet
+another try, and proceeded to get it wrong all over
+again.   The latest incarnation of Wifi, as I write this,
+is WPA personal which is vulnerable to offline
+dictionary attack, an attack that has been well known,
+well understood, and the solutions to it well known for
+a very long time.  Similarly for DNSSEC, and IPSEC,
+where time after time they got the cryptography correct,
+unlike Wifi, but managed every time to produce non
+solutions that no one could use or would use.  </p><p>
+
+No way can end users be expected to burden themselves
+with such a task, when the experts fail over and over. 
+Rather, cryptography needs to be embedded invisibly in
+tools that do user tasks, and make those tasks secure
+without the end user ever thinking about cryptography. 
+SSH is the best example of a tool that works like this.
+You never see a dialog box that relates to cryptographic
+matters.   It is just secure.  It acts the way people
+expect it to act, and they don’t need to think about
+the messy details of how it ensures  that hostile
+adversaries cannot meddle and make things  fail in
+unexpected ways.  Similarly, Skype's encryption is
+invisbly embodied in a utility that people use to
+communicate with each other, and no one should ever be
+aware of it.  </p><p>
+
+If people use secure tools to mediate cooperation, and
+the storage and creation of value, to do business, then 
+those tools will not only be secure against ordinary 
+criminals, but against governments – wherupon it becomes 
+hard for governments to collect taxes or regulate business,
+hard for governments to intrude themselves in honest
+peaceful activities.  </p><p>
+
+As soon as we produced the first not very satisfactory
+versions of such tools, and early adopters came to use
+them, we hit the second problem.  The cypherpunk
+program requires heavy reliance on value, exchange, and
+promises to pay and deliver being computer mediated. 
+But computers are extremely insecure.  One’s
+computer is apt to come under the control of hostile
+criminals.  The computer virus and trojan problem
+makes it impractical to keep large amounts of value on
+a computer.  Similarly, the phishing problem makes it
+difficult to have internet mediate relationships of
+economic value.  The anonymity that gives protection
+against governments makes it alarmingly easy for people
+to pretend to be what they are not.  And then
+we discovered that net centric anonymous or weakly
+nymous money was violently unpopular because of
+criminals flocking to it, provoking governments to shut
+it down.  </p><p>
+
+And so, the cypherpunk movement collapsed.  The remaining cypherpunks patiently
+studied solutions to these problems, and, by and large,
+solutions have been discovered, though these solutions
+are not yet implemented, or the implementations are
+not yet widely adopted, perhaps not yet ready for
+wide adoption.  </p><p>
+
+The problems that shut down the cypherpunk movement are
+
+<ol><li>Cryptography is hard, cryptographic protocols
+that actually work are harder, and embedding those
+protocols invisibly in utilities that do useful things
+without the end user needing to know or think about
+cryptography considerably harder still: To solve this we
+need <a href="replacing_TCP.html">higher level tools
+which automatically apply known sound protocols to the
+particular case</a>, so that good cryptography can be a
+routine and invisible part of good applications, without
+requiring as much thought as it now does.</li>
+
+<li>Computer insecurity, trojans and malware: To
+solve this, we need to restrict programs using the
+<a href="./safe_operating_system.html">powerbox software
+pattern</a></li>
+
+<li>Phishing</li>
+
+<li>Violently unpopular criminal misuse of net centered
+money</li> </ol>
+
+
+</body></html>
+ 

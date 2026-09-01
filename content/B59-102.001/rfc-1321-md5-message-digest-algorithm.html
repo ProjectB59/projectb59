@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-102.001 · The MD5 Message-Digest Algorithm (RFC 1321) — Rivest, RFC 1321 (1992)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-102.001">← back to the vault</a>
+  <div class="call">B59-102.001 · WRITING · HASH FUNCTIONS</div>
+  <h1>The MD5 Message-Digest Algorithm (RFC 1321)</h1>
+  <div class="by">Ronald L. Rivest · Network Working Group, RFC 1321 · April 1992</div>
+
+  <div class="lede">"The algorithm takes as input a message of arbitrary length and produces as output a 128-bit fingerprint or message digest of the input."</div>
+
+  <h2>Why it matters</h2>
+  <p>Cryptographic hash functions are the workhorse primitive of everything the cypherpunks built next: proof-of-work, hash chains, Merkle trees, commitment schemes, content addressing. MD5 was, through the 1990s and 2000s, the default one. This RFC is how it was specified and spread.</p>
+
+  <h2>What it specifies</h2>
+  <p>A padding rule, a 128-bit state, and four rounds of 16 operations mixing the message into that state, plus a full reference implementation in C. The "conservative" design note explains that MD5 deliberately traded some of MD4’s speed for a wider security margin.</p>
+
+  <h2>Reading it now</h2>
+  <p>Collisions in MD5 were demonstrated in 2004 and made cheap thereafter, and it must not be used where collision resistance matters (certificates, signatures). It survives as a fast non-security checksum and as a case study in how hash functions fail. The RFC is kept here as the historical record, not as a recommendation.</p>
+
+  <h2>Executive summary (verbatim)</h2>
+  <div class="fn">This document describes the MD5 message-digest algorithm. The algorithm takes as input a message of arbitrary length and produces as output a 128-bit "fingerprint" or "message digest" of the input. It is conjectured that it is computationally infeasible to produce two messages having the same message digest, or to produce any message having a given prespecified target message digest. The MD5 algorithm is intended for digital signature applications, where a large file must be "compressed" in a secure manner before being encrypted with a private (secret) key under a public-key cryptosystem such as RSA. ... The MD5 algorithm is being placed in the public domain for review and possible adoption as a standard.</div>
+
+  <div class="cite">SOURCE: R. Rivest, "The MD5 Message-Digest Algorithm," RFC 1321, Internet Engineering Task Force, April 1992.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="rfc-1321-md5-message-digest-algorithm-source.txt">rfc-1321-md5-message-digest-algorithm-source.txt</a>, retrieved from <a href="https://www.rfc-editor.org/rfc/rfc1321.txt">https://www.rfc-editor.org/rfc/rfc1321.txt</a> on 2026-08-31. SHA-256 of the snapshot: 284a79d148400d9cd2a423211d1103b5cef0fb9256a4cbe6d7ebe5197c3149dd.</div>
+</main>
+</body>
+</html>

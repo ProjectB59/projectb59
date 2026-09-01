@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-402.004 · On Memory-Bound Functions for Fighting Spam — Dwork, Goldberg &amp; Naor (2003)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-402.004">← back to the vault</a>
+  <div class="call">B59-402.004 · WRITING · PROOF-OF-WORK</div>
+  <h1>On Memory-Bound Functions for Fighting Spam</h1>
+  <div class="by">Cynthia Dwork, Andrew Goldberg and Moni Naor · Advances in Cryptology — CRYPTO 2003 · August 2003</div>
+
+  <div class="lede">"Memory access speeds vary across machines much less than do CPU speeds, [so] memory-bound functions may behave more equitably than CPU-bound functions."</div>
+
+  <h2>Why it matters</h2>
+  <p>It is the missing middle of the proof-of-work story. Between the 1992 origin (B59-402.001) and Bitcoin’s 2008 hash-based mining, researchers already saw the central weakness of CPU puzzles, hardware asymmetry, and tried to fix it. The "memory-hard" and "ASIC-resistant" functions later used by Litecoin (scrypt), Ethereum (Ethash) and others are pursuing exactly the goal set here.</p>
+
+  <h2>What it proves</h2>
+  <p>A formal model of a memory-bound computation, an abstract function with an asymptotically tight amortized lower bound on required memory accesses for the sender, a concrete instantiation inspired by RC4, a way for the receiver to verify with no memory accesses, and measurements showing only a 4x spread between a set-top box and a fast workstation.</p>
+
+  <h2>The lineage it started</h2>
+  <p>The memory-hardness research line runs from here through Percival’s scrypt (2009) to Argon2 and the egalitarian-mining designs, and informs every later argument about whether proof-of-work can stay accessible to ordinary hardware.</p>
+
+  <h2>Original abstract (excerpt)</h2>
+  <div class="fn">In 1992, Dwork and Naor proposed that e-mail messages be accompanied by easy-to-check proofs of computational effort in order to discourage junk e-mail, now known as spam. They proposed specific CPU-bound functions for this purpose. Burrows suggested that, since memory access speeds vary across machines much less than do CPU speeds, memory-bound functions may behave more equitably than CPU-bound functions... we prove that, on average, the sender of a message must perform many unrelated accesses to memory, while the receiver, in order to verify the work, has to perform significantly fewer accesses.</div>
+
+  <div class="cite">SOURCE: Cynthia Dwork, Andrew Goldberg, and Moni Naor, "On Memory-Bound Functions for Fighting Spam," in D. Boneh (ed.), Advances in Cryptology — CRYPTO 2003, Lecture Notes in Computer Science 2729, Springer, 2003, pp. 426-444.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="on-memory-bound-functions-for-fighting-spam-source.pdf">on-memory-bound-functions-for-fighting-spam-source.pdf</a>, retrieved from <a href="https://www.iacr.org/archive/crypto2003/27290425/27290425.pdf">https://www.iacr.org/archive/crypto2003/27290425/27290425.pdf</a> on 2026-08-31. SHA-256 of the snapshot: 10758efa74b800a801c1b8957298262a1ac3ea9e08b32762a3b14021032b2aac.</div>
+</main>
+</body>
+</html>

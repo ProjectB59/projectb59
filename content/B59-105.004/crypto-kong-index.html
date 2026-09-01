@@ -1,0 +1,832 @@
+<HTML>
+	<HEAD>
+		<META name="reply-to" content="jamesd@echeque.com (James A. Donald)">
+		<META NAME="description" CONTENT="Utility for digital signatures and encryption">
+		<META NAME="keywords" CONTENT="digital signatures, encryption, cryptography, crypto, email, elliptic curves">
+		<META NAME="Author" CONTENT="James A. Donald">
+		<TITLE>
+			Crypto Kong
+		</TITLE>
+		<LINK HREF="mailto:jamesd@echeque.com" REV="made">
+		<LINK HREF="index.html" REV="parent">
+	</HEAD>
+	<BODY>
+		<H1>
+			<CENTER>
+				Crypto Kong
+			</CENTER>
+		</H1>
+		
+		<CENTER>
+			<IMG SRC="rose.gif" HEIGHT=113 WIDTH=149>
+		</CENTER>
+		
+		<H2>
+			Digital signatures and encryption so simple that even the chairman of the
+			board can use it.
+		</H2>
+		
+		<CENTER>
+			<IMG SRC="CryptoKong.gif" HEIGHT=362 WIDTH=288 ALIGN=RIGHT>
+		</CENTER>
+		
+		<H3>
+			Release 1.2.1,  4 November 2001
+		</H3>
+		<A HREF="install.htm"><IMG SRC="dl1.gif" HEIGHT=25 WIDTH=43> &nbsp;&nbsp;Download Kong</A>
+		<UL>
+			<LI>
+			<A HREF="#0CHAP">What Kong does</A>
+			<LI>
+			<A HREF="#ACHAP">Why Kong is superior</A>
+			
+			<LI>
+			<A HREF="#BCHAP">How to use Kong</A>
+			
+			<LI>
+			<A HREF="#CCHAP">Linking digital IDs with paper documents or physical presence</A>
+			
+			<LI>
+			<A HREF="#CMCHAP">Certificates and contracts</A>
+			
+			<LI>
+			<A HREF="how.htm">How Kong works</A>
+			
+			<LI>
+			<A HREF="identity.htm">How Kong's identity model differs from Verisign/SMIME</A>
+			
+			<LI>
+			<A HREF="KeyStrength.htm">How secure is Kong?</A>
+			<LI>
+			<A HREF="#DCHAP">Kong's signatures look more professional</A>
+			
+			<LI>
+			<A HREF="#ECHAP">Symbols of Kong</A>
+			<LI>
+			<A HREF="#FCHAP">Known problems and desirable but absent features</A>
+			<LI>
+			<A HREF="#RCHAP">Revision History</A>
+			<LI>
+			<A HREF="#HCHAP">System Requirements</A>
+			<LI>
+			<A HREF="source.htm">Crypto Kong Source code</A>
+		</UL>
+		<HR>
+		<H2>
+			<A NAME="0CHAP">What Kong does</A>
+		</H2>
+		
+		It digitally signs a document using a secret (a secret file, or a secret
+		passphrase, or both).&nbsp; It will decipher a document encrypted to your
+		signature.&nbsp; The people you communicate with do not have, or need to have,
+		your secret.  What one man knows, nobody knows, what two men know, everyone
+		knows.
+		<P>
+		Kong keeps track of your secrets and signatures, and stores signed documents
+		for signature comparisons.
+		<P>
+		Kong can tell if two documents supposedly signed by the same person were both
+		signed using the same secret, and thus by the same person, even though it does
+		not know that person's secret.
+		<P>
+		It can also encrypt a document to a signature, so that the document can only be
+		decrypted using the secret used to form the signature, thus ensuring that it
+		can only be decrypted by the person who signed the document to which you are
+		replying, even	though it does not know that person's secret.
+		<P>
+		Kong signs documents using your secret, stores and compares other people's
+		documents to make sure that they were signed using the same secret, encrypts
+		documents to a signature selected from the documents that it has stored, and
+		uses your secret to decrypt documents sent to you that were encrypted to your
+		signature.
+		<P>
+		Unlike most digital signature programs, this one has no concept of "true
+		names".  It makes no attempt to determine that the Bob you are talking to is
+		the "real" Bob.  It merely ensures that it is the same Bob.  If you receive
+		documents with different "Bob" signatures, Kong will insist you give each Bob a
+		separate label, and will tell you which Bob is sending you the message whose
+		signature you just checked
+		
+		<HR>
+		<H2>
+			<A NAME="ACHAP">Why Kong is superior:</A>
+		</H2>
+		Kong is simpler and easier to use than any competing digital signature
+		and encryption product, because there is no need for certificate management.
+		<P>
+		With Kong your public key is merely the first line of your signature.&nbsp;
+		You do not need to create and publish your public key certificate,
+		or obtain other peoples certificates so that you can communicate with them
+		privately, unlike other digital signature and encryption programs.&nbsp; You
+		do not even need to care what a public key is.
+		<P>
+		Digital signatures work like pen signatures.&nbsp; Anyone using Kong
+		can tell if a document has been altered since it was signed, and anyone
+		can tell whether or not two documents were signed by the same person.&nbsp;
+		Two documents whose signatures match must have been signed using the same
+		secret file or passphrase, and thus pesumably by the same person.&nbsp; Kong can
+		determine that two documents were signed using the same secret, even hough it
+		does not know and cannot discover what that secret was.&nbsp;
+		<P>
+		With other products, in particular Verisign's product, you need a certificate
+		signed by someone, such as Verisign, testifying that you are the real
+		you.&nbsp; This leads to high fees, complexity, and administrative costs.&nbsp;
+		Maintaining a verisign certificate typically costs a business about one hundred
+		dollars per year per additional seat.  Kong merely shows that you are the same
+		you, just as an ordinary signature does.
+		<P>
+		When you encrypt a document to a particular person, it can only be decrypted
+		using the secret used for that person's signature, thus only the person you are
+		replying to can decrypt it.&nbsp; You yourself cannot decrypt it unless
+		you list yourself among the recipients.
+		<P>
+		At some future date, I intend to support certificates of identity as
+		well, but the vast majority of people have no need of them, and should
+		not be forced to use them.&nbsp; Most people do not understand them, so use
+		those certificates incorrectly, and even when they do understand them, they
+		still often manage those certificates incorrectly.
+		<HR>
+		<H2>
+			<A NAME="BCHAP"></A>
+			How to use Kong
+		</H2>
+		To compare the signatures on two documents, put one in the clipboard, press
+		the
+		<I>
+			do clipboard
+		</I>
+		button in Kong, Kong will find no matches in its
+		database, and will suggest you store the document.&nbsp; Press the
+		<I>
+			Store
+		</I>
+		button to store the document in the Kong database for future comparison
+		and reference.
+		
+		<P>
+		The text you place in the clipboard must include the full delimiter
+		line, which marks the start of the signed text.&nbsp; Any text preceding
+		that delimiter line will be discarded.
+		
+		<P>
+		Later, when you receive another document from this person, put the other
+		document in the clipboard, and press the
+		<I>
+			do clipboard
+		</I>
+		button again.
+		Kong compares the document with its database, and reports on matches at
+		the bottom of the window.
+		
+		<P>
+		To sign a document in Kong, again simply paste it into Kong with the
+		<I>
+			do clipboard
+		</I>
+		button, and press the
+		<I>
+			Sign
+		</I>
+		button.
+		
+		<P>
+		To encrypt a document so that only a person who signed a certain document
+		can read it, you must first store a document by that person so that Kong
+		can find that person's signature.&nbsp; Kong can then encrypt your document so
+		that only the person who knows the secret used to sign the other document
+		can decrypt it.&nbsp; (This of course means that your copy of Kong cannot
+		decrypt it, only his copy.)
+		
+		<P>
+		The secret used for decryption and digital signatures can be a secret
+		file, a secret passphrase, or both.&nbsp; Kong remembers where the file last
+		was, and looks for it there.&nbsp; You can put the file on a floppy disk and
+		lock the disk away for security, or leave it on your hard disk for convenience.
+		Kong records information that allows it to recognize the file or passphrase
+		when it sees it, but secret file or passphrase is not stored in Crypto
+		Kong's database.&nbsp; Kong does however store decrypted documents in the
+		database in clear text when you press the
+		<I>
+			store
+		</I>
+		button.
+		
+		<P>
+		Kong is not intended for storage security, but for communication
+		security.&nbsp; One excellent product that provides storage security is
+		<A HREF="http://www.scramdisk.clara.net/">Scramdisk</A>
+		, which I use.&nbsp; A good storage security product
+		should provide an encrypted disk partition, that can only be rendered readable
+		with a password, and becomes unreadable when the user logs off or the computer
+		is powered down or reset because the password is forgotten, for example
+		<A HREF="http://www.argus-systems.com/">Mad Max</A>
+		,
+		<A HREF="http://www.pcdynamics.com/SafeHouse/">SafeHouse</A>
+		,	and
+		<A HREF="http://www.securitydynamics.com/products/datasheets/securpc.html">SecurePC</A>
+		.
+		
+		<P>
+		Kong has various potential vulnerabilities against an adversary with
+		access to your computer.&nbsp; I intend to remedy the worst of these, but Kong
+		will never provide the security against attacks on storage that is provided
+		by an encrypted disk partition, a partition whose passphrase is at least
+		twelve characters long if the passphrase is random seeming gibberish, like
+		that which appears in digital signatures, and at least seventy two characters
+		long if it is a humanly intelligible, grammatically correct, english
+		sentence.&nbsp;  Crypto Kong is designed for communications security, not
+		storage security.
+		<HR>
+		<H2>
+			<A NAME="CCHAP">Linking digital IDs with paper documents or physical presence.</A>
+		</H2>
+		The Kong model has no concept of "true identity".&nbsp; If there are several
+		people with different signatures, all calling themselves Bob,
+		or perhaps the same person with several different signatures, then Kong does not
+		attempt to address the question of which is the one &quot;true&quot; Bob,
+		unlike other products.&nbsp;  Instead it helps you keep your dealings with one
+		Bob separate
+		from your dealings with another Bob.&nbsp;  It provides an identifier
+		to distinguish between the different Bobs
+		<P>
+		
+		How then do we
+		link a digital ID with a paper document, such as a check sent to a stockbroker?
+		
+		
+		<P>
+		One method is to use the public key, which is the first code line in
+		your signature.&nbsp; For most purposes it is sufficient to give only the
+		first twelve characters of the public key, perhaps sixteen if your transactions
+		are a crucial to the national security of an important nation. &nbsp;For
+		example if John Doe was to write in handwriting on the check,
+		<BLOCKQUOTE>
+			<I>
+				Apply to the account of
+				<BR>
+				&nbsp;&nbsp;&nbsp; --digsig
+				<BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; John Doe
+				<BR>
+				&nbsp;&nbsp;&nbsp; 3heijUWX+5v9U
+			</I>
+		</BLOCKQUOTE>
+		Then the broker, assuming he uses Crypto Kong in his business, would
+		check the first few digits of the digital signature on one of the digital
+		documents you sent him against the writing on the paper check, and would
+		know that the money should be invested as directed by the author of those
+		documents.
+		
+		<P>
+		Alternatively, the broker could establish an account on the basis of a
+		digital signature, and inform the person opening the
+		account that that account number is indeed linked to the digital signature,
+		in which case the person opening the account can
+		simply put the account number on the check, as usual.&nbsp;  This fits better
+		with
+		existing business practices, but it involves an extra communications step,
+		creating additional opportunities for mischance, error, confusion,
+		interference, fraud, or leakage of information.
+		
+		<P>
+		With the former method, if the handwritten reference to the digital
+		signature agrees with the signature on the check, then the broker can
+		trivially prove that he had proper authority to apply the money as directed
+		in digitally signed documents.&nbsp;  With the latter method, his authority is
+		only as good as the reliability of his communications with his client.
+		
+		<P>
+		Suppose John Doe wants to move money or benefits in the opposite direction,
+		from a digital ID to a paper ID?
+		
+		<P>
+		If he is moving money from a brokerage account to back to a bank account,
+		the problem is trivial.&nbsp; John simply sends a digitally signed
+		message:&nbsp;
+		"Deposit $10000 in account 4377844378 at the bank of such and such.
+		
+		<P>
+		What, however, if the money or goods must be provided to a physical
+		person who turns up in the flesh to collect the money or goods?
+		
+		<P>
+		This is slightly more complex, but it is only as complex as the
+		existing system for bills of lading and letters of credit.&nbsp; Indeed
+		it
+		<B>
+			<I>
+				is
+			</I>
+		</B>
+		the existing system for bills of lading and letters
+		of credit, translated directly, one for one, to digital signatures.
+		
+		<P>
+		Suppose for example, a warehouser has been directed "give the goods
+		to John when he turns up", and he wants to be able to prove he gave the
+		goods to the correct John.&nbsp; It does no good for the John that turns
+		up to sign a receipt for the goods, for that is a pen signature, and we
+		suppose the message directing the warehouser was digital, and the warehouser
+		wants to be able to provide digital proof that John received the goods,
+		so that computers can shuffle the documents around, instead of the present
+		cumbersome system where large bundles of signed papers pass from hand to hand in
+		exchange for the goods.
+		
+		<P>
+		One simple solution would be for the real John to carry a floppy disk
+		containing a digitally signed message "Received consignment 27777 comprising
+		such and such" and gives it to the warehouser in exchange for the goods.&nbsp;
+		This is the direct equivalent of the existing system
+		for bills of lading, where goods are exchanged for signed documents.
+		
+		<P>
+		Or if a floppy disk was inconvenient, or we were concerned that the
+		floppy disk might be stolen, the warehouser could be given the signature
+		of a passphrase, with no document.&nbsp; The real John knows the pass phrase
+		that corresponds to that signature, and the deal is that he will give the
+		passphrase to the warehouser in return for the goods.&nbsp; When the warehouser
+		has the passphrase that is validly signed by the signature he already possesses,
+		this is proof that he delivered the goods to someone authorized to receive
+		them.&nbsp; This is some what similar to the system used withdraw physical
+		cash from a sparbuch account, and is similar to, but not directly equivalent
+		to, the system used to obtain physical goods using bills of lading.&nbsp; We
+		would use this passphrase system when wiring money to someone, to be picked
+		up in physical person, as in a sparbuch account, but we would probably
+		not use it when shipping goods to be picked up by a physical person, as
+		with a bill of lading.
+		<HR WIDTH="100%">
+		<H2>
+			<A NAME="CMCHAP">Certificates and Contracts</A>
+		</H2>
+		
+		<H3>
+			Contracts:
+		</H3>
+		Suppose Alice wanted to prepare a contract, to be signed by both herself
+		and Bob.&nbsp; Then she could prepare a signed document which
+		read:
+<PRE>    --
+A contract between Alice and a second party,
+wherein the second party promises to take good
+care of Alice's stuff
+
+
+    --digsig
+         Alice
+     9Xjp1N+QDtXR9Mw1S0gJTnwliGM3rQpuzdogeqOLqii
+     VApNcqXfjT35PvF2aBGC8aTegtm6+vyg9BkxX62j
+4O+9VXuj9zRYesnbrdoI29AoeApHRDyu/iHmnG8Qm
+</PRE>
+		
+		Then if Bob wished to sign the contract, he would select
+		<U>
+			New
+		</U>
+		from the
+		file menu or button bar, paste the contract prepared by Alice in the
+		document, press the
+		<U>
+			Sign
+		</U>
+		button, then the
+		<U>
+			Copy
+		</U>
+		button,
+		and send the contract, now signed by both parties, back to Alice:
+<PRE>    -- 2
+    --
+A contract between Alice and a second party,
+wherein the second party promises to take good
+care of Alice's stuff
+
+
+    --digsig
+         Alice
+     9Xjp1N+QDtXR9Mw1S0gJTnwliGM3rQpuzdogeqOLqii
+     VApNcqXfjT35PvF2aBGC8aTegtm6+vyg9BkxX62j
+     4O+9VXuj9zRYesnbrdoI29AoeApHRDyu/iHmnG8Qm
+
+
+    --digsig
+         Bob
+     F9KBGIfyizpoyo8i8NS/Dqe/eP4WVNcXcRJuS14QPXn
+     h/5dazl5WDrJti1vKpHCMkuXz/PTN4/U0PjeR4f9
+47fz5E13nN1LXJQXHvMlXsC57b2PGPtEFyzwznr2D
+</PRE>
+		Crypto Kong has no special case handling for certificates and contracts,
+		so you have to do this using the file menu, rather than the
+		<I>
+			do clipboard
+		</I>
+		button.
+		
+		<P>
+		Often one wants to link the contract to an identity capable
+		of being sued.
+		
+		<P>
+		For example, today, when you rent a computer, the people renting you
+		the computer will usually ask you to fax your most recent pay stub or bank
+		account so that if you break the contract, they can go after your money.
+		
+		<P>
+		Because people usually fax these things, rather than present
+		them personally, someone could steal your identity.
+		
+		<P>
+		If you fax the bank statement together with the digitally signed contract,
+		this shows that you, the person who possesses the secret of the signature,
+		also possesses the bank statement.
+		
+		<P>
+		This method, which corresponds to existing practice, is probably good
+		enough for most purposes, but it still exposes you to the risk that someone
+		will steal the image of your bank statement from the fax, and use it to
+		commit identity theft.
+		
+		<P>
+		To protect against identity theft, you could write the first part of
+		your digital signature, including the first twelve to sixteen digits of
+		your public key, on the bank statement, before faxing it.
+		
+		<P>
+		For example:
+		<TABLE >
+			<TR>
+				<TD WIDTH="500">
+<PRE>&nbsp;&nbsp;&nbsp; This account property of
+<BR>&nbsp;&nbsp;&nbsp; --digsig
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bob
+<BR>&nbsp;&nbsp;&nbsp; 6YeGpsZR+nOTh
+</PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		This protects Bob against identity theft, though it does not entirely protect
+		the
+		people he is contracting with.&nbsp; When digital IDs come to be widely
+		used, the wide use will protect them against dealing with stolen identities.
+		<H3>
+			Certificates
+		</H3>
+		Certificates, like contracts, are handled with nested signatures:
+		
+		<P>
+		Suppose Alice hires Bob to do some consulting work and is satisfied
+		with the results.&nbsp; She knows her friend Carol also needs similar work done
+		and wants to recommend Bob to Carol.
+		
+		<P>
+		In Crypto Kong you would do this with nested signatures, using the file
+		menu.
+<PRE>    -- 2
+Dear Carol
+
+ I think Bob is a very good consultant.
+
+ Enclosed is Bob's resume
+
+    --
+Hi:  I do great consulting.
+
+
+    --digsig
+         Bob
+     F9KBGIfyizpoyo8i8NS/Dqe/eP4WVNcXcRJuS14QPXn
+     N9Cm/pDw8sgVDMj8f3upNmp1pSE3rSj0atQuF7Jt
+     4RgxEDpUxK1DVzBejpH3qqvrqcY2+8M+pSXFB0LLG
+
+
+    --digsig
+         Alice
+     9Xjp1N+QDtXR9Mw1S0gJTnwliGM3rQpuzdogeqOLqii
+     ckd5NlB2nGrQHe4TSMSDd791WEq64XCotsYG0oiZ
+4W3Yi4QBCgYC0SnORJFesTOcbCsmGsEnXZRCVrsou
+</PRE>
+		With competing products, Alice would have to reference Bob's "true name",
+		which is a problem, for the concept of "true name" does not correspond
+		to any easily understood security protocol.
+		
+		<P>
+		With Crypto Kong, Alice merely sends an enclosed document signed by
+		Bob.&nbsp; Instead of having to conform to protocols designed to prove the
+		identity
+		of the one true Bob, she merely has to say, in effect, "this particular
+		Bob", instead of needing to say "the one true Bob"
+		
+		<P>
+		<HR>
+		<H2>
+			<A NAME="DCHAP">Kong's signatures look more professional</A>
+		</H2>
+		In Kong, if I digitally sign the document "Example signed document" it
+		looks like:
+		<TABLE BORDER=2 >
+			<TR>
+				<TD WIDTH="560">
+<PRE>&nbsp;&nbsp;&nbsp; --
+Example signed document.
+&nbsp;&nbsp;&nbsp; --digsig
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; James A. Donald
+&nbsp;&nbsp;&nbsp;&nbsp; 6YeGpsZR+nOTh/cGwvITnSR3TdzclVpR0+pr3YYQdkG
+&nbsp;&nbsp;&nbsp;&nbsp; BSvaK4MOZ2HQvr15n12Wn//srJ0bGg0SBsjB0i7z
+&nbsp;&nbsp;&nbsp;&nbsp; 9DzVhXhT9dtOvXQsvNgW9fxxzbg1MahNdUf/jGDb
+</PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		In the major competing product, a digitally signed document looks like:
+		<BR>
+		&nbsp;
+		<TABLE BORDER >
+			<TR>
+				<TD WIDTH="560">
+<PRE><TT>-----BEGIN PGP SIGNED MESSAGE-----
+Example signed document.
+-----BEGIN PGP SIGNATURE-----
+Version: PGP for Personal Privacy 5.0
+Charset: noconv
+
+iQEVAwUBM7+wl2rcIxe8e5eNAQEK5ggArPlG9AOFH35BK2hma3K/RJRDm1Lbd5BM
+THLdg4MH0IwlV46jRGXrAUfMSBY3jfBlSWos3XIfbH3BpIPCwz0722iJNyq9+nij
+sGDb/IgcoUGXYfADg4Irlw8LGDmQwd2JEAfc1wLBPSG2TYRCHZy5HAPNq1tqrvp2
+ZMq6J8xjuY+LfuM3lLs0MgO2SeNvJl0VFLOY5KOSojGkNhGEl+gVWbY+fBKhfvGK
+
+UUXEL7cT7uwkTfR6kfNdWbAQAteAkDOrUw69zRYzgRegmocgUVZRhzEMNhEzwFSH
+io1Wbwe2QywRIxiwnA7HnlsR7ClZn7fNG1ryM6BBUpnkJWMM80vgZQ==
+=QIXE
+-----END PGP SIGNATURE-----
+</TT>
+</PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		Kong's signatures are smaller and less obtrusive than the competing product's
+		signatures because Kong uses elliptic curve encryption for its one way
+		function.&nbsp; The work factor to break Kong signatures and encryption is
+		believed
+		to be 2
+		<SUP>
+			120
+		</SUP>
+		, sufficient to resist even a major superpower on
+		a matter crucial to national security.&nbsp; The competing product requires very
+		large signatures, as in the above example, to give comparable security.
+		The competing product's signatures would be even larger and uglier, if
+		it put the public key in the signature, as Kong does.&nbsp; Because the major
+		competing product does not place the public key in the signature, when
+		you use it you need to separately manage public keys, (certificates of
+		identity) which is complicated and tedious.&nbsp;
+		<HR>
+		<H2>
+			<A NAME="ECHAP"></A>
+			Symbols of Kong
+		</H2>
+		Kong was so named because Hong Kong was taken over by China, or perhaps
+		started to take over China, the day that the first prototype of the program
+		was built.&nbsp; As Hong Kong had been an island of liberty in the midst of
+		oppression,
+		I hoped that Crypto Kong would similarly protect people from oppression
+		by the state.
+		
+		<P>
+		The icon for Kong represents a rose, from the phrase, "sub rosa", or
+		"under the rose".&nbsp; A rose over a table is a symbol that discussions at that
+		table were to be held in confidence, that actions planned at the table
+		were to be undertaken in secret.&nbsp; Some say this symbol arose from a roman
+		legend, where Cupid bribed a child to remain silent about his mother's
+		illicit sexual liaison by giving the child a rose, though if such a legend
+		ever existed, I suspect it was made up after the rose became a symbol,
+		not before.&nbsp; This symbol may predate Rome by millennia, for there was a
+		statue of the Egyptian god Horus carrying a rose and holding his fingers
+		to his lips.&nbsp; Perhaps this symbol relates to some now long forgotten
+		conspiracy.&nbsp;
+		<HR>
+		<H2>
+			<A NAME="FCHAP"></A>
+			Known problems and desirable but absent features
+		</H2>
+		
+		<UL>
+			<LI>
+			<P>
+			Does not yet sign or encrypt binary files.
+			<P>
+			</LI>
+			<LI>
+			<P>
+			Does not yet support integration with Eudora or Pegasus.
+			<P>
+			</LI>
+			<LI>
+			<P>
+			Signature format needs to do something more than merely pass/fail,
+			needs to be able to say that whitespace has changed, but the document
+			is otherwise OK.
+			<P>
+			</LI>
+			<LI>
+			<P>
+			When someone sends you an encrypted message and you store it (and you
+			need to store at least one signed message from that person before you can
+			make an encrypted reply to him) that encrypted message is stored in the
+			Kong database in the clear.&nbsp; I do not regard this defect as urgent,
+			because, as the ad says, Crypto Kong is designed for communications encryption,
+			rather than storage encryption, and if you want to be genuinely secure
+			against raids on your computer, you should use a storage encryption product
+			as well.
+			<P>
+			As a temporary workaround, I suggest you should exchange relatively
+			innocuous messages, store those for comparison with future messages, and
+			delete those messages you do not wish an attacker with access to your computer
+			to see.
+			<P>
+			I intend to fix this problem eventually.&nbsp; I intend to make Kong
+			more secure against attacks on your computer, but I do not intend that
+			Kong will ever be suitable as storage security product, nor do I intend
+			that it will ever be entirely safe to have your computer raided if you
+			are using Kong, but not using any storage security.
+			<P>
+			Kong will never be suitable for storage security.  If I create and
+			release a storage security product, it will be a separate product, with a
+			separate install.
+			<P>
+			</LI>
+			<LI>
+			<P>
+			The undo command in editing only remembers one undo.
+			<P>
+			</LI>
+		</UL>
+		<HR>
+		<H2>
+			<A NAME="RCHAP">Revision History</A>
+		</H2>
+		<P>
+		Due to cryptography export regulations, you may not always have downloaded the
+		most recent version.  Check the version number in the Help/About window.
+		<UL>
+			<LI>
+			Release 1.0.5
+			<UL>
+				<LI>
+				Remedies the 64000 character limit on file operations.  Previously file
+				menu operations on documents larger than 64000 characters would fail
+				ungracefully.
+				</LI>
+				<LI>
+				Badly formed contracts or certificates would crash previous versions, or cause
+				them to do unexpected things.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.0.6
+			<UL>
+				<LI>
+				Minor fixes such as spelling and grammar errors.
+				</LI>
+				<LI>
+				The alphabetically ordered list of recipients was ordered by date,
+				and the date ordered list was ordered alphabetically.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.0.7
+			<UL>
+				<LI>
+				More tolerant of mangled headers, gives helpful error messages
+				when it appears that the headers are mangled.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.0.8
+			<UL>
+				<LI>
+				Supports encryption to multiple recipients.  (Hold the control key
+				down while selecting each recipient.)
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.0.9
+			<UL>
+				<LI>
+				When viewing a decrypted file, there is a new button, the menus button, which
+				gets you out of view mode, and gives you the full capabilities of Crypto Kong.
+				</LI>
+				<LI>
+				KongToolsSource.exe now contains a make file and a project file.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.0.10
+			<UL>
+				<LI>
+				Minor Bug fixes.
+				</LI>
+				<LI>
+				Some software, notably Internet Explorer and some releases of Eudora, sometimes
+				represents spaces in unicode as the character 0x00A0.  This violates unicode
+				standard, and causes signatures to fail to match.  Kong now forces all leading
+				0x00A0s to 0x0020s.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.0.11
+			<UL>
+				<LI>
+				Previously allowed you to treat documents where the signature was invalid, as
+				if the signature was
+				valid, leading to a crash or a user error.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.1.0
+			<UL>
+				<LI>
+				<EM>
+					Major bug fix:
+				</EM>
+				The random number generator misbehaved one time in 64000.  If an adversary
+				was aware of this problem, and knew part of the plaintext, he could
+				discover the rest of the plaintext in an encrypted message one time in
+				64000.
+				</LI>
+				<LI>
+				New feature: The windows brought up by the "DoClipboard" button now remember
+				their old size, and may be sized independently of the main window.  If you
+				mostly use the DoClipboard button, it is convenient to make the main window
+				small, and size the pop up windows as convenient.
+				</LI>
+				<LI>
+				Minor bug fix: If the remembered position of a window is off screen, perhaps
+				because the screen has changed, Kong now positions itself correctly, rather
+				than in
+				the remembered position.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.1.1
+			<UL>
+				<LI>
+				New feature: Uses system tray, so that you do not need Crypto Kong hanging
+				around wasting screen space.
+				You can minimize it to the system tray and just click on the system tray button
+				instead of the DoClipboard
+				button.  Right clicking on the system tray button brings up a menu to display
+				the full interface, exit
+				Crypto Kong, and so forth.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.1.4
+			<UL>
+				<LI>
+				Headers now treat whitespace as insignificant.  Previously invisible changes in
+				a file could result in headers not being recognized.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+			<LI>
+			Release 1.2.1
+			<UL>
+				<LI>
+				Bug fix release for the new header feature.  The previously release 1.1.4 would
+				fail to recognize the the first key when a document was encrypted for multiple
+				recipients.
+				</LI>
+			</UL>
+			</LI>
+			<P>
+		</UL>
+		<HR>
+		<H2>
+			<A NAME="HCHAP">System requirements</A>
+		</H2>
+		Kong will only run under Windows 95, Windows 98, and Windows NT.
+		
+		<HR>
+		by
+		<A HREF="mailto:jamesd@echeque.com">jamesd@echeque.com</A>
+		
+	</BODY>
+</HTML>

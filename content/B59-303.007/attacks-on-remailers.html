@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-303.007 · REMAIL: Attacks on Remailers</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap;overflow-x:auto}
+  a{color:var(--cyan)}
+  .note{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);background:rgba(44,212,242,.05);border:1px solid var(--hair);padding:12px 16px;line-height:1.6;margin:18px 0}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-303.007">← back to the vault</a>
+  <div class="call">B59-303.007 · WRITING · REMAILERS</div>
+  <h1>REMAIL: Attacks on Remailers</h1>
+  <div class="by">Eric Hughes · 1993-08-31</div>
+
+  <div class="lede">The whole point of a remailer network is that you have to subvert many of them in order to breach the security of the system.</div>
+
+  <p>The cypherpunk remailers of 1993 were simple: strip headers, decrypt one layer, forward. This thread is where the list worked out how weak that was against an observer who could watch traffic, and what would have to be added, delay, padding to a fixed size, batching and reordering, to make chaining actually resist analysis. Lance Cottrell's Mixmaster, released the following year, is essentially an implementation of the conclusions.</p>
+
+  <h2>Full text</h2>
+  <div class="fn">From: hughes@ah.com (Eric Hughes)
+Date: Tue, 31 Aug 93 10:54:04 PDT
+To: cypherpunks@toad.com
+Subject: REMAIL: Attacks on remailers
+In-Reply-To: &lt;9308301420.AA03878@elf.owlnet.rice.edu&gt;
+Message-ID: &lt;9308311745.AA17964@ah.com&gt;
+MIME-Version: 1.0
+Content-Type: text/plain
+
+
+&gt;With no root privs on the machine, I tried using the at command to
+&gt;perform the above function and then reschedule itself for tomorrow.
+&gt;Problem: if the machine reboots then the mailing out portion is killed.
+
+A user's crontab is not deleted at reboot, to my knowledge.  You could
+simply run a cron job to schedule mail delivery.  (If you deliver on
+cron, you don't get an even distribution of delivery times, unless you
+use a much more frequent cron.)
+
+Eric
+</div>
+
+  <div class="cite">SOURCE — Eric Hughes, message to cypherpunks@toad.com, 31 August 1993. Archived at mailing-list-archive.cryptoanarchy.wiki.<br>Archived by Modulo 59 · Project B59 for permanent preservation. SHA-256 of the source snapshot is recorded in the vault entry for B59-303.007.</div>
+</main>
+</body>
+</html>
