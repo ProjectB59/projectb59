@@ -1,4 +1,4 @@
-// Project B59 — BOARDS: mIRC-style reader for the vault's lists & discussions
+// Project B59: BOARDS, mIRC-style reader for the vault's lists & discussions
 // Channels are built from real vault records + the Extropian thread mirror.
 (function(){
 'use strict';
@@ -20,23 +20,23 @@ function buildChannels(){
     });
   }
   var chans = [
-    { name:'#vault-lobby', topic:'Welcome to the B59 boards — type /help for commands', msgs:[
+    { name:'#vault-lobby', topic:'Welcome to the B59 boards, type /help for commands', msgs:[
       { nick:'bot_admin', time:'', text:'Connected to irc.projectb59.net on port 6667.', sys:true },
       { nick:'bot_admin', time:'', text:'These boards replay the vault\u2019s archived lists and essays as live channels.', sys:true },
       { nick:'bot_admin', time:'', text:'Join a channel on the left. Click any message to open its record in the archive.', sys:true },
       { nick:'bot_admin', time:'', text:'Commands: /list  /join #channel  /whois nick  /topic  /clear  /help', sys:true }
     ]},
-    { name:'#extropy-chat', topic:'Extropy-Chat mirror — Hal Finney, Szabo, More, Yudkowsky', msgs:[] },
-    { name:'#cypherpunks', topic:'Cypherpunks write code — lists, remailers, manifestos', msgs:recMsgs('lists') },
+    { name:'#extropy-chat', topic:'Extropy-Chat mirror: Hal Finney, Szabo, More, Yudkowsky', msgs:[] },
+    { name:'#cypherpunks', topic:'Cypherpunks write code: lists, remailers, manifestos', msgs:recMsgs('lists') },
     { name:'#digital-cash', topic:'Chaum → ecash → b-money → bit gold', msgs:recMsgs('cash') },
-    { name:'#smart-contracts', topic:'Szabo essays — trusted third parties are security holes', msgs:recMsgs('szabo') },
-    { name:'#crypto-wars', topic:'Clipper, PGP, SSL challenge, Bernstein — the fight for strong crypto', msgs:recMsgs('wars') },
+    { name:'#smart-contracts', topic:'Szabo essays: trusted third parties are security holes', msgs:recMsgs('szabo') },
+    { name:'#crypto-wars', topic:'Clipper, PGP, SSL challenge, Bernstein: the fight for strong crypto', msgs:recMsgs('wars') },
     { name:'#arcade', topic:'Off-topic: Atari, Intellivision, APh and the coin-op years', msgs:recMsgs('gaming') }
   ];
   // Extropy threads → chat lines
   var ex = chans[1];
   (EX.threads||[]).forEach(function(t){
-    ex.msgs.push({ nick:'bot_admin', time:t.month, text:'— thread: '+t.subject+' ('+t.message_count+' messages) —', sys:true });
+    ex.msgs.push({ nick:'bot_admin', time:t.month, text:'thread: '+t.subject+' ('+t.message_count+' messages)', sys:true });
     (t.messages||[]).forEach(function(m){
       m.body.split(/\n\n+/).forEach(function(para,i){
         ex.msgs.push({ nick:nickOf(m.author), time:(i===0?(m.date||'').replace(/^\w+,\s*/,'').slice(0,11):''), text:para.replace(/\n/g,' ') });
@@ -79,8 +79,8 @@ function line(m){
 }
 function paintLog(){
   var c = chans[cur];
-  el('irc-topic').innerHTML = '<b>'+esc(c.name)+'</b> — '+esc(c.topic);
-  el('irc-title').textContent = 'mIRC59 — ['+c.name+'] connected to vault.projectb59.net';
+  el('irc-topic').innerHTML = '<b>'+esc(c.name)+'</b>: '+esc(c.topic);
+  el('irc-title').textContent = 'mIRC59: ['+c.name+'] connected to vault.projectb59.net';
   var log = el('irc-log');
   log.innerHTML = c.msgs.map(line).join('');
   log.querySelectorAll('[data-rec]').forEach(function(d){
@@ -92,26 +92,26 @@ function switchTo(i){ cur = i; paintChans(); paintNicks(); paintLog(); }
 function sysMsg(t){ chans[cur].msgs.push({nick:'bot_admin', time:'', text:t, sys:true}); paintLog(); }
 function whois(n){
   var bios = {
-    hal_finney:'Hal Finney — PGP 2.0 core dev, RPOW inventor, first Bitcoin transaction recipient. 847 archived messages.',
-    nick_szabo:'Nick Szabo — smart contracts, bit gold, trusted third parties are security holes. 312 archived messages.',
-    max_more:'Max More — Extropy Institute founder; the philosophy layer of the frontier.',
-    eliezer_yudkowsky:'Eliezer Yudkowsky — early AI safety; prolific Extropy-list presence. 1,204 archived messages.',
-    bot_admin:'bot_admin — the vault daemon. It never sleeps, it only archives.'
+    hal_finney:'Hal Finney: PGP 2.0 core dev, RPOW inventor, first Bitcoin transaction recipient. 847 archived messages.',
+    nick_szabo:'Nick Szabo: smart contracts, bit gold, trusted third parties are security holes. 312 archived messages.',
+    max_more:'Max More: Extropy Institute founder; the philosophy layer of the frontier.',
+    eliezer_yudkowsky:'Eliezer Yudkowsky: early AI safety; prolific Extropy-list presence. 1,204 archived messages.',
+    bot_admin:'bot_admin: the vault daemon. It never sleeps, it only archives.'
   };
-  sysMsg(bios[n] || (n+' — archived correspondent. Records under this name are in the archive; try searching it.'));
+  sysMsg(bios[n] || (n+': archived correspondent. Records under this name are in the archive; try searching it.'));
 }
 
 function command(v){
   var parts = v.trim().split(/\s+/);
   var cmd = parts[0].toLowerCase();
-  if(cmd==='/help') sysMsg('Commands: /list — all channels · /join #name — switch · /whois nick — bio · /topic — channel topic · /clear — clear scroll. Click a line to open its record.');
+  if(cmd==='/help') sysMsg('Commands: /list (all channels), /join #name (switch), /whois nick (bio), /topic (channel topic), /clear (clear scroll). Click a line to open its record.');
   else if(cmd==='/list') sysMsg('Channels: '+chans.map(function(c){ return c.name; }).join('  '));
-  else if(cmd==='/join'){ var i = chans.findIndex(function(c){ return c.name===(parts[1]||''); }); if(i>=0){ switchTo(i); } else sysMsg('No such channel: '+(parts[1]||'')+' — try /list'); }
+  else if(cmd==='/join'){ var i = chans.findIndex(function(c){ return c.name===(parts[1]||''); }); if(i>=0){ switchTo(i); } else sysMsg('No such channel: '+(parts[1]||'')+', try /list'); }
   else if(cmd==='/whois') whois((parts[1]||'').toLowerCase());
   else if(cmd==='/topic') sysMsg('Topic: '+chans[cur].topic);
   else if(cmd==='/clear'){ chans[cur].msgs = chans[cur].msgs.filter(function(m){ return !m.sys || cur!==0; }); paintLog(); }
-  else if(cmd.charAt(0)==='/') sysMsg('Unknown command '+cmd+' — /help');
-  else sysMsg('The boards are read-only — this is an archive, not a live wire. (Yet.) Try /help.');
+  else if(cmd.charAt(0)==='/') sysMsg('Unknown command '+cmd+', try /help');
+  else sysMsg('The boards are read-only, this is an archive, not a live wire. (Yet.) Try /help.');
 }
 
 function ensure(){

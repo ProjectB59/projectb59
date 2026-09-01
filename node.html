@@ -60,8 +60,8 @@
   <div class="panel">
     <div style="font-family:var(--mono);font-size:13px;margin-bottom:16px"><span class="dot" id="dot"></span><span id="state">contacting node…</span></div>
     <div class="stat-grid">
-      <div class="stat"><div class="n" id="blocks">—</div><div class="l">blocks verified</div></div>
-      <div class="stat"><div class="n" id="peers">—</div><div class="l">peers connected</div></div>
+      <div class="stat"><div class="n" id="blocks">···</div><div class="l">blocks verified</div></div>
+      <div class="stat"><div class="n" id="peers">···</div><div class="l">peers connected</div></div>
       <div class="stat"><div class="n" id="mode">pruned</div><div class="l">node mode</div></div>
     </div>
     <div class="sync" id="syncwrap" style="display:none">
@@ -99,7 +99,7 @@
       // Two honest-but-different measures. Block count is the intuitive one
       // (and what the bar shows). verificationprogress weights by actual
       // chain data, which trails badly because 2009-2013 blocks are nearly
-      // empty while recent ones are full — so it's the truer "how done".
+      // empty while recent ones are full, so it's the truer "how done".
       var blockPct = s.headers ? (s.blocks / s.headers) * 100 : 0;
       var dataPct = (s.progress || 0) * 100;
       document.getElementById('syncbar').style.width=Math.max(0.5,blockPct).toFixed(1)+'%';

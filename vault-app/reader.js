@@ -1,7 +1,7 @@
-// Project B59 — inline reader: renders an archived HTML document in-site
+// Project B59: inline reader, renders an archived HTML document in-site
 // (reading column + provenance sidebar) instead of opening the raw file in
 // a new tab. Fetches the record's own primary file at read time and strips
-// its chrome client-side — no separate reader dataset to keep in sync.
+// its chrome client-side. No separate reader dataset to keep in sync.
 (function(){
 'use strict';
 var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };

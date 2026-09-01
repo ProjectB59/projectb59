@@ -1,4 +1,4 @@
-// Project B59 — People: the lineage roster and author pages.
+// Project B59: People, the lineage roster and author pages.
 // Bios are seeded from the ecosystem litepaper's person-cards, written to house
 // tone (no em-dashes). Record association is computed live against
 // window.B59_RECORDS by matching each person's alias list against a record's
@@ -31,7 +31,7 @@ var PEOPLE = [
 {slug:'eric-hughes', name:'Eric Hughes', role:'Cypherpunks co-founder', dates:'b. 1968', aliases:['Eric Hughes'],
  bio:['Mathematician and a co-founder of the Cypherpunks in 1992 with Tim May and John Gilmore. He wrote "A Cypherpunk’s Manifesto" (1993) and its line "Cypherpunks write code," ran one of the first anonymous remailers, and hosted the early physical meetings.'],
  ext:[['A Cypherpunk’s Manifesto, 1993','activism.net']]},
-{slug:'tim-may', name:'Tim May', role:'Cypherpunks co-founder', dates:'1951–2018', aliases:['Tim May','Timothy C. May','Timothy May'],
+{slug:'tim-may', name:'Tim May', role:'Cypherpunks co-founder', dates:'1951-2018', aliases:['Tim May','Timothy C. May','Timothy May'],
  bio:['Former Intel physicist and a co-founder of the Cypherpunks. His "Crypto Anarchist Manifesto" (1988), read out at Crypto ’88, argued that strong cryptography would let people transact and associate beyond the reach of the state. He compiled the Cyphernomicon, the movement’s enormous FAQ, and posted to the list until his death in 2018.'],
  ext:[]},
 {slug:'john-gilmore', name:'John Gilmore', role:'EFF co-founder', dates:'b. 1955', aliases:['John Gilmore'],
@@ -40,7 +40,7 @@ var PEOPLE = [
 {slug:'phil-zimmermann', name:'Phil Zimmermann', role:'Creator of PGP', dates:'b. 1954', aliases:['Zimmermann'],
  bio:['Author of PGP, released as free software in 1991, which put strong encrypted mail within reach of anyone with a modem. The US government opened a three-year criminal investigation into its spread and never charged him. He kept shipping, and testified to the Senate in 1996 as export rules began to give way.'],
  ext:[['philzimmermann.com','philzimmermann.com']]},
-{slug:'jude-milhon', name:'Jude Milhon', role:'"St. Jude", coined "cypherpunk"', dates:'1939–2003', aliases:['Milhon','St. Jude'],
+{slug:'jude-milhon', name:'Jude Milhon', role:'"St. Jude", coined "cypherpunk"', dates:'1939-2003', aliases:['Milhon','St. Jude'],
  bio:['Writer, programmer, and activist known as St. Jude. She coined the word cypherpunk. A member of the 1970s Community Memory project and later a senior editor at Mondo 2000, she pressed the movement to stay human and inclusive as much as technical.'],
  ext:[]},
 {slug:'julian-assange', name:'Julian Assange', role:'Cypherpunk, WikiLeaks founder', dates:'b. 1971', aliases:['Assange'],
@@ -52,7 +52,7 @@ var PEOPLE = [
 {slug:'morningstar-farmer', name:'Chip Morningstar & Randy Farmer', role:'Designers of Habitat', dates:'', aliases:['Morningstar','Farmer'],
  bio:['Designers of Lucasfilm’s Habitat (1986), the first graphical multi-user world with persistent avatars, virtual property, and a player-run economy. Their 1990 paper "The Lessons of Lucasfilm’s Habitat" set out principles for large online societies decades before the word metaverse existed. Both later worked on object-capability security.'],
  ext:[]},
-{slug:'friedrich-hayek', name:'Friedrich Hayek', role:'Economist, Nobel laureate', dates:'1899–1992', aliases:['Hayek'],
+{slug:'friedrich-hayek', name:'Friedrich Hayek', role:'Economist, Nobel laureate', dates:'1899-1992', aliases:['Hayek'],
  bio:['Austrian-British economist and Nobel laureate. "The Use of Knowledge in Society" (1945) argued that no central authority can hold the dispersed knowledge a price system coordinates. "Denationalisation of Money" (1976) proposed competing private currencies, the theoretical case digital-cash designers would later draw on.'],
  ext:[]},
 {slug:'george-selgin', name:'George Selgin', role:'Free-banking economist', dates:'', aliases:['Selgin'],
@@ -70,7 +70,7 @@ var PEOPLE = [
 {slug:'nick-szabo', name:'Nick Szabo', role:'Coined "smart contracts"', dates:'b. 1964', aliases:['Nick Szabo'],
  bio:['Legal scholar and cryptographer. He coined the term smart contracts in the mid-1990s and designed Bit Gold (1998), a proof-of-work chain of unforgeable value that is the closest single precursor to Bitcoin’s architecture. His essays on money, trust, and law are preserved here in depth.'],
  ext:[]},
-{slug:'hal-finney', name:'Hal Finney', role:'PGP 2.0, RPOW', dates:'1956–2014', aliases:['Hal Finney'],
+{slug:'hal-finney', name:'Hal Finney', role:'PGP 2.0, RPOW', dates:'1956-2014', aliases:['Hal Finney'],
  bio:['PGP 2.0 core developer, cypherpunk remailer operator, and creator of RPOW (2004), the first reusable proof-of-work system. He ran Bitcoin the week it launched and received the first transaction Satoshi sent. Diagnosed with ALS in 2009, he kept working until his death in 2014 and is cryonically preserved.'],
  ext:[['nakamotoinstitute.org/finney','nakamotoinstitute.org']]},
 {slug:'phil-salin', name:'Phil Salin', role:'Founder of AMIX', dates:'d. 1991', aliases:['Phil Salin'],
@@ -79,7 +79,7 @@ var PEOPLE = [
 {slug:'james-donald', name:'James Donald', role:'Cypherpunk, digital-cash analyst', dates:'', aliases:['James A. Donald','James Donald'],
  bio:['A cypherpunks list contributor who published detailed analyses of distributed electronic cash and web-of-trust design in the mid-1990s. His 2008 exchange with Satoshi on the cryptography list, questioning whether the design would scale, is among the earliest recorded responses to Bitcoin from outside.'],
  ext:[]},
-{slug:'john-perry-barlow', name:'John Perry Barlow', role:'EFF co-founder', dates:'1947–2018', aliases:['Barlow'],
+{slug:'john-perry-barlow', name:'John Perry Barlow', role:'EFF co-founder', dates:'1947-2018', aliases:['Barlow'],
  bio:['Founding member of the Electronic Frontier Foundation, Grateful Dead lyricist, and author of "A Declaration of the Independence of Cyberspace" (1996). His essays "The Economy of Ideas" and "Selling Wine Without Bottles" argued that the economics of information would not survive being treated like physical property.'],
  ext:[]},
 {slug:'eff', name:'Electronic Frontier Foundation', role:'Digital civil liberties', dates:'f. 1990', aliases:['Electronic Frontier Foundation','EFF'],
@@ -97,7 +97,7 @@ var PEOPLE = [
 {slug:'stuart-haber-scott-stornetta', name:'Stuart Haber & W. Scott Stornetta', role:'Timestamping', dates:'', aliases:['Haber','Stornetta'],
  bio:['Cryptographers whose 1991 paper "How to Time-Stamp a Digital Document" chained records by hash so that no timestamp could be changed without breaking every one after it. Cited in the Bitcoin whitepaper.'],
  ext:[]},
-{slug:'len-sassaman', name:'Len Sassaman', role:'Mixmaster maintainer', dates:'1980–2011', aliases:['Sassaman'],
+{slug:'len-sassaman', name:'Len Sassaman', role:'Mixmaster maintainer', dates:'1980-2011', aliases:['Sassaman'],
  bio:['Cryptographer, maintainer of the Mixmaster remailer, and co-designer of Mixminion. A tireless defender of anonymity infrastructure. He died in 2011.'],
  ext:[]},
 {slug:'zooko-wilcox', name:'Zooko Wilcox-O’Hearn', role:'Tahoe-LAFS, Zcash founder', dates:'', aliases:['Zooko'],
@@ -113,7 +113,7 @@ var PEOPLE = [
  bio:['Journalist whose 1993 WIRED feature "Crypto Rebels" introduced the cypherpunks to a wide public, and whose book "Crypto" (2001) remains the standard popular history of the movement.'],
  ext:[]},
 {slug:'satoshi-uesaka', name:'Satoshi Uesaka', role:'Game Arts, Thexder', dates:'', aliases:['Satoshi Uesaka'],
- bio:['Japanese game developer at Game Arts in the 1980s: graphic and mechanical design on Thexder (1985) and Silpheed (1986), and director of Fire Hawk: Thexder – The Second Contact (1989).'],
+ bio:['Japanese game developer at Game Arts in the 1980s: graphic and mechanical design on Thexder (1985) and Silpheed (1986), and director of Fire Hawk: Thexder, The Second Contact (1989).'],
  ext:[['MobyGames credits','mobygames.com']]}
 ];
 
@@ -134,8 +134,8 @@ function roster(){
   var cards = PEOPLE.map(function(p){
     var recs = recordsFor(p);
     return '<div class="p-card" data-slug="'+p.slug+'">'+
-      '<div class="nm">'+esc(p.name)+'</div>'+
-      '<div class="role">'+esc(p.role)+(p.dates?' · '+esc(p.dates):'')+'</div>'+
+      '<div><div class="nm">'+esc(p.name)+'</div>'+
+      '<div class="role">'+esc(p.role)+(p.dates?' · '+esc(p.dates):'')+'</div></div>'+
       '<div class="stat"><b>'+recs.length+'</b> record'+(recs.length===1?'':'s')+' in the vault</div>'+
     '</div>';
   }).join('');

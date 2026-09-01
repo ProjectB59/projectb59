@@ -1,9 +1,9 @@
-// Project B59 — Modulo59 IRC: a tiny embedded web client for OUR OWN IRC
+// Project B59: Modulo59 IRC, a tiny embedded web client for OUR OWN IRC
 // network (Ergo on the claudecraft droplet). Unlike Libera, this is our
 // server, so it can be embedded directly: Ergo's websocket allows the
 // projectb59.com origin, and we speak the IRCv3 protocol over it.
 //
-// Deliberately minimal — connect as a guest, join a channel, read and send.
+// Deliberately minimal: connect as a guest, join a channel, read and send.
 // No SASL/account UI here; registering a nick is a power-user thing done
 // with a normal client. window.B59M59IRC = { mount, setChannel, disconnect }.
 (function(){
@@ -80,7 +80,7 @@ function connect(){
       if(m.cmd === 'ERROR'){ sys('disconnected: ' + (m.params[0]||'')); return; }
     });
   };
-  ws.onclose = function(){ connected = false; setStatus('disconnected — click a channel to reconnect', false); ws = null; };
+  ws.onclose = function(){ connected = false; setStatus('disconnected, click a channel to reconnect', false); ws = null; };
   ws.onerror = function(){ setStatus('connection error', false); };
 }
 
@@ -107,14 +107,14 @@ function sendInput(){
   var v = (elInput.value || '').trim();
   if(!v) return;
   elInput.value = '';
-  if(!connected){ sys('not connected yet — hang on a second'); return; }
+  if(!connected){ sys('not connected yet, hang on a second'); return; }
   if(v.charAt(0)==='/'){
     // pass a couple of safe slash commands straight through, e.g. /nick /me
     var parts = v.slice(1).split(' ');
     var c = parts[0].toLowerCase();
     if(c==='nick' && parts[1]){ myNick = parts[1]; send('NICK ' + parts[1]); return; }
     if(c==='me' && parts.length>1){ var act = parts.slice(1).join(' '); send('PRIVMSG '+channel+' :ACTION '+act+''); addLine('<span class="m59-star">*</span> '+esc(myNick)+' '+esc(act),'sys'); return; }
-    sys('only /nick and /me work here — open a full client for the rest'); return;
+    sys('only /nick and /me work here, open a full client for the rest'); return;
   }
   send('PRIVMSG ' + channel + ' :' + v);
   msg(myNick, v); // local echo
@@ -138,7 +138,7 @@ function mount(container){
   elStatus = container.querySelector('#m59-status');
   container.querySelector('#m59-form').addEventListener('submit', function(e){ e.preventDefault(); sendInput(); });
   paintChans();
-  sys('This is the Modulo59 network — our own IRC server. You join as a guest; pick a nick with /nick, or open a full client and register to hold one.');
+  sys('This is the Modulo59 network, our own IRC server. You join as a guest; pick a nick with /nick, or open a full client and register to hold one.');
   connect();
 }
 
