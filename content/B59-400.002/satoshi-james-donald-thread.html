@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-400.002 · Satoshi Nakamoto ↔ James A. Donald</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  ul{color:#cfd3dc;margin:0 0 16px 22px;font-size:16.5px}
+  li{margin-bottom:8px}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-400.002">&larr; back to the vault</a>
+  <div class="call">B59-400.002 · MAILING-LIST THREAD · SATOSHI · SCALING</div>
+  <h1>Satoshi Nakamoto ↔ James A. Donald</h1>
+  <div class="by">"Bitcoin P2P e-cash paper" · cryptography@metzdowd.com · 31 October – 17 November 2008</div>
+
+  <div class="lede">“We very, very much need such a system, but the way I understand your proposal, it does not seem to scale to the required size.”</div>
+
+  <p>When Satoshi Nakamoto announced the Bitcoin white paper to the cryptography mailing list on 31 October 2008, the first substantive reply came from James A. Donald, writing as jamesd@echeque.com — a long-time cypherpunk and author of the Crypto Kong signature tool (see B59-203.005, B59-105.004).</p>
+  <p>Donald pressed the scaling question harder than anyone else in the thread: for proof-of-work tokens to hold value they must circulate on a very large network, but timely double-spend detection seems to require every peer to hold most of the transaction history, and "if hundreds of millions of people are doing transactions, that is a lot of bandwidth." Satoshi’s replies in this thread contain some of his clearest early explanations of block propagation, SPV-style verification, and the incentive argument.</p>
+  <p>The complete October and November 2008 list archives are attached as the primary source. The excerpt below is Donald’s opening reply of 3 November 2008.</p>
+
+  <h2>James A. Donald, 3 November 2008</h2>
+  <div class="fn">From jamesd at echeque.com  Sun Nov  2 18:46:23 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Mon, 03 Nov 2008 09:46:23 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: &lt;CHILKAT-MID-dd013ecc-8c7f-fc14-b1c5-cc9fd0181098@server123&gt;
+References: &lt;CHILKAT-MID-dd013ecc-8c7f-fc14-b1c5-cc9fd0181098@server123&gt;
+Message-ID: &lt;490E3BCF.2020109@echeque.com&gt;
+
+Satoshi Nakamoto wrote:
+&gt; I've been working on a new electronic cash system that's fully
+&gt; peer-to-peer, with no trusted third party.
+&gt; 
+&gt; The paper is available at:
+&gt; http://www.bitcoin.org/bitcoin.pdf
+
+We very, very much need such a system, but the way I understand your 
+proposal, it does not seem to scale to the required size.
+
+For transferable proof of work tokens to have value, they must have 
+monetary value.  To have monetary value, they must be transferred within 
+a very large network - for example a file trading network akin to 
+bittorrent.
+
+To detect and reject a double spending event in a timely manner, one 
+must have most past transactions of the coins in the transaction, which, 
+  naively implemented, requires each peer to have most past 
+transactions, or most past transactions that occurred recently. If 
+hundreds of millions of people are doing transactions, that is a lot of 
+bandwidth - each must know all, or a substantial part thereof.
+
+---------------------------------------------------------------------</div>
+
+  <div class="cite">SOURCE &mdash; &ldquo;Bitcoin P2P e-cash paper,&rdquo; cryptography@metzdowd.com, Oct&ndash;Nov 2008. Full monthly archives attached, retrieved from metzdowd.com/pipermail/cryptography/.<br>Archived by Modulo 59 · Project B59 for permanent preservation.</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-303.018 · Rubberhose — Architecture</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap;overflow-x:auto}
+  a{color:var(--cyan)}
+  .note{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);background:rgba(44,212,242,.05);border:1px solid var(--hair);padding:12px 16px;line-height:1.6;margin:18px 0}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-303.018">← back to the vault</a>
+  <div class="call">B59-303.018 · WRITING · DENIABLE ENCRYPTION</div>
+  <h1>Rubberhose — Architecture</h1>
+  <div class="by">Julian Assange, Ralf-P. Weinmann · 2000-12-06</div>
+
+  <div class="lede">For the file system drivers a marutukku block device looks just like any block device.</div>
+
+  <p>This is the design at one level of zoom: the modules, the daemon, the on-disk files, and how a request for a disk block travels through them. The key structural idea is the "aspect," a keyed view of some of the blocks in a larger encrypted container, with several aspects able to coexist in one extent so that revealing one says nothing about the others.</p>
+
+  <h2>Full text</h2>
+  <div class="fn">    _________             _______________              ___________
+   /         \    (3)    /               \     (4)    /           \
+   | KUE LKM | &lt;-------&gt; | Marutukku LKM | &lt;--------&gt; | FS driver |
+   \_________/           \_______________/            \___________/
+        ^                                                  _|_
+        | (1)                                            _/ | \_
+        |                                              _/   |   \_
+        V                                        (5) _/     |     \_ (5)
+ ________________         _______________          _/   (5) |       \_
+/                \  (2)  /               \        /         |         \_
+| hosed (daemon) | &lt;---- | hose (client) |       /          |           \
+\________________/       \_______________/      /      ___________    _____
+         |        \     /         \            /      /           \  /     \
+         |         \__ /____       \ (8)  ___________ | aspect #2 |  | ... |
+         | (7)        /     \ (6)  /     /           \\___________/  \_____/
+         |        ___/       \    /      | aspect #1 |
+   _____________ / (8)  _____________    \___________/
+  /             \      /             \
+  | maru.extent |      | maru.keymap |
+  \_____________/      \_____________/
+
+
+(1) The KUE kernel module dispatches requests for individual blocks of
+    the file system to the hosed daemon.
+(2) Hose and hosed communicate over an AF_UNIX socket. hose can be used
+    from the command line to control the marutukku crypto system.
+(3) KUE and the marutukku kernel module can mostly be seen as a single
+    entity for most cases. The KUE serves a character file to the user-space,
+    the marutukku lkm a block device. The combination of the maru kernel module
+    and kue moves the data back and forth between those.
+(4) For the file system drivers a marutukku block device looks just like
+    any block device. Thus we can use almost any file system we like
+    with marutukku (with the exception of log-based systems).
+(5) Strictly speaking we are looking at 'mounted aspects' here.
+    [...]
+(6) The hosed daemon loads the keying and remap information for the
+    aspects from the maru.keymap file. The keying information is encrypted
+    with a passphrase for now.
+(7) The hosed daemon reands and writes encrypted blocks from/to the extent,
+    a large file or partion which acts as the final backing store
+(8) For creating a keymap file, aspect metadata or wiping the extent,
+    hose accesses maru.keymap and maru.extent directly. This is also employed
+    to encrypt/decrypt extents completely in userspace.
+</div>
+
+  <div class="cite">SOURCE — Rubberhose source, doc/ARCHITECTURE. Internet Archive snapshot 20001206215000 of rubberhose.org.<br>Archived by Modulo 59 · Project B59 for permanent preservation. SHA-256 of the source snapshot is recorded in the vault entry for B59-303.018.</div>
+</main>
+</body>
+</html>

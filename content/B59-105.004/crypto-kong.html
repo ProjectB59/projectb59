@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-105.004 · Crypto Kong — documentation</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  ul{color:#cfd3dc;margin:0 0 16px 22px;font-size:16.5px}
+  li{margin-bottom:8px}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-105.004">&larr; back to the vault</a>
+  <div class="call">B59-105.004 · SOFTWARE DOCS · WEB OF TRUST · CRYPTO KONG</div>
+  <h1>Crypto Kong — documentation</h1>
+  <div class="by">James A. Donald · echeque.com/Kong/ · c. 1998–2002 · recovered from the Wayback Machine</div>
+
+  <div class="lede">Your key is your identity; you decide who to trust by experience, not by certificate authority.</div>
+
+  <p>Crypto Kong was James A. Donald’s Windows program for signing and encrypting text and email. Its interest here is the trust model: it rejected the X.509 certificate hierarchy outright. In Kong, a key is an identity in itself, and a user builds trust in a correspondent by accumulating signed messages from them over time — a direct, personal web of trust rather than a chain of authorities.</p>
+  <p>Four pages are mirrored as the primary source: the overview (index.html / Kong.htm), how.htm on the mechanism, identity.htm arguing that "your signature is your true name," and digicash.htm, Donald’s short note on digital cash. Together they are a working late-1990s implementation of the ideas he would later bring to the Bitcoin thread on the cryptography list (B59-400.002).</p>
+  <p>Both hosting domains are now dead, so all pages are recovered from the Internet Archive.</p>
+
+  <h2>Overview (excerpt)</h2>
+  <div class="fn">Crypto Kong
+
+
+
+
+
+
+
+Crypto Kong
+
+
+
+
+
+
+
+
+
+Digital signatures and encryption so simple that even the chairman of the
+board can use it.
+
+
+
+
+
+
+
+
+Release 1.2.1, 4 November 2001
+
+
+Download Kong 
+
+
+What Kong does 
+
+Why Kong is superior 
+
+
+How to use Kong 
+
+
+Linking digital IDs with paper documents or physical presence 
+
+
+Certificates and contracts 
+
+
+How Kong works 
+
+
+How Kong's identity model differs from Verisign/SMIME 
+
+
+How secure is Kong? 
+
+Kong's signatures look more professional 
+
+
+Symbols of Kong 
+
+Known problems and desirable but absent features 
+
+Revision History 
+
+System Requirements 
+
+Crypto Kong Source code 
+
+
+
+What Kong does 
+
+
+
+It digitally signs a document using a secret (a secret file, or a secret
+passphrase, or both). It will decipher a document encrypted to your
+signature. The people you communicate with do not have, or need to have,
+your secret. What one man knows, nobody knows, what two men know, everyone
+knows.
+
+Kong keeps track of your secrets and signatures, and stores signed documents
+for signature comparisons.
+
+Kong can tell if two documents supposedly signed by the same person were both
+signed using the same secret, and thus by the same person, even though it does
+not know that person's secret.
+
+It can also encrypt a document to a signature, so that the document can only be
+decrypted using the secret used to form the signature, thus ensuring that it
+can only be decrypted by the person who signed the document to which you are
+replying, even though it does not know that person's secret.
+
+Kong signs documents using your secret, stores and compares other people's
+documents to make sure that they were signed using the same secret, encrypts
+documents to a signature selected from the documents that it has stored, and
+uses your secret to decrypt documents sent to you that were encrypted to your
+signature.
+
+Unlike most digital signature programs, this one has no concept of "true
+names". It makes no attempt to determine that the Bob you are talking to is
+the "real" Bob. It merely ensures that it is the same Bob. If you receive
+documents with different "Bob" signatures, Kong will insist you give each Bob a
+separate label, and will tell you which Bob is sending you the message whose
+signature you just checked
+
+
+
+Why Kong is superior: 
+
+
+Kong is simpler and easier to use than any competing digital signature
+and encryption product, because there is no need for certificate management.
+
+With Kong your public key is merely the first line of your signature. 
+You do not need to create and publish your public key certificate,
+or obtain other peoples certificates so that you can communicate with them
+privately, unlike other digital signature and encryption programs. You
+do not even need to care what a public key is.
+
+Digital signatures work like pen signatures. Anyone using Kong
+can tell if a document has been altered since it was signed, and anyone
+can tell whether or not two documents were signed by the same person. 
+Two documents whose signatures match must have been signed using the same
+secret file or passphrase, and thus pesumably by the same person. Kong can
+determine that two documents were signed using the same secret, even hough it
+does not know and cannot discover what that secret was. 
+
+With other products, in particular Verisign's product, you need a certificate
+signed by someone, such as Verisign, testifying that you are the real
+you. This leads to high fees, complexity, and administrative costs. 
+Maintaining a verisign certificate typically costs a business about one hundred
+dollars per year per additional seat. Kong merely shows that you are the same
+you, just as an ordinary signature does.
+
+When you encrypt a document to a particular person, it can only be decrypted
+using the secret used for that person's signature, thus only the person you are
+replying to can decrypt it. You yourself cannot decrypt it unless
+you list yourself among the recipients.
+
+At some future date, I intend to support certificates of identity as
+well, but the vast majority of people have no need of them, and should
+not be forced to use them. Most people do not understand them, so use
+those certificates incorrectly, and even when they do understand them, they
+still often manage those certificates incorrectly.
+
+
+
+How to use Kong
+
+
+To compare the signatures on two documents, put one in the clipboard, press
+the
+
+do clipboard
+
+button in Kong, Kong will find no matches in its
+database, and will suggest you store the document. Press the
+
+Store
+
+button to store the document in the Kong database for future comparison
+and reference.
+
+
+The text you place in the clipboard must include the full delimiter
+line, which marks the start of the signed text. Any text preceding
+that delimiter line will be discarded.
+
+
+Later, when you receive another document from this person, put the other
+document in the clipboard, and press the
+
+do clipboard
+
+button again.
+Kong compares the document with its database, and reports on matches at
+the bottom of the window.
+
+
+To sign a document in Kong, again simply paste it into Kong with the
+
+do clipboard
+
+button, and press the
+
+Sign
+
+button.
+
+
+To encrypt a document so that only a person who signed a certain document
+can read it, you must first store a document by that person so that Kong
+can find that person's signature. Kong can then encrypt your document so
+that only the person who knows the secret used to sign the other document
+can decrypt it. (This of course means that your copy of Kong cannot
+decrypt it, only his copy.)
+
+
+The secret used for decryption and digital signatures can be a secret
+file, a secret passphrase, or both. Kong remembers where the file last
+was, and looks for it there. You can put the file on a floppy disk and
+lock the disk away for security, or leave it on your hard disk for convenience.
+Kong records information that allows it to recognize the file or passphrase
+when it sees it, but secret file or passphrase is not stored in Crypto
+Kong's database. Kong does however store decrypted documents in the
+database in clear text when you press the
+
+store
+
+button.
+
+
+Kong is not intended for storage security, but for communication
+security. One excellent product that provides storage security is
+Scramdisk 
+, which I use. A good storage security product
+should provide an encrypted disk partition, that can only be rendered readable
+with a password, and becomes unreadable when the user logs off or the computer
+is powered down or reset because the password is forgotten, for example
+Mad Max 
+,
+SafeHouse 
+, and
+SecurePC 
+.
+
+
+Kong has various potential vulnerabilities against an adversary with
+access to your computer. I intend to remedy the worst of these, but Kong
+will never provide the security against attacks on storage that is provided
+by an encrypted disk partition, a partition whose passphrase is at least
+twelve characters long if the passphrase is random seeming gibberish, like
+that which appears in digital signatures, and at least seventy two characters
+long if it is a humanly intelligible, grammatically correct, english
+sentence. Crypto Kong is designed for communications security, not
+storage security.
+
+
+Linking digital IDs with paper documents or physical presence. 
+
+
+The Kong model has no concept of "true identity". If there are several
+people with different signatures, all calling themselves Bob,
+or perhaps the same person with several different signatures, then Kong does not
+attempt to address the question of which is the one "true" Bob,
+unlike other products. Instead it helps you keep your dealings with one
+Bob separate
+from your dealings with another Bob. It provides an identifier
+to distinguish between the different Bobs
+
+
+How then do we
+link a digital ID with a paper document, such as a check sent to a stockbroker?
+
+
+
+One method is to use the public key, which is the first code line in
+your signature. For most purposes it is sufficient to give only the
+first twelve characters of the public key, perhaps sixteen if your transactions
+are a crucial to the national security of an important nation. For
+example if John Doe was to write in handwriting on the check,
+
+
+Apply to the account of
+
+
+--digsig
+
+
+John Doe
+
+
+3heijUWX+5v9U
+
+
+Then the broker, assuming he uses Crypto Kong in his business, would
+check the first few digits of the digital signature on one of the digital
+documents you sent him against the writing on the paper check, and would
+know that the money should be invested as directed by the author of those
+documents.
+
+
+Alternatively, the broker could establish an account on the basis of a
+digital signature, and inform the person opening the
+account that that account number is indeed linked to the digital signature,
+in which case the person opening the account can
+simply put the account number on the check, as usual. This fits better
+with
+existing business practices, but it involves an extra communications step,
+creating additional opportunities for mischance, error, confusion,
+
+[…]  Full text in the attached primary-source file.</div>
+
+  <div class="cite">SOURCE &mdash; James A. Donald, Crypto Kong documentation, echeque.com/Kong/, c. 1998&ndash;2002; recovered from the Internet Archive Wayback Machine (raw id_ snapshots). Original sites defunct.<br>Archived by Modulo 59 · Project B59 for permanent preservation.</div>
+</main>
+</body>
+</html>

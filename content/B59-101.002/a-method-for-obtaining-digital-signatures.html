@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-101.002 · A Method for Obtaining Digital Signatures and Public-Key Cryptosystems — Rivest, Shamir &amp; Adleman (1978)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-101.002">← back to the vault</a>
+  <div class="call">B59-101.002 · WRITING · RSA</div>
+  <h1>A Method for Obtaining Digital Signatures and Public-Key Cryptosystems</h1>
+  <div class="by">R. L. Rivest, A. Shamir, L. Adleman · Communications of the ACM, 21(2) · February 1978</div>
+
+  <div class="lede">"Publicly revealing an encryption key does not thereby reveal the corresponding decryption key."</div>
+
+  <h2>Why it matters</h2>
+  <p>Diffie and Hellman described what a public-key system would need to be; RSA is the first one that fully delivered it. Encryption and signatures from a single operation, security reducible to a problem (factoring) that had been studied for centuries, and simple enough to implement on the hardware of the day.</p>
+
+  <h2>How it works</h2>
+  <p>Pick two large primes, publish their product n and an exponent e, keep the primes secret. Encrypting is raising a message to the power e mod n; decrypting is raising to a secret power d recovered from the primes. Signing runs the same math in the other order. Recovering d without the primes appears to require factoring n.</p>
+
+  <h2>The lineage it started</h2>
+  <p>RSA underlies decades of TLS, PGP and GPG, SSH, code signing, and smart-card identity. The cypherpunks built on it directly: PGP is an RSA application, and Chaum’s digital cash uses RSA signatures with a blinding step (see B59-201.001).</p>
+
+  <h2>Original abstract</h2>
+  <div class="fn">An encryption method is presented with the novel property that publicly revealing an encryption key does not thereby reveal the corresponding decryption key. This has two important consequences: (1) Couriers or other secure means are not needed to transmit keys... (2) A message can be "signed" using a privately held decryption key. Anyone can verify this signature using the corresponding publicly revealed encryption key. Signatures cannot be forged, and a signer cannot later deny the validity of his signature. This has obvious applications in "electronic mail" and "electronic funds transfer" systems.</div>
+
+  <div class="cite">SOURCE: R. L. Rivest, A. Shamir, and L. Adleman, "A Method for Obtaining Digital Signatures and Public-Key Cryptosystems," Communications of the ACM, vol. 21, no. 2, February 1978, pp. 120-126.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="a-method-for-obtaining-digital-signatures-source.pdf">a-method-for-obtaining-digital-signatures-source.pdf</a>, retrieved from <a href="https://people.csail.mit.edu/rivest/Rsapaper.pdf">https://people.csail.mit.edu/rivest/Rsapaper.pdf</a> on 2026-08-31. SHA-256 of the snapshot: f7b1f78d9a7cbeb85e32b8c563a6db60771a5cc4bdc55580645f7cb778a4966b.</div>
+</main>
+</body>
+</html>

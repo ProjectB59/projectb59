@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Names: Decentralized, Secure, Human-Meaningful: Choose Two</title><link rev="made" class="mailto" href="mailto:zooko%5Bat%5Dzooko%5Bdot%5Dcom"><meta name="description" content="essay on limitations of decentralized namespaces"><meta name="keywords" content="Zooko decentralized namespaces trust boundaries"></head>
+  
+    <h1 class="large"><center>zooko.com</center></h1>
+
+<!--    <center>
+      <a href="http://zooko.com/zooko_introduction.html"><img src="search_files/lightblueball.gif" alt="*" border="0" height="14" width="14">introduction</a> | 
+      <a href="http://zooko.com/log.html"><img src="search_files/lightblueball.gif" alt="*" border="0" height="14" width="14">current&nbsp;events</a> | 
+      <a href="http://zooko.com/projects.html"><img src="search_files/lightblueball.gif" alt="*" border="0" height="14" width="14">projects</a> | 
+      <a href="http://zooko.com/zooko_stuff.html"><img src="search_files/lightblueball.gif" alt="*" border="0" height="14" width="14">stuff</a>
+    </center>
+-->
+
+    <center><h2>Names: Decentralized, Secure, Human-Meaningful: Choose Two</h2></center>
+    <p>Newsflash 2006-01-30: I've noticed more people citing this web page and discussing it.  While this web page is important for historical reasons, there are more current -- and probably more coherent -- discussions of the issues elsewhere.  I recommend that you start with Marc Stiegler's <a class="external" href="http://www.skyhunter.com/marcs/petnames/IntroPetNames.html">An Introduction to Petname Systems</a>.  See also Tyler Close's web pages about YURLs, cited below.  --Zooko 2006-01-30</p>
+
+    <font size="-2"><p>version 0.9.9.0, 2003-09-22</p>
+    <p>I
+greatly appreciate feedback. Whether you found it to be enlightening,
+confusing or boring, I want to know. Please send comments to: <a class="mailto" href="mailto:zooko@zooko.com">&lt;zooko@zooko.com&gt;</a>.</p></font>
+        <p>Update:
+Tyler Close has written a nice analogy about "naming versus pointing",
+and has proposed that secure, non-human-meaningful names be called
+"pointers" instead of "names". I think this is an excellent idea, that
+obviates a lot of conflict by helping people think of human-meaningful
+"naming", and secure "pointing" as separate. Tyler's company, Waterken,
+has developed a secure pointing standard named "YURL". Read more about
+it at their website: <a href="http://www.waterken.com/dev/YURL/Analogy/">http://www.waterken.com/dev/YURL/Analogy/</a>.</p>
+
+    <h2>Non-Self-Authenticating Names Cannot Span Trust Boundaries</h2>
+
+    <p>There
+are two kinds of name-value pairs: those that are self-authenticating
+and those that aren't. A name-value pair is "self-authenticating" if,
+given the name-value pair, you can verify on your own that the mapping
+from that name to that value is correct. (For example, if the name
+comes with a public key and the value comes with a digital signature
+made by the corresponding private key, then it is easy to verify
+without any other information that the value is a valid value for that
+name.)</p>
+    <p>If your decentralized namespace confines itself to
+serving self-authenticating name-value pairs, then you can easily be
+free from the risk of deception and the only remaining security issue
+is to prevent denial of service attacks.</p>
+    <p>If your
+decentralized namespace allows non-self-authenticating name-value
+pairs, then I doubt that it will be secure. I have not seen any proof
+that such a system is even possible in principle, it isn't even clear
+what the intended behavior <em>should</em> be, and the best designs that I have seen are complex, limited, and risky.</p>
+    <p>In
+this essay, I use the word "decentralized" to denote that the system
+spans trust boundaries. This means that two peers can use this system
+to interoperate with each other, while neither of them is vulnerable to
+the other <em>nor</em> is either vulnerable to a third party.</p>
+
+    <h2>Self-Authenticating Names Cannot Be Meaningful To Humans</h2>
+
+    <p>Examples of self-authenticating name-value pairs are those where the name is the secure hash of the value (<a class="external" href="http://freenet.sourceforge.net/">Freenet</a>'s <i>CHKs</i> and <a class="external" href="http://mnet.sourceforge.net/">Mnet</a>'s <i>mnetids</i>)
+and those where the name includes the id of a public key and the value
+includes a digital signature from the corresponding private key
+(Freenet's <i>SSKs</i> and <a class="external" href="http://www.fs.net/sfs/new-york.lcs.mit.edu:85xq6pznt4mgfvj4mb23x6b8adak55ue/pub/sfswww/index.html">Self-certifying File System</a>'s directory names).</p>
+
+    <p>Okay,
+so if we can have a decentralized namespace to securely share
+self-authenticating pairs but not non-self-authenticating pairs, then
+why don't we just satisfy ourselves with the former? Because they are
+not meaningful to humans.</p>
+    <p>Cryptographic values such as hashes and public keys are too long and random-looking for humans to use them as meaningful names.</p>
+    <p><cite></cite></p><blockquote>
+          "Humans are incapable of securely storing high-quality cryptographic keys, and
+          they have unacceptable speed and accuracy when performing cryptographic
+          operations. (They are also large, expensive to maintain, difficult to manage,
+          and they pollute the environment. It is astonishing that these devices
+          continue to be manufactured and deployed. But they are sufficiently pervasive
+          that we must design our protocols around their limitations.)"
+        </blockquote><p></p>
+    <p><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--
+Kaufman, Perlman, and Speciner quoted in Anderson's "Security
+Engineering"</i></p>
+
+    <h2>But Your Computer Can Remember Things For You</h2>
+
+    <p>Okay, that's funny, but we <em>don't</em> have to design <em>every</em> namespace to support human-meaningful keys.  For example, I often cut-and-paste URLs from amazon.com.  They look like this:</p>
+    <pre>http://www.amazon.com/exec/obidos/ASIN/0312862075/</pre>
+    <p>I have never memorized one of these or used one in spoken conversation, and I probably never will.</p>
+    <p>If you are designing a decentralized namespace, think about whether you <em>have</em>
+to support human-meaningful, non-self-authenticating keys, at the cost
+of losing the ability to safely span trust boundaries. For some
+applications, you do need human-meaningful keys, for others you don't.</p>
+    <p>Further,
+consider that your human user might have a loyal computer assistant at
+hand, which can translate self-authenticating names into
+human-meaningful names as described in the <a class="external" href="http://www.erights.org/elib/capability/pnml.html">Pet Names Markup Language</a>
+and as implemented in Self-certifying File System. If so, then you can
+have both the safety of self-authenticating keys and the
+human-friendliness of traditional names. Indeed, the way that my
+desktop software, editor and e-mail software allow me to cut-and-paste
+URLs from one application to another is an example of how tools can
+free humans from the need to remember names. I didn't need any new
+software tools to use the amazon.com URL above as an opaque reference
+-- just a web browser and a text editor.</p>
+
+    <h2>Two Ways To Design A Namespace That Does Not Span Trust Boundaries</h2>
+
+    <p>The current state of the art, as far as I have seen, tends to fall into one of two traps.</p>
+    <ul>
+      <li><p>First trap:</p>
+        <p>
+          </p><ol>
+            <li>Assume that you need arbitrary keys including non-self-authenticating ones.</li>
+            <li>Think about the problem of crossing trust boundaries, and solve by delegating to a "trusted third party".</li>
+            <li>Forever
+after you will be vulnerable to MicrosoftNSIVerisignICANNUSGovInc. and
+anyone (including their employees) who can subvert one of their
+servers. When this bloated monopoly screws something up, your system
+will pay the price for their incompetence. You will not be able to
+choose a different name authority, because everyone <em>else</em> will
+also be tied to the central monopoly and you will need their service in
+order to interoperate with the world. (Does this scenario sound
+familiar to anyone?) In addition, they will charge you a tax on every
+packet for the privilege of continued service.</li>
+          </ol>
+        <p></p>
+      </li>
+      <li><p>Second trap:</p>
+        <p>
+          </p><ol>
+            <li>Assume that you need arbitrary keys.</li>
+            <li>Don't think about trust boundaries.</li>
+            <li>Publish.</li>
+            <li>Try to figure out how to make it secure without introducing a central "trusted third party".</li>
+            <li>Go to step 4.</li>
+          </ol>
+        <p></p>
+      </li>
+    </ul>
+
+    <h2>You Can't Have It All, But You Can Have Some Of It</h2>
+    <p>To
+summarize, you cannot have a namespace which is all three of: 1.
+decentralized (which is the same as saying that the namespace spans
+trust boundaries), 2. secure in the sense that an attacker cannot cause
+name lookups to return incorrect values that violate some universal
+policy of name ownership, and 3. using human-memorizable keys.</p>
+    <p>So what should you do?  There are at least five alternatives:</p>
+    <p></p><ol>
+        <li>You
+can have a namespace that is secure and allows human-memorizable keys,
+but that is centralized in terms of trust -- all participants must
+trust a central authority, or perhaps a hierarchy of authorities
+leading ultimately to a central "root" authority. Many people seem to
+think that this is the only possible kind of namespace, perhaps because
+of their familiarity with DNS, which is an example of this design.
+Corporations like VeriSign/NSI, Microsoft, Time/Warner/AOL/Netscape,
+and others apparently believe that such a namespace is a natural
+monopoly rich in unexploited profits. This belief of theirs is revealed
+by the amount of money they are spending in the attempt to gain control
+of the namespace.</li>
+        <li>You can have a namespace that is
+decentralized and uses human-memorizable keys but is not secure, in the
+sense that anyone can change any name to point to any value at any
+time. It may sound silly, but such namespaces <em>do</em> actually get deployed, usually when the user base is very small or when they all know one another.</li>
+        <li>You
+can have a namespace that is decentralized and secure but does not have
+human-memorizable keys. Freenet's CHKs, Mnet's mnetids, and <a class="external" href="http://www.pdos.lcs.mit.edu/chord/">Chord</a>'s
+keys do this for immutable key-value pairs (where a given name refers
+to a bitwise copy of an object and that name can never be made to refer
+to any other bit pattern). Freenet's SSKs, <a class="external" href="http://world.std.com/%7Ecme/html/spki.html">SPKI</a>'s
+certificates, and Self-certifying File System's directory names do this
+for mutable key-value pairs (where a given name, which includes a
+public key, can be made to refer to a new object in addition to the old
+object, but only by using the private key).</li>
+        <li>You can have a
+namespace that is decentralized and secure, as in #3, and in addition
+you can offer your users a computer agent, which runs locally to them
+and is loyal to them, which translates the self-authenticating names
+into human-memorizable names for their use. Since most uses of a
+decentralized namespace will already include a user agent (e.g. a web
+browser, handheld wireless device, an e-mail user agent, etc.), this
+requirement is not as burdensome as it might appear. The Pet Names
+Markup Language is a specification for a very simple markup language
+for this purpose. Self-certifying File System implements this feature
+with a simple tool which is familiar to every Unix user: the symbolic
+link.</li>
+        <li>Show me that I'm wrong.  I didn't <em>prove</em> that
+it is impossible to have all three features, I only said that I doubted
+that your namespace will have all three. If you think your namespace
+design can provide all three, then lay out an argument that it can do
+so. The first step will be to specify what it <em>means</em> for the
+decentralized human-memorizable names to be secure, which is the same
+as specifying what universal policy should govern ownership of names.
+(For example, in the case of CHKs, to be secure means that you can't
+have a collision such that one CHK identifies two different bitstrings
+which, conveniently enough, is part of the definition of security for
+cryptographic hashes. In the case of SSKs, to be secure means that only
+the holder of the private key can change the mapping from a given SSKs
+to its object, which is conveniently similar to the traditional notion
+of security for digital signatures.) If your decentralized namespace
+satisfies all three criteria then (a) you should carefully justify your
+claim that it does so, starting with a specification of what the
+ownership policy is and including a specification of what kind of
+threat model it is secure under, and (b) publish! It will be the first
+published design that does so!</li>
+      </ol><p></p>
+
+    <p>If you
+want my advice, I recommend strategy #3 and the optional added feature
+of #4. The best example to emulate is probably Self-certifying File
+System.</p>
+
+    <p>Thanks to <a class="external" href="http://www.caplet.com/">Mark Miller</a>
+for teaching me about the important distinction between
+self-authenticating and non-self-authenticating key-value pairs and for
+helpful comments on an earlier draft of this article. Thanks to <a class="external" href="http://www.aaronsw.com/">Aaron Swartz</a> and others for suggestions.</p>
+
+    <p>Links mentioned on this page:</p>
+    <ul>
+      <li><a class="external" href="http://freenet.sourceforge.net/">Freenet</a></li>
+      <li><a class="external" href="http://mnet.sourceforge.net/">Mnet</a></li>
+      <li><a class="external" href="http://www.fs.net/sfs/new-york.lcs.mit.edu:85xq6pznt4mgfvj4mb23x6b8adak55ue/pub/sfswww/index.html">Self-certifying File System</a></li>
+      <li><a class="external" href="http://www.erights.org/elib/capability/pnml.html">Pet Names Markup Language</a></li>
+      <li><a class="external" href="http://www.pdos.lcs.mit.edu/chord/">Chord</a></li>
+      <li><a class="external" href="http://world.std.com/%7Ecme/html/spki.html">SPKI</a></li>
+    </ul>
+
+    <hr>
+      <address><a class="mailto" href="mailto:zooko@zooko.com">Zooko</a></address>
+      <!-- Created: Fri Oct  5 15:50:05 PDT 2001 -->
+      <!-- hhmts start -->
+Last modified: Mon Jan 30 13:10:43 AST 2006
+<!-- hhmts end -->
+  </body></html>
+

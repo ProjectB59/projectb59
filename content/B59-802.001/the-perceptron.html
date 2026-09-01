@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-802.001 · The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-802.001">← back to the vault</a>
+  <div class="call">B59-802.001 · WRITING · NEURAL NETS</div>
+  <h1>The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain</h1>
+  <div class="by">F. Rosenblatt · Psychological Review · 1958</div>
+
+  <div class="lede">“The perceptron is designed to illustrate some of the fundamental properties of intelligent systems in general, without becoming too deeply enmeshed in the special … conditions which hold for particular biological organisms.”</div>
+
+  <h2>Why it matters</h2>
+  <p>Rosenblatt turned the McCulloch and Pitts neuron into a machine that <i>learns</i>. The perceptron adjusts connection strengths in response to its errors, so that a system given examples can converge on a rule nobody programmed. He proved a convergence theorem: if a linear separation of the data exists, the learning procedure will find one in finite time.</p>
+  <h2>What it got right and wrong</h2>
+  <p>Right: weight updating from error is the seed of essentially all modern learning. Wrong, or at least oversold at the time: a single layer of these units can only separate linearly, a limit Minsky and Papert set out in detail eleven years later.</p>
+  <h2>Lineage</h2>
+  <p>The perceptron learning rule leads directly to the linear classifiers of today and, once stacked into layers and trained by backpropagation, to deep networks.</p>
+
+  <div class="cite">SOURCE: F. Rosenblatt, &#34;The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain,&#34; Psychological Review, vol. 65, no. 6 (1958), pp. 386&#8202;to&#8202;408.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Snapshot mirrored from a University of Pennsylvania course copy (ling.upenn.edu).</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-101.003 · Secure Communications Over Insecure Channels — Merkle (1978)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-101.003">← back to the vault</a>
+  <div class="call">B59-101.003 · WRITING · KEY EXCHANGE</div>
+  <h1>Secure Communications Over Insecure Channels</h1>
+  <div class="by">Ralph C. Merkle · Communications of the ACM, 21(4) · April 1978</div>
+
+  <div class="lede">"This paper shows that it is possible to select a key over open communications channels in such a fashion that communications security can be maintained."</div>
+
+  <h2>Why it matters</h2>
+  <p>Merkle got to the core idea of public key cryptography, key agreement without a prior shared secret, independently of Diffie and Hellman and slightly earlier, but publication delays put his paper in print two years after theirs. "New Directions" itself credits him. This is the other origin of the field.</p>
+
+  <h2>The mechanism</h2>
+  <p>One party sends a large number of "puzzles," each moderately expensive to solve. The other party picks one at random, solves it, and uses its contents as the shared key, sending back only a public identifier for which puzzle was chosen. An eavesdropper does not know which puzzle was picked and must solve them all on average, so the attacker’s cost scales as the square of the honest cost. It is a quadratic gap, not the exponential gap RSA later gave, but it proved the concept was real.</p>
+
+  <h2>The rejection history</h2>
+  <p>The referee reports Merkle preserved (see "Publishing a New Idea," B59-101.009) are a case study in how established experts receive an idea with no precedent to cite. One reviewer wrote that the work was "not in the main stream of present cryptography thinking."</p>
+
+  <h2>Original abstract</h2>
+  <div class="fn">According to traditional conceptions of cryptographic security, it is necessary to transmit a key, by secret means, before encrypted messages can be sent securely. This paper shows that it is possible to select a key over open communications channels in such a fashion that communications security can be maintained. A method is described which forces any enemy to expend an amount of work which increases as the square of the work required of the two communicants to select the key. The method provides a logically new kind of protection against the passive eavesdropper.</div>
+
+  <div class="cite">SOURCE: Ralph C. Merkle, "Secure Communications Over Insecure Channels," Communications of the ACM, vol. 21, no. 4, April 1978, pp. 294-299.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="secure-communications-over-insecure-channels-source.pdf">secure-communications-over-insecure-channels-source.pdf</a>, retrieved from <a href="https://ralphmerkle.com/1974/PuzzlesAsPublished.pdf">https://ralphmerkle.com/1974/PuzzlesAsPublished.pdf</a> on 2026-08-31. SHA-256 of the snapshot: e89c2f2563f5c73472fe7983c05051e6f542a075a148a28fac76a6b6713e91cd.</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-101.001 · New Directions in Cryptography — Diffie &amp; Hellman (1976)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-101.001">← back to the vault</a>
+  <div class="call">B59-101.001 · WRITING · PUBLIC-KEY CRYPTOGRAPHY</div>
+  <h1>New Directions in Cryptography</h1>
+  <div class="by">Whitfield Diffie and Martin E. Hellman · IEEE Transactions on Information Theory, IT-22(6) · November 1976</div>
+
+  <div class="lede">"We stand today on the brink of a revolution in cryptography."</div>
+
+  <h2>Why it matters</h2>
+  <p>Before this paper, every cryptographic system rested on a shared secret key that had to be delivered in advance by some trusted channel: a courier, registered mail, a face to face meeting. Diffie and Hellman argued that computer networks made that model untenable, and then showed a way out. Two people with no prior contact could hold a public conversation and end it sharing a secret that a listener to every word could not reconstruct.</p>
+
+  <h2>What it introduced</h2>
+  <p>The paper defines public key cryptosystems (distinct enciphering and deciphering keys, with the deciphering key infeasible to compute from the enciphering key), public key distribution, and one-way authentication that yields a signature anyone can verify but no one can forge. It gives a concrete key exchange based on exponentiation modulo a prime, the construction now called Diffie-Hellman, and it frames the search for trap-door one-way functions as the central open problem.</p>
+
+  <h2>The lineage it started</h2>
+  <p>Rivest, Shamir and Adleman answered the open problem two years later with RSA. Merkle’s puzzles, developed independently at Berkeley, are the other root of the same tree. Every later system for key agreement, digital signatures, certificate authorities and secure messaging descends from the framework set out here.</p>
+
+  <h2>Original abstract</h2>
+  <div class="fn">Two kinds of contemporary developments in cryptography are examined. Widening applications of teleprocessing have given rise to a need for new types of cryptographic systems, which minimize the need for secure key distribution channels and supply the equivalent of a written signature. This paper suggests ways to solve these currently open problems. It also discusses how the theories of communication and computation are beginning to provide the tools to solve cryptographic problems of long standing.</div>
+
+  <div class="cite">SOURCE: Whitfield Diffie and Martin E. Hellman, "New Directions in Cryptography," IEEE Transactions on Information Theory, vol. IT-22, no. 6, November 1976, pp. 644-654.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="new-directions-in-cryptography-source.pdf">new-directions-in-cryptography-source.pdf</a>, retrieved from <a href="https://ee.stanford.edu/~hellman/publications/24.pdf">https://ee.stanford.edu/~hellman/publications/24.pdf</a> on 2026-08-31. SHA-256 of the snapshot: 03fa2f493a1448a309586b9cf9e5c3a4dfd14735e0786cc94674519570b890ff.</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-303.020 · Mixmaster &amp; Remailer Attacks</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap;overflow-x:auto}
+  a{color:var(--cyan)}
+  .note{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);background:rgba(44,212,242,.05);border:1px solid var(--hair);padding:12px 16px;line-height:1.6;margin:18px 0}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-303.020">← back to the vault</a>
+  <div class="call">B59-303.020 · WRITING · REMAILERS</div>
+  <h1>Mixmaster &amp; Remailer Attacks</h1>
+  <div class="by">Lance Cottrell · 2000-12-09</div>
+
+  <div class="lede">The whole point of a remailer network is that you have to subvert many of them in order to breach the security of the system.</div>
+
+  <p>This is the piece most often cited when people summarise "how to attack a remailer network." Cottrell's framing, count how many nodes an adversary must control or observe to deanonymise a message, and design so that number is large, became the standard way to reason about mix systems, and carried over into the later work on Tor.</p>
+  <p>Hosted from Cottrell's own obscura.com. The dated capture is 2000; the text is substantially the 1995 essay, cleaned up and put on the web as promised in the original list post.</p>
+
+  <h2>Full text</h2>
+  <div class="fn">Mixmaster &amp; Remailer Attacks
+
+Mixmaster &amp; Remailer Attacks
+
+Cypherpunk remailers.
+
+The structure of current remailer messages is a nested set of encrypted
+messages. Each message is encrypted to a remailer. The message contains the
+instructions for each remailer (such as where to send the message next) and
+the message to be forwarded. Each remailer removes a layer of encryption,
+and accompanying instructions, takes any requested actions, and sends the
+message on to the next destination.
+
+Figure 1
+
+The figure above graphically represents a message that will be sent through
+3 remailers (A,B,C) and finally to Bob. The boxes represent encryption,
+with the name of the person to whom the message is encrypted is outside the
+upper left corner of the box. One important fact is immediately clear from
+this diagram; the message shrinks after each hop.
+
+Cypherpunk remailers do several things:
+
+Send a message to another email address or post it to a new group.
+Accept encrypted messages with instructions for processing hidden
+inside the encrypted envelope.
+Strip of all (or at least some) mail headers.
+Add new headers (like subject lines).
+Remove some information from the end of the message.
+Encrypt part of the message using a key specified in the message.
+
+Some but not all remailers can also do the following:
+
+Hold messages for some fixed or random time (latency).
+Reorder messages keeping a fixed minimum number in the remailer at
+all times.
+
+Attacks on Cypherpunk remailers
+
+Since anonymous remailers are designed to prevent traffic analysis, the
+best way to understand their weaknesses is to study various attacks that an
+opponent might use against them. I will assume a very powerful opponent,
+both to present a worst case scenario, and because it is possible to resist
+these attacks using second generation remailers.
+
+Threat model
+
+I assume that an attacker is able to record the contents of all messages
+into and out of all remailers, along with the times they arrive and depart.
+All messages are monitored as they leave the sender's machine, and as they
+arrive at the destination. The attacker is able to send an unlimited number
+of messages through the remailers, including previously intercepted
+messages. Messages can also be prevented from arriving at their
+destinations (denial of service). The attacker has compromised some (but
+not all) of the remailers, and knows the source, destination, and contents
+of all messages passing through the compromised remailers. This set of
+attacker abilities and resources is the threat model.
+
+Trivial Attacks
+
+From the threat model it is prima facie obvious that unencrypted messages
+can be tracked, so I will consider only encrypted communications.
+The use of only one remailer is also insecure. If that remailer is
+compromised, you have no security because the operator knows both the
+originating and final addresses.
+
+Reordering
+
+Chains of remailers with encryption are better, but still vulnerable.
+Messages can be traced through these remailers, because incoming messages
+are forwarded directly after processing. When a message arrives, another
+leaves immediately.  With no further information the attacker knows that
+these are the same message despite any precautions that may have been
+taken. This can even be done retroactively using mail logs (if those are
+kept).
+
+This is the biggest problem with standard Cypherpunk remailers. The first
+fix proposed was to delay incoming messages for some random length of time.
+If this time were longer than the time between message arrivals, then it
+would be impossible to know (with certainty) which incoming message
+corresponded to which outgoing message. This proposal Is weak in several
+respects. The exact amount of protection provided by latency is unknown. It
+depends on the traffic through the remailer at that time. If there are many
+messages arriving in the average holding time, then the identity of the
+message is reasonably well disguised, but if there is very little traffic
+(due to normal fluctuations, network outages, or denial of service attacks)
+then little or no protection is provided. To provide some minimum level of
+protection, considering only normal traffic variations, the latency must be
+much larger than it would have to be at times maximum traffic.
+
+Although reordering solves this problem, it also opens up another possible
+attack. Reordering always involves keeping some number of messages in the
+remailer at all times. These messages are called the message "pool." The
+most efficient reordering scheme is to keep N messages in the pool, and to
+send out one of the (N+1) messages in the pool (including the one that just
+arrived) chosen at random. Unfortunately this scheme is susceptible to a
+"spam" attack.
+An attacker sends many more than N messages to the remailer. These messages
+will displace all the real messages in the pool, leaving only messages
+which the attacker can recognize.If many more than N messages are sent to a
+remailer then the its pool of messages will contain only planted messages
+(which can be recognized). If the attacker sends another batch of messages
+after your message arrives, your message will be flushed back out of the
+pool. Since the attacker can recognize his own message, yours will be
+obvious.
+
+Combining latency and reordering gives some resistance to this attack.
+Rather than sending out one message from the pool each time a new message
+arrives, periodically all but N messages in the pool are sent. If, during
+an average period, several real messages have arrived then even if the pool
+of messages if flushed out, there will be more than just your message mixed
+in with the attacker's messages.
+If the attacker combines the spam with a denial of service attack, then
+your message would be the only non-attacker message again. There is nothing
+you can do if the attacker can ensure that yours is the only message
+traversing the entire network of remailers. With ideal remailers your
+message could be any one of the messages passing through any remailer at
+the same time. If yours is the only message passing through the remailer
+network, then you are toast.
+
+Size &amp; Distinguishability
+
+Suppose now that your message is chained through remailers that are
+delaying and reordering at every hop. Your messages can still be tracked by
+size.  By default messages decreases in size by a small (and approximately
+known) amount at each hop. Even if your message is well mixed with the
+other messages in the remailer, and even if they are all different sizes,
+they are still distinguishable. It is possible to have the remailer remove
+padding from the message at each hop, but this only to decreases the size
+of the message, and only to a minimum established by the size of the actual
+message you want to send. You are also limited by the fact that extremely
+large messages will stand out, since your message must change size by a
+large fraction of its own size at each hop to ensure maximum confusion.
+While removing padding at each step makes traffic analysis much more
+difficult, it does leak information. All messages that leave a remailer
+larger than your message was when it arrived are known not to be yours, and
+if the use of this feature is unusual, then your message will stand out as
+being the only one to change size by a nonstandard amount. The solution is
+clear; All messages should be exactly the same size.
+
+Replay attack
+
+Unfortunately reordered, indistinguishable messages, can still be tracked.
+This attack can be used to follow a message to its final destination, or to
+backtrack from the end to the original sender. Both of these techniques use
+a type of spam attack. To trace a message forward through the chain of
+remailers, the attacker captures your message and sends many copies of it
+to the first remailer. Many identical messages will then emerge from the
+remailer and move on to the next remailer. This bump in remailer traffic
+will show the rout of the message. When it becomes too dispersed from
+reordering, the message can be captured between two remailers, and many
+copies re-introduced at that point.
+
+To prevent this attack remailers must refuse to send any message more than
+once. This can be done by including a random ID number for each hop, which
+the remailer records. Unfortunately this places large storage demands on
+the remailer, but the impact can be limited if old IDs are removed from the
+list, or the remailer's key is changed periodically (at which point the
+list can be cleared). A better solution is to require anonymous ecash
+postage in each layer. If the message is resent, then the cash has been
+doubly spent, and the remailer would refuse to send it. This also has the
+benefit of making spams expensive, and of motivating remailer operators to
+provide superior services.
+
+Mixmaster
+
+The only type 2 remailer is Mixmaster. Its design philosophy is strongly
+influenced by Chaum's paper on digital mixes (the origin of its name).
+Below is a diagram of the structure of a Mixmaster packet. Rather than 4
+there are actually 20 headers. Messages are sent as one or more packets
+(messages consisting of multiple packets are called multi-part messages).
+In this diagram layers of encryption are indicated by a notation to the
+left of the object. The last key in the list would have been the first used.
+The order shown is the order in which the keys will be used to decrypt the
+data.
+
+Figure 2
+
+When remailer A gets this message, it will decrypt the RSA encrypted packet
+at the top, and check to see if it has seen the ID number before. If so,
+the message is discarded. The first header (before decryption) is added to
+the end of the list of headers, and all the others are shifted up one. All
+headers and the body packet (the section at the end with the text to be
+sent) are decrypted with the 3DES key in the header. This reveals a RSA
+encrypted header for the next remailer at the top, and obscures the old top
+header (now at the bottom of the stack). Mixmaster uses three key triple DES
+for all data encryption, and 1024 bit RSA for public key encryption of the
+3DES keys.
+
+The header for the last remailer in the chain contains a flag indicating
+that it is the last hop, and if it is part of a multipart message. If this
+packet contains the entire message (it is not a multi-part message), the
+body is decrypted and the plain text is placed in the reordering pool,
+ready to be sent on. If it is only one part of the message, the Message ID
+number is used to identify the other parts as they arrive. When all the
+parts have arrived the message is reassembled, and placed in the pool. If
+not all parts arrive within some time limit, then the message is discarded.
+Only the last remailer in the chain can see that a group of remailer
+packets are all part of a single message. To all the others, they are
+completely independent.
+
+All Mixmaster packets are exactly the same length, and all bits are
+encrypted with an 3DES key at every hop, so no information about the
+identity of the message is visible to the observer. Even a compromised
+remailer can only know the previous and next locations in the chain. It can
+not know how many hops have preceded it, or how many will follow (unless it
+is the final hop).
+
+These messages are rather large. Each of the 20 headers are 512 bytes, and
+the body is 10k.
+
+Future features
+
+Mixmaster remailers that indicate that they can accept socket connections
+will exchange messages directly. The messages will be superencrypted with
+a 3DES key derived from a Diffie-Hellman key exchange. This provides
+forward security against remailer operators being asked to decrypt
+intercepted messages.
+
+Nothing is perfect
+
+Even if you are using a perfect network of remailers, you can still be
+tracked. Only so many messages pass through the network of remailers in any
+given day. If Alice sending a message usualy correlates with Bob receiving
+a message, it is likely that she is sending messages to him. This was
+discussed in some detail in several messages by Hal and Louis Cypher. One
+defense is to send dummy messages in to the remailer "bramble" so your
+messages correlate with everything. These must be sent at random times so
+that your real messages do not stand out.
+
+Up to Lance Cottrell's home page
+Lance Cottrell loki@obscura.com
+</div>
+
+  <div class="cite">SOURCE — Lance Cottrell, “Mixmaster &amp; Remailer Attacks,” obscura.com/~loki/remailer/. Internet Archive snapshot 20001209094700.<br>Archived by Modulo 59 · Project B59 for permanent preservation. SHA-256 of the source snapshot is recorded in the vault entry for B59-303.020.</div>
+</main>
+</body>
+</html>

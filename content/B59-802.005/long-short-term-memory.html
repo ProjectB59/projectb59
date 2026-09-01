@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-802.005 · Long Short-Term Memory</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-802.005">← back to the vault</a>
+  <div class="call">B59-802.005 · WRITING · NEURAL NETS</div>
+  <h1>Long Short-Term Memory</h1>
+  <div class="by">Sepp Hochreiter &amp; Jürgen Schmidhuber · Neural Computation · 1997</div>
+
+  <div class="lede">“LSTM can learn to bridge time intervals in excess of 1000 steps even in case of noisy, incompressible input sequences, without loss of short time lag capabilities.”</div>
+
+  <h2>Why it matters</h2>
+  <p>Plain recurrent networks cannot hold information for long: gradients shrink or blow up as they travel back through time, a problem Hochreiter had diagnosed in 1991. LSTM fixes it with a memory cell whose contents pass forward unchanged unless explicit gates decide to write, read or erase. Error can flow across hundreds of steps without vanishing.</p>
+  <h2>The reach of it</h2>
+  <p>For roughly two decades LSTM was the default for sequence data: speech recognition, machine translation, handwriting, time series. It was in production at large scale in phones and translation services through the 2010s.</p>
+  <h2>Lineage</h2>
+  <p>The gating idea carries into GRUs, highway networks and the residual connections of very deep models. Transformers later displaced LSTM for many language tasks, but on long streaming sequences the gated-memory approach is still competitive.</p>
+
+  <div class="cite">SOURCE: Sepp Hochreiter and J&uuml;rgen Schmidhuber, &#34;Long Short-Term Memory,&#34; Neural Computation, vol. 9, no. 8 (1997), pp. 1735&#8202;to&#8202;1780.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Snapshot mirrored from the authors&#39; institutional copy at Johannes Kepler University Linz (bioinf.jku.at).</div>
+</main>
+</body>
+</html>

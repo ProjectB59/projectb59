@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-101.005 · Protocols for Public Key Cryptosystems — Merkle (1980)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-101.005">← back to the vault</a>
+  <div class="call">B59-101.005 · WRITING · PUBLIC-KEY CRYPTOGRAPHY</div>
+  <h1>Protocols for Public Key Cryptosystems</h1>
+  <div class="by">Ralph C. Merkle · IEEE Symposium on Security and Privacy · April 1980</div>
+
+  <div class="lede">"New cryptographic protocols which take full advantage of the unique properties of public key cryptosystems are now evolving."</div>
+
+  <h2>Why it matters</h2>
+  <p>This is where the hash tree enters the literature. The problem Merkle solves is authenticating one item out of many without signing or storing each one: publish a single root hash, and prove membership with a logarithmic path of hashes. That data structure turned out to matter far beyond cryptographic protocols.</p>
+
+  <h2>What it compares</h2>
+  <p>The paper sets the conventional shared-key approach against public key methods for two tasks, distributing keys and signing documents, and weighs the costs of each. It also develops Merkle’s tree-based one-time signature ideas, which he expands in later work.</p>
+
+  <h2>The lineage it started</h2>
+  <p>Merkle trees authenticate the transaction set in every Bitcoin block and the state in most later chains. Certificate Transparency logs, Git commit history, ZFS, BitTorrent and content-addressed storage systems all rest on the same root-and-path idea introduced here.</p>
+
+  <h2>Original abstract</h2>
+  <div class="fn">New cryptographic protocols which take full advantage of the unique properties of public key cryptosystems are now evolving. Several protocols for public key distribution and for digital signatures are briefly compared with each other and with the conventional alternative.</div>
+
+  <div class="cite">SOURCE: Ralph C. Merkle, "Protocols for Public Key Cryptosystems," Proceedings of the 1980 IEEE Symposium on Security and Privacy, Oakland, CA, April 1980, pp. 122-134.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="protocols-for-public-key-cryptosystems-source.pdf">protocols-for-public-key-cryptosystems-source.pdf</a>, retrieved from <a href="https://ralphmerkle.com/papers/Protocols.pdf">https://ralphmerkle.com/papers/Protocols.pdf</a> on 2026-08-31. SHA-256 of the snapshot: d568120ba4745335ea98988cb9b43f7143d06507ee42b0fca17bc91ea9732167.</div>
+</main>
+</body>
+</html>

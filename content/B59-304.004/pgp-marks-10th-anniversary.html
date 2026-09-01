@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-304.004 · PGP Marks 10th Anniversary</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  .doc p{color:#d7dae1}
+  .doc h3{font-family:ui-monospace,monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper);margin:26px 0 10px}
+  pre.raw{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12.5px;color:#cfd3dc;background:var(--panel);border:1px solid var(--hair);padding:18px;line-height:1.55;white-space:pre-wrap;word-wrap:break-word;overflow-x:auto}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-304.004">← back to the vault</a>
+  <div class="call">B59-304.004 · WRITING · CRYPTO-WARS · HISTORY · CYPHERPUNK</div>
+  <h1>PGP Marks 10th Anniversary</h1>
+  <div class="by">Philip Zimmermann · 5 June 2001</div>
+
+  <div class="lede">It was on this day in 1991 that I sent the first release of PGP to a couple of my friends for uploading to the Internet.</div>
+
+  <p>There is no single contemporaneous "release announcement" for PGP 1.0; it went out in June 1991 as a quiet upload by two friends. This 2001 essay is Zimmermann’s own reconstruction of those days and is the most detailed first-hand account of the release sequence.</p>
+  <p>The "US only" detail matters historically: Zimmermann believed the Usenet tag would keep the posting inside the country. It did not, and the program’s appearance on foreign servers is what triggered the export investigation. He is candid that in 1991 he barely understood how newsgroups propagated.</p>
+  <p>The essay also dates the tools of the movement: PGP 2.0 in September 1992, built by volunteers around the world, with the trust model Zimmermann had not had time to finish for 1.0. That trust model is documented in B59-304.002.</p>
+
+  <h2>Full text</h2>
+  <div class="doc">
+    <p>PGP Marks 10th Anniversary</p>
+    <p>Today marks the 10th anniversary of the release of PGP 1.0.</p>
+    <p>It was on this day in 1991 that I sent the first release of PGP to a couple of my friends for uploading to the Internet. First, I sent it to Allan Hoeltje, who posted it to Peacenet, an ISP that specialized in grassroots political organizations, mainly in the peace movement. Peacenet was accessible to political activists all over the world. Then, I uploaded it to Kelly Goen, who proceeded to upload it to a Usenet newsgroup that specialized in distributing source code. At my request, he marked the Usenet posting as "US only". Kelly also uploaded it to many BBS systems around the country. I don't recall if the postings to the Internet began on June 5th or 6th.</p>
+    <p>It may be surprising to some that back in 1991, I did not yet know enough about Usenet newsgroups to realize that a "US only" tag was merely an advisory tag that had little real effect on how Usenet propagated newsgroup postings. I thought it actually controlled how Usenet routed the posting. But back then, I had no clue how to post anything on a newsgroup, and didn't even have a clear idea what a newsgroup was.</p>
+    <p>It was a hard road to get to the release of PGP. I missed five mortgage payments developing the software in the first half of 1991. To add to the stress, a week before PGP's first release, I discovered the existence of another email encryption standard called Privacy Enhanced Mail (PEM), which was backed by several big companies, as well as RSA Data Security. I didn't like PEM's design, for several reasons. PEM used 56-bit DES to encrypt messages, which I did not regard as strong cryptography. Also, PEM absolutely required every message to be signed, and revealed the signature outside the encryption envelope, so that the message did not have to be decrypted to reveal who signed it. Nonetheless, I was distressed to learn of the existence of PEM only one week before PGP's release. How could I be so out of touch to fail to notice something as important as PEM? I guess I just had my head down too long, writing code. I fully expected PEM to crush PGP, and even briefly considered not releasing PGP, since it might be futile in the face of PEM and its powerful backers. But I decided to press ahead, since I had come this far already, and besides, I knew that my design was better aligned with protecting the privacy of users.</p>
+    <p>After releasing PGP, I immediately diverted my attention back to consulting work, to try to get caught up on my mortgage payments. I thought I could just release PGP 1.0 for MSDOS, and leave it alone for awhile, and let people play with it. I thought I could get back to it later, at my leisure. Little did I realize what a feeding frenzy PGP would set off. Apparently, there was a lot of pent-up demand for a tool like this. Volunteers from around the world were clamoring to help me port it to other platforms, add enhancements, and generally promote it. I did have to go back to work on paying gigs, but PGP continued to demand my time, pulled along by public enthusiasm.</p>
+    <p>I assembled a team of volunteer engineers from around the world. They ported PGP to almost every platform (except for the Mac, which turned out to be harder). They translated PGP into foreign languages. And I started designing the PGP trust model, which I did not have time to finish in the first release. Fifteen months later, in September 1992, we released PGP 2.0, for MSDOS, several flavors of Unix, Commodore Amiga, Atari, and maybe a few other platforms, and in about ten foreign languages. PGP 2.0 had the now-famous PGP trust model, essentially in its present form.</p>
+    <p>It was shortly after PGP 2.0's release that US Customs took an interest in the case. Little did they realize that they would help propel PGP's popularity, helping to ignite a controversy that would eventually lead to the demise of the US export restrictions on strong cryptography.</p>
+    <p>Today, PGP remains just about the only way anyone encrypts their email. And now there are a dozen companies developing products that use the OpenPGP standard, all members of the OpenPGP Alliance, at http://www.openpgp.org.</p>
+    <p>What a decade it has been.</p>
+    <p>-Philip Zimmermann</p>
+    <p>5 June 2001</p>
+    <p>Burlingame, California</p>
+    <p>http://www.philzimmermann.com</p>
+  </div>
+
+  <div class="cite">SOURCE — Philip R. Zimmermann, "PGP Marks 10th Anniversary," 5 June 2001. Archived by Modulo 59 · Project B59 from philzimmermann.com/EN/essays/PGP_10thAnniversary.html.</div>
+</main>
+</body>
+</html>

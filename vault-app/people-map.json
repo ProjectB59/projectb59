@@ -1,0 +1,1492 @@
+{
+  "generated": "2026-08-31",
+  "note": "Maps every distinct author string in records.js to one or more canonical person slugs. Multi-author strings map to a list. Built for the People pages task (pages themselves not built here).",
+  "by_author_string": {
+    "Adam Back": [
+      "adam-back"
+    ],
+    "Alcor Life Extension Foundation": [
+      "alcor"
+    ],
+    "Andy Greenberg (WIRED)": [
+      "andy-greenberg"
+    ],
+    "Chip Morningstar & F. Randall Farmer": [
+      "chip-morningstar",
+      "randy-farmer"
+    ],
+    "Chip Morningstar": [
+      "chip-morningstar"
+    ],
+    "Cryptoanarchy Wiki (maintainers), Ryan Lackey (original archive source)": [
+      "cryptoanarchy-wiki",
+      "ryan-lackey"
+    ],
+    "Cynthia Dwork & Moni Naor": [
+      "cynthia-dwork",
+      "moni-naor"
+    ],
+    "Cynthia Dwork, Andrew Goldberg & Moni Naor": [
+      "cynthia-dwork",
+      "andrew-goldberg",
+      "moni-naor"
+    ],
+    "Damien Doligez": [
+      "damien-doligez"
+    ],
+    "Dave Bayer, Stuart Haber & W. Scott Stornetta": [
+      "dave-bayer",
+      "stuart-haber",
+      "scott-stornetta"
+    ],
+    "David Chaum": [
+      "david-chaum"
+    ],
+    "David L. Chaum": [
+      "david-chaum"
+    ],
+    "David Rolfe, interviewed by Scott Stilphen": [
+      "david-rolfe",
+      "scott-stilphen"
+    ],
+    "Don Lavoie, Howard Baetjer, Bill Tulloh, Mark Miller, Eric Drexler, Phil Salin": [
+      "don-lavoie",
+      "howard-baetjer",
+      "bill-tulloh",
+      "mark-s-miller",
+      "eric-drexler",
+      "phil-salin"
+    ],
+    "Electronic Frontier Foundation (John Gilmore, project lead)": [
+      "eff",
+      "john-gilmore"
+    ],
+    "Electronic Frontier Foundation": [
+      "eff"
+    ],
+    "Eric Hughes": [
+      "eric-hughes"
+    ],
+    "Esther Dyson (editor), Phil Salin (contributor)": [
+      "esther-dyson",
+      "phil-salin"
+    ],
+    "F. Randall Farmer": [
+      "randy-farmer"
+    ],
+    "Finn Brunton (BBC Science Focus)": [
+      "finn-brunton"
+    ],
+    "Friedrich A. Hayek": [
+      "friedrich-hayek"
+    ],
+    "George Danezis, Roger Dingledine & Nick Mathewson": [
+      "george-danezis",
+      "roger-dingledine",
+      "nick-mathewson"
+    ],
+    "George Selgin": [
+      "george-selgin"
+    ],
+    "Hal Finney, interviewed by Scott Stilphen": [
+      "hal-finney",
+      "scott-stilphen"
+    ],
+    "Hal Finney": [
+      "hal-finney"
+    ],
+    "Ian Grigg": [
+      "ian-grigg"
+    ],
+    "James A. Donald & Satoshi Nakamoto": [
+      "james-donald",
+      "satoshi-nakamoto"
+    ],
+    "James A. Donald": [
+      "james-donald"
+    ],
+    "John Gilmore (transcription), various speakers": [
+      "john-gilmore"
+    ],
+    "John Gilmore": [
+      "john-gilmore"
+    ],
+    "John Perry Barlow": [
+      "john-perry-barlow"
+    ],
+    "Julian Assange, Ralf-P. Weinmann, Suelette Dreyfus": [
+      "julian-assange",
+      "ralf-weinmann",
+      "suelette-dreyfus"
+    ],
+    "Julian Assange, Ralf-P. Weinmann": [
+      "julian-assange",
+      "ralf-weinmann"
+    ],
+    "Julian Assange": [
+      "julian-assange"
+    ],
+    "Khaled Mardam-Bey": [
+      "khaled-mardam-bey"
+    ],
+    "Lance Cottrell / Anonymizer, Inc.": [
+      "lance-cottrell"
+    ],
+    "Lance Cottrell": [
+      "lance-cottrell"
+    ],
+    "Lawrence H. White": [
+      "lawrence-white"
+    ],
+    "Maaria Bajwa (archivist)": [
+      "maaria-bajwa"
+    ],
+    "Mark S. Miller & K. Eric Drexler": [
+      "mark-s-miller",
+      "eric-drexler"
+    ],
+    "Mark S. Miller & Marc Stiegler": [
+      "mark-s-miller",
+      "marc-stiegler"
+    ],
+    "Mark S. Miller": [
+      "mark-s-miller"
+    ],
+    "Martin E. Hellman": [
+      "martin-hellman"
+    ],
+    "Max More": [
+      "max-more"
+    ],
+    "Mitchell Kapor & John Perry Barlow": [
+      "mitch-kapor",
+      "john-perry-barlow"
+    ],
+    "Nick Szabo": [
+      "nick-szabo"
+    ],
+    "Philip R. Zimmermann": [
+      "phil-zimmermann"
+    ],
+    "Photograph from the collection of David Rolfe": [
+      "david-rolfe"
+    ],
+    "Project B59 Research / NotebookLM": [
+      "project-b59-research"
+    ],
+    "Project B59 Research": [
+      "project-b59-research"
+    ],
+    "Ralph C. Merkle": [
+      "ralph-merkle"
+    ],
+    "Ralph Merkle": [
+      "ralph-merkle"
+    ],
+    "Ronald L. Rivest & Adi Shamir": [
+      "ron-rivest",
+      "adi-shamir"
+    ],
+    "Ronald L. Rivest, Adi Shamir & Leonard Adleman": [
+      "ron-rivest",
+      "adi-shamir",
+      "leonard-adleman"
+    ],
+    "Ronald L. Rivest": [
+      "ron-rivest"
+    ],
+    "Satoshi Nakamoto & Wei Dai": [
+      "satoshi-nakamoto",
+      "wei-dai"
+    ],
+    "Stuart Haber & W. Scott Stornetta": [
+      "stuart-haber",
+      "scott-stornetta"
+    ],
+    "Timothy C. May": [
+      "tim-may"
+    ],
+    "Tom Busby": [
+      "tom-busby"
+    ],
+    "Ulf Moeller, Lance Cottrell, Peter Palfrader & Len Sassaman": [
+      "ulf-moeller",
+      "lance-cottrell",
+      "peter-palfrader",
+      "len-sassaman"
+    ],
+    "Ulf Möller, Lance Cottrell, Peter Palfrader, Len Sassaman": [
+      "ulf-moeller",
+      "lance-cottrell",
+      "peter-palfrader",
+      "len-sassaman"
+    ],
+    "Wei Dai": [
+      "wei-dai"
+    ],
+    "Whitfield Diffie & Martin E. Hellman": [
+      "whitfield-diffie",
+      "martin-hellman"
+    ],
+    "Whitfield Diffie": [
+      "whitfield-diffie"
+    ],
+    "Zooko Wilcox-O'Hearn & Brian Warner": [
+      "zooko-wilcox-o-hearn",
+      "brian-warner"
+    ],
+    "Zooko Wilcox-O'Hearn": [
+      "zooko-wilcox-o-hearn"
+    ]
+  },
+  "persons": {
+    "adam-back": {
+      "display": "Adam Back",
+      "aliases": [
+        "Adam Back"
+      ],
+      "record_count": 3,
+      "record_ids": [
+        "B59-0163",
+        "B59-0164",
+        "B59-0165"
+      ]
+    },
+    "adi-shamir": {
+      "display": "Adi Shamir",
+      "aliases": [
+        "Adi Shamir"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0106",
+        "B59-0108"
+      ]
+    },
+    "alcor": {
+      "display": "Alcor Life Extension Foundation",
+      "aliases": [
+        "Alcor Life Extension Foundation"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0095"
+      ]
+    },
+    "andrew-goldberg": {
+      "display": "Andrew Goldberg",
+      "aliases": [
+        "Andrew Goldberg"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0113"
+      ]
+    },
+    "andy-greenberg": {
+      "display": "Andy Greenberg",
+      "aliases": [
+        "Andy Greenberg"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0093"
+      ]
+    },
+    "bill-tulloh": {
+      "display": "Bill Tulloh",
+      "aliases": [
+        "Bill Tulloh"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0013"
+      ]
+    },
+    "brian-warner": {
+      "display": "Brian Warner",
+      "aliases": [
+        "Brian Warner"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0186"
+      ]
+    },
+    "chip-morningstar": {
+      "display": "Chip Morningstar",
+      "aliases": [
+        "Chip Morningstar"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0157",
+        "B59-0159"
+      ]
+    },
+    "cryptoanarchy-wiki": {
+      "display": "Cryptoanarchy Wiki",
+      "aliases": [
+        "Cryptoanarchy Wiki"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0027"
+      ]
+    },
+    "cynthia-dwork": {
+      "display": "Cynthia Dwork",
+      "aliases": [
+        "Cynthia Dwork"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0096",
+        "B59-0113"
+      ]
+    },
+    "damien-doligez": {
+      "display": "Damien Doligez",
+      "aliases": [
+        "Damien Doligez"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0092"
+      ]
+    },
+    "dave-bayer": {
+      "display": "Dave Bayer",
+      "aliases": [
+        "Dave Bayer"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0175"
+      ]
+    },
+    "david-chaum": {
+      "display": "David L. Chaum",
+      "aliases": [
+        "David Chaum",
+        "David L. Chaum"
+      ],
+      "record_count": 3,
+      "record_ids": [
+        "B59-0110",
+        "B59-0111",
+        "B59-0112"
+      ]
+    },
+    "david-rolfe": {
+      "display": "David Rolfe",
+      "aliases": [
+        "David Rolfe"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0089",
+        "B59-0091"
+      ]
+    },
+    "don-lavoie": {
+      "display": "Don Lavoie",
+      "aliases": [
+        "Don Lavoie"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0013"
+      ]
+    },
+    "eff": {
+      "display": "Electronic Frontier Foundation",
+      "aliases": [
+        "Electronic Frontier Foundation"
+      ],
+      "record_count": 3,
+      "record_ids": [
+        "B59-0118",
+        "B59-0119",
+        "B59-0182"
+      ]
+    },
+    "eric-drexler": {
+      "display": "Eric Drexler",
+      "aliases": [
+        "Eric Drexler",
+        "K. Eric Drexler"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0013",
+        "B59-0191"
+      ]
+    },
+    "eric-hughes": {
+      "display": "Eric Hughes",
+      "aliases": [
+        "Eric Hughes"
+      ],
+      "record_count": 6,
+      "record_ids": [
+        "B59-0028",
+        "B59-0098",
+        "B59-0128",
+        "B59-0129",
+        "B59-0130",
+        "B59-0131"
+      ]
+    },
+    "esther-dyson": {
+      "display": "Esther Dyson",
+      "aliases": [
+        "Esther Dyson"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0015"
+      ]
+    },
+    "finn-brunton": {
+      "display": "Finn Brunton",
+      "aliases": [
+        "Finn Brunton"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0094"
+      ]
+    },
+    "friedrich-hayek": {
+      "display": "Friedrich A. Hayek",
+      "aliases": [
+        "Friedrich A. Hayek"
+      ],
+      "record_count": 4,
+      "record_ids": [
+        "B59-0146",
+        "B59-0147",
+        "B59-0148",
+        "B59-0149"
+      ]
+    },
+    "george-danezis": {
+      "display": "George Danezis",
+      "aliases": [
+        "George Danezis"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0183"
+      ]
+    },
+    "george-selgin": {
+      "display": "George Selgin",
+      "aliases": [
+        "George Selgin"
+      ],
+      "record_count": 4,
+      "record_ids": [
+        "B59-0150",
+        "B59-0151",
+        "B59-0152",
+        "B59-0153"
+      ]
+    },
+    "hal-finney": {
+      "display": "Hal Finney",
+      "aliases": [
+        "Hal Finney"
+      ],
+      "record_count": 21,
+      "record_ids": [
+        "B59-0010",
+        "B59-0011",
+        "B59-0017",
+        "B59-0018",
+        "B59-0019",
+        "B59-0020",
+        "B59-0021",
+        "B59-0022",
+        "B59-0023",
+        "B59-0024",
+        "B59-0025",
+        "B59-0032",
+        "B59-0033",
+        "B59-0034",
+        "B59-0035",
+        "B59-0036",
+        "B59-0037",
+        "B59-0038",
+        "B59-0039",
+        "B59-0040",
+        "B59-0090"
+      ]
+    },
+    "howard-baetjer": {
+      "display": "Howard Baetjer",
+      "aliases": [
+        "Howard Baetjer"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0013"
+      ]
+    },
+    "ian-grigg": {
+      "display": "Ian Grigg",
+      "aliases": [
+        "Ian Grigg"
+      ],
+      "record_count": 3,
+      "record_ids": [
+        "B59-0187",
+        "B59-0188",
+        "B59-0189"
+      ]
+    },
+    "james-donald": {
+      "display": "James A. Donald",
+      "aliases": [
+        "James A. Donald"
+      ],
+      "record_count": 3,
+      "record_ids": [
+        "B59-0171",
+        "B59-0172",
+        "B59-0173"
+      ]
+    },
+    "john-gilmore": {
+      "display": "John Gilmore",
+      "aliases": [
+        "John Gilmore"
+      ],
+      "record_count": 8,
+      "record_ids": [
+        "B59-0012",
+        "B59-0014",
+        "B59-0029",
+        "B59-0030",
+        "B59-0031",
+        "B59-0118",
+        "B59-0119",
+        "B59-0120"
+      ]
+    },
+    "john-perry-barlow": {
+      "display": "John Perry Barlow",
+      "aliases": [
+        "John Perry Barlow"
+      ],
+      "record_count": 6,
+      "record_ids": [
+        "B59-0176",
+        "B59-0177",
+        "B59-0178",
+        "B59-0179",
+        "B59-0180",
+        "B59-0181"
+      ]
+    },
+    "julian-assange": {
+      "display": "Julian Assange",
+      "aliases": [
+        "Julian Assange"
+      ],
+      "record_count": 9,
+      "record_ids": [
+        "B59-0132",
+        "B59-0133",
+        "B59-0134",
+        "B59-0135",
+        "B59-0136",
+        "B59-0137",
+        "B59-0138",
+        "B59-0139",
+        "B59-0140"
+      ]
+    },
+    "khaled-mardam-bey": {
+      "display": "Khaled Mardam-Bey",
+      "aliases": [
+        "Khaled Mardam-Bey"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0016"
+      ]
+    },
+    "lance-cottrell": {
+      "display": "Lance Cottrell",
+      "aliases": [
+        "Lance Cottrell"
+      ],
+      "record_count": 6,
+      "record_ids": [
+        "B59-0141",
+        "B59-0142",
+        "B59-0143",
+        "B59-0144",
+        "B59-0145",
+        "B59-0184"
+      ]
+    },
+    "lawrence-white": {
+      "display": "Lawrence H. White",
+      "aliases": [
+        "Lawrence H. White"
+      ],
+      "record_count": 3,
+      "record_ids": [
+        "B59-0154",
+        "B59-0155",
+        "B59-0156"
+      ]
+    },
+    "len-sassaman": {
+      "display": "Len Sassaman",
+      "aliases": [
+        "Len Sassaman"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0143",
+        "B59-0184"
+      ]
+    },
+    "leonard-adleman": {
+      "display": "Leonard Adleman",
+      "aliases": [
+        "Leonard Adleman"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0106"
+      ]
+    },
+    "maaria-bajwa": {
+      "display": "Maaria Bajwa",
+      "aliases": [
+        "Maaria Bajwa"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0026"
+      ]
+    },
+    "marc-stiegler": {
+      "display": "Marc Stiegler",
+      "aliases": [
+        "Marc Stiegler"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0190"
+      ]
+    },
+    "mark-s-miller": {
+      "display": "Mark Miller",
+      "aliases": [
+        "Mark Miller",
+        "Mark S. Miller"
+      ],
+      "record_count": 4,
+      "record_ids": [
+        "B59-0013",
+        "B59-0190",
+        "B59-0191",
+        "B59-0192"
+      ]
+    },
+    "martin-hellman": {
+      "display": "Martin E. Hellman",
+      "aliases": [
+        "Martin E. Hellman"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0099",
+        "B59-0100"
+      ]
+    },
+    "max-more": {
+      "display": "Max More",
+      "aliases": [
+        "Max More"
+      ],
+      "record_count": 3,
+      "record_ids": [
+        "B59-0160",
+        "B59-0161",
+        "B59-0162"
+      ]
+    },
+    "mitch-kapor": {
+      "display": "Mitchell Kapor",
+      "aliases": [
+        "Mitchell Kapor"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0181"
+      ]
+    },
+    "moni-naor": {
+      "display": "Moni Naor",
+      "aliases": [
+        "Moni Naor"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0096",
+        "B59-0113"
+      ]
+    },
+    "nick-mathewson": {
+      "display": "Nick Mathewson",
+      "aliases": [
+        "Nick Mathewson"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0183"
+      ]
+    },
+    "nick-szabo": {
+      "display": "Nick Szabo",
+      "aliases": [
+        "Nick Szabo"
+      ],
+      "record_count": 46,
+      "record_ids": [
+        "B59-0043",
+        "B59-0044",
+        "B59-0045",
+        "B59-0046",
+        "B59-0047",
+        "B59-0048",
+        "B59-0049",
+        "B59-0050",
+        "B59-0051",
+        "B59-0052",
+        "B59-0053",
+        "B59-0054",
+        "B59-0055",
+        "B59-0056",
+        "B59-0057",
+        "B59-0058",
+        "B59-0059",
+        "B59-0060",
+        "B59-0061",
+        "B59-0062",
+        "B59-0063",
+        "B59-0064",
+        "B59-0065",
+        "B59-0066",
+        "B59-0067",
+        "B59-0068",
+        "B59-0069",
+        "B59-0070",
+        "B59-0071",
+        "B59-0072",
+        "B59-0073",
+        "B59-0074",
+        "B59-0075",
+        "B59-0076",
+        "B59-0077",
+        "B59-0078",
+        "B59-0079",
+        "B59-0080",
+        "B59-0081",
+        "B59-0082",
+        "B59-0083",
+        "B59-0084",
+        "B59-0085",
+        "B59-0086",
+        "B59-0087",
+        "B59-0088"
+      ]
+    },
+    "peter-palfrader": {
+      "display": "Peter Palfrader",
+      "aliases": [
+        "Peter Palfrader"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0143",
+        "B59-0184"
+      ]
+    },
+    "phil-salin": {
+      "display": "Phil Salin",
+      "aliases": [
+        "Phil Salin"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0013",
+        "B59-0015"
+      ]
+    },
+    "phil-zimmermann": {
+      "display": "Philip R. Zimmermann",
+      "aliases": [
+        "Philip R. Zimmermann"
+      ],
+      "record_count": 4,
+      "record_ids": [
+        "B59-0114",
+        "B59-0115",
+        "B59-0116",
+        "B59-0117"
+      ]
+    },
+    "project-b59-research": {
+      "display": "Project B59 Research",
+      "aliases": [
+        "Project B59 Research"
+      ],
+      "record_count": 11,
+      "record_ids": [
+        "B59-0001",
+        "B59-0002",
+        "B59-0003",
+        "B59-0004",
+        "B59-0005",
+        "B59-0006",
+        "B59-0007",
+        "B59-0008",
+        "B59-0009",
+        "B59-0041",
+        "B59-0121"
+      ]
+    },
+    "ralf-weinmann": {
+      "display": "Ralf-P. Weinmann",
+      "aliases": [
+        "Ralf-P. Weinmann"
+      ],
+      "record_count": 3,
+      "record_ids": [
+        "B59-0135",
+        "B59-0136",
+        "B59-0138"
+      ]
+    },
+    "ralph-merkle": {
+      "display": "Ralph C. Merkle",
+      "aliases": [
+        "Ralph C. Merkle",
+        "Ralph Merkle"
+      ],
+      "record_count": 5,
+      "record_ids": [
+        "B59-0102",
+        "B59-0103",
+        "B59-0104",
+        "B59-0105",
+        "B59-0193"
+      ]
+    },
+    "randy-farmer": {
+      "display": "F. Randall Farmer",
+      "aliases": [
+        "F. Randall Farmer"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0157",
+        "B59-0158"
+      ]
+    },
+    "roger-dingledine": {
+      "display": "Roger Dingledine",
+      "aliases": [
+        "Roger Dingledine"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0183"
+      ]
+    },
+    "ron-rivest": {
+      "display": "Ronald L. Rivest",
+      "aliases": [
+        "Ronald L. Rivest"
+      ],
+      "record_count": 4,
+      "record_ids": [
+        "B59-0106",
+        "B59-0107",
+        "B59-0108",
+        "B59-0109"
+      ]
+    },
+    "ryan-lackey": {
+      "display": "Ryan Lackey",
+      "aliases": [
+        "Ryan Lackey"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0027"
+      ]
+    },
+    "satoshi-nakamoto": {
+      "display": "Satoshi Nakamoto",
+      "aliases": [
+        "Satoshi Nakamoto"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0168",
+        "B59-0171"
+      ]
+    },
+    "scott-stilphen": {
+      "display": "Scott Stilphen",
+      "aliases": [
+        "Scott Stilphen"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0090",
+        "B59-0091"
+      ]
+    },
+    "scott-stornetta": {
+      "display": "W. Scott Stornetta",
+      "aliases": [
+        "W. Scott Stornetta"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0174",
+        "B59-0175"
+      ]
+    },
+    "stuart-haber": {
+      "display": "Stuart Haber",
+      "aliases": [
+        "Stuart Haber"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0174",
+        "B59-0175"
+      ]
+    },
+    "suelette-dreyfus": {
+      "display": "Suelette Dreyfus",
+      "aliases": [
+        "Suelette Dreyfus"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0135"
+      ]
+    },
+    "tim-may": {
+      "display": "Timothy C. May",
+      "aliases": [
+        "Timothy C. May"
+      ],
+      "record_count": 7,
+      "record_ids": [
+        "B59-0097",
+        "B59-0122",
+        "B59-0123",
+        "B59-0124",
+        "B59-0125",
+        "B59-0126",
+        "B59-0127"
+      ]
+    },
+    "tom-busby": {
+      "display": "Tom Busby",
+      "aliases": [
+        "Tom Busby"
+      ],
+      "record_count": 1,
+      "record_ids": [
+        "B59-0042"
+      ]
+    },
+    "ulf-moeller": {
+      "display": "Ulf Möller",
+      "aliases": [
+        "Ulf Moeller",
+        "Ulf Möller"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0143",
+        "B59-0184"
+      ]
+    },
+    "wei-dai": {
+      "display": "Wei Dai",
+      "aliases": [
+        "Wei Dai"
+      ],
+      "record_count": 5,
+      "record_ids": [
+        "B59-0166",
+        "B59-0167",
+        "B59-0168",
+        "B59-0169",
+        "B59-0170"
+      ]
+    },
+    "whitfield-diffie": {
+      "display": "Whitfield Diffie",
+      "aliases": [
+        "Whitfield Diffie"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0099",
+        "B59-0101"
+      ]
+    },
+    "zooko-wilcox-o-hearn": {
+      "display": "Zooko Wilcox-O'Hearn",
+      "aliases": [
+        "Zooko Wilcox-O'Hearn"
+      ],
+      "record_count": 2,
+      "record_ids": [
+        "B59-0185",
+        "B59-0186"
+      ]
+    }
+  },
+  "roster_coverage": {
+    "Hal Finney": {
+      "slug": "hal-finney",
+      "records": 21,
+      "ids": [
+        "B59-0010",
+        "B59-0011",
+        "B59-0017",
+        "B59-0018",
+        "B59-0019",
+        "B59-0020",
+        "B59-0021",
+        "B59-0022",
+        "B59-0023",
+        "B59-0024",
+        "B59-0025",
+        "B59-0032",
+        "B59-0033",
+        "B59-0034",
+        "B59-0035",
+        "B59-0036",
+        "B59-0037",
+        "B59-0038",
+        "B59-0039",
+        "B59-0040",
+        "B59-0090"
+      ]
+    },
+    "Nick Szabo": {
+      "slug": "nick-szabo",
+      "records": 46,
+      "ids": [
+        "B59-0043",
+        "B59-0044",
+        "B59-0045",
+        "B59-0046",
+        "B59-0047",
+        "B59-0048",
+        "B59-0049",
+        "B59-0050",
+        "B59-0051",
+        "B59-0052",
+        "B59-0053",
+        "B59-0054",
+        "B59-0055",
+        "B59-0056",
+        "B59-0057",
+        "B59-0058",
+        "B59-0059",
+        "B59-0060",
+        "B59-0061",
+        "B59-0062",
+        "B59-0063",
+        "B59-0064",
+        "B59-0065",
+        "B59-0066",
+        "B59-0067",
+        "B59-0068",
+        "B59-0069",
+        "B59-0070",
+        "B59-0071",
+        "B59-0072",
+        "B59-0073",
+        "B59-0074",
+        "B59-0075",
+        "B59-0076",
+        "B59-0077",
+        "B59-0078",
+        "B59-0079",
+        "B59-0080",
+        "B59-0081",
+        "B59-0082",
+        "B59-0083",
+        "B59-0084",
+        "B59-0085",
+        "B59-0086",
+        "B59-0087",
+        "B59-0088"
+      ]
+    },
+    "John Gilmore": {
+      "slug": "john-gilmore",
+      "records": 8,
+      "ids": [
+        "B59-0012",
+        "B59-0014",
+        "B59-0029",
+        "B59-0030",
+        "B59-0031",
+        "B59-0118",
+        "B59-0119",
+        "B59-0120"
+      ]
+    },
+    "Phil Salin": {
+      "slug": "phil-salin",
+      "records": 2,
+      "ids": [
+        "B59-0013",
+        "B59-0015"
+      ]
+    },
+    "Eric Hughes": {
+      "slug": "eric-hughes",
+      "records": 6,
+      "ids": [
+        "B59-0028",
+        "B59-0098",
+        "B59-0128",
+        "B59-0129",
+        "B59-0130",
+        "B59-0131"
+      ]
+    },
+    "Tim May": {
+      "slug": "tim-may",
+      "records": 7,
+      "ids": [
+        "B59-0097",
+        "B59-0122",
+        "B59-0123",
+        "B59-0124",
+        "B59-0125",
+        "B59-0126",
+        "B59-0127"
+      ]
+    },
+    "Cynthia Dwork": {
+      "slug": "cynthia-dwork",
+      "records": 2,
+      "ids": [
+        "B59-0096",
+        "B59-0113"
+      ]
+    },
+    "Moni Naor": {
+      "slug": "moni-naor",
+      "records": 2,
+      "ids": [
+        "B59-0096",
+        "B59-0113"
+      ]
+    },
+    "David Chaum": {
+      "slug": "david-chaum",
+      "records": 3,
+      "ids": [
+        "B59-0110",
+        "B59-0111",
+        "B59-0112"
+      ]
+    },
+    "Whitfield Diffie": {
+      "slug": "whitfield-diffie",
+      "records": 2,
+      "ids": [
+        "B59-0099",
+        "B59-0101"
+      ]
+    },
+    "Martin Hellman": {
+      "slug": "martin-hellman",
+      "records": 2,
+      "ids": [
+        "B59-0099",
+        "B59-0100"
+      ]
+    },
+    "Friedrich Hayek": {
+      "slug": "friedrich-hayek",
+      "records": 4,
+      "ids": [
+        "B59-0146",
+        "B59-0147",
+        "B59-0148",
+        "B59-0149"
+      ]
+    },
+    "Max More": {
+      "slug": "max-more",
+      "records": 3,
+      "ids": [
+        "B59-0160",
+        "B59-0161",
+        "B59-0162"
+      ]
+    },
+    "Ralph Merkle": {
+      "slug": "ralph-merkle",
+      "records": 5,
+      "ids": [
+        "B59-0102",
+        "B59-0103",
+        "B59-0104",
+        "B59-0105",
+        "B59-0193"
+      ]
+    },
+    "Ron Rivest": {
+      "slug": "ron-rivest",
+      "records": 4,
+      "ids": [
+        "B59-0106",
+        "B59-0107",
+        "B59-0108",
+        "B59-0109"
+      ]
+    },
+    "Phil Zimmermann": {
+      "slug": "phil-zimmermann",
+      "records": 4,
+      "ids": [
+        "B59-0114",
+        "B59-0115",
+        "B59-0116",
+        "B59-0117"
+      ]
+    },
+    "Jude Milhon": {
+      "slug": "jude-milhon",
+      "records": 0,
+      "ids": []
+    },
+    "Julian Assange": {
+      "slug": "julian-assange",
+      "records": 9,
+      "ids": [
+        "B59-0132",
+        "B59-0133",
+        "B59-0134",
+        "B59-0135",
+        "B59-0136",
+        "B59-0137",
+        "B59-0138",
+        "B59-0139",
+        "B59-0140"
+      ]
+    },
+    "Lance Cottrell": {
+      "slug": "lance-cottrell",
+      "records": 6,
+      "ids": [
+        "B59-0141",
+        "B59-0142",
+        "B59-0143",
+        "B59-0144",
+        "B59-0145",
+        "B59-0184"
+      ]
+    },
+    "Chip Morningstar": {
+      "slug": "chip-morningstar",
+      "records": 2,
+      "ids": [
+        "B59-0157",
+        "B59-0159"
+      ]
+    },
+    "Randy Farmer": {
+      "slug": "randy-farmer",
+      "records": 2,
+      "ids": [
+        "B59-0157",
+        "B59-0158"
+      ]
+    },
+    "George Selgin": {
+      "slug": "george-selgin",
+      "records": 4,
+      "ids": [
+        "B59-0150",
+        "B59-0151",
+        "B59-0152",
+        "B59-0153"
+      ]
+    },
+    "Lawrence H. White": {
+      "slug": "lawrence-white",
+      "records": 3,
+      "ids": [
+        "B59-0154",
+        "B59-0155",
+        "B59-0156"
+      ]
+    },
+    "Adam Back": {
+      "slug": "adam-back",
+      "records": 3,
+      "ids": [
+        "B59-0163",
+        "B59-0164",
+        "B59-0165"
+      ]
+    },
+    "Wei Dai": {
+      "slug": "wei-dai",
+      "records": 5,
+      "ids": [
+        "B59-0166",
+        "B59-0167",
+        "B59-0168",
+        "B59-0169",
+        "B59-0170"
+      ]
+    },
+    "James Donald": {
+      "slug": "james-donald",
+      "records": 3,
+      "ids": [
+        "B59-0171",
+        "B59-0172",
+        "B59-0173"
+      ]
+    },
+    "John Perry Barlow": {
+      "slug": "john-perry-barlow",
+      "records": 6,
+      "ids": [
+        "B59-0176",
+        "B59-0177",
+        "B59-0178",
+        "B59-0179",
+        "B59-0180",
+        "B59-0181"
+      ]
+    },
+    "EFF": {
+      "slug": "eff",
+      "records": 3,
+      "ids": [
+        "B59-0118",
+        "B59-0119",
+        "B59-0182"
+      ]
+    },
+    "Steven Levy": {
+      "slug": "steven-levy",
+      "records": 0,
+      "ids": []
+    },
+    "Len Sassaman": {
+      "slug": "len-sassaman",
+      "records": 2,
+      "ids": [
+        "B59-0143",
+        "B59-0184"
+      ]
+    },
+    "Zooko Wilcox-O'Hearn": {
+      "slug": "zooko-wilcox-o-hearn",
+      "records": 2,
+      "ids": [
+        "B59-0185",
+        "B59-0186"
+      ]
+    },
+    "Ian Grigg": {
+      "slug": "ian-grigg",
+      "records": 3,
+      "ids": [
+        "B59-0187",
+        "B59-0188",
+        "B59-0189"
+      ]
+    },
+    "Stuart Haber": {
+      "slug": "stuart-haber",
+      "records": 2,
+      "ids": [
+        "B59-0174",
+        "B59-0175"
+      ]
+    },
+    "Scott Stornetta": {
+      "slug": "scott-stornetta",
+      "records": 2,
+      "ids": [
+        "B59-0174",
+        "B59-0175"
+      ]
+    },
+    "Mark S. Miller": {
+      "slug": "mark-s-miller",
+      "records": 4,
+      "ids": [
+        "B59-0013",
+        "B59-0190",
+        "B59-0191",
+        "B59-0192"
+      ]
+    },
+    "Eric Drexler": {
+      "slug": "eric-drexler",
+      "records": 2,
+      "ids": [
+        "B59-0013",
+        "B59-0191"
+      ]
+    },
+    "Don Lavoie": {
+      "slug": "don-lavoie",
+      "records": 1,
+      "ids": [
+        "B59-0013"
+      ]
+    },
+    "Howard Baetjer": {
+      "slug": "howard-baetjer",
+      "records": 1,
+      "ids": [
+        "B59-0013"
+      ]
+    },
+    "Bill Tulloh": {
+      "slug": "bill-tulloh",
+      "records": 1,
+      "ids": [
+        "B59-0013"
+      ]
+    }
+  },
+  "zero_record_roster_figures": [
+    "Jude Milhon (jude-milhon)",
+    "Steven Levy (steven-levy)"
+  ]
+}

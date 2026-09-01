@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-401.001 · How to Time-Stamp a Digital Document</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  ul{color:#cfd3dc;margin:0 0 16px 22px;font-size:16.5px}
+  li{margin-bottom:8px}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-401.001">&larr; back to the vault</a>
+  <div class="call">B59-401.001 · PAPER · TIMESTAMPING · HASH CHAIN</div>
+  <h1>How to Time-Stamp a Digital Document</h1>
+  <div class="by">Stuart Haber &amp; W. Scott Stornetta · Bellcore · Journal of Cryptology, 1991</div>
+
+  <div class="lede">Hash each new record together with the one before it, and the sequence becomes something no one can quietly rewrite.</div>
+
+  <p>This is where the block chain’s core trick comes from. Haber and Stornetta pose the problem of proving when a digital document existed, without having to trust whoever runs the timestamping service.</p>
+  <p>Their first mechanism is linking: the timestamp certificate for each document includes the hash of the previous certificate, so the certificates form a chain — altering one record means redoing every record after it. Their second is distributed trust: the document’s own hash pseudorandomly selects several independent parties who must each co-sign the timestamp, so no single party can backdate or forge.</p>
+  <p>The Bitcoin white paper cites this work; Satoshi’s "The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work" is this paper’s linking scheme with proof-of-work added. The full PDF is attached.</p>
+  <p>Provenance / rights note: this is a Journal of Cryptology (Springer) paper. It is staged here as a hosted file with a hash, but flagged for Kat to decide whether it should instead be a link-only external reference — see the provenance field.</p>
+
+  <h2>About this file</h2>
+  <p>The attached file haber-stornetta-1991-how-to-time-stamp.pdf is the published Journal of Cryptology paper (13 pp.), retrieved from link.springer.com. See the record’s provenance note about copyright handling.</p>
+
+  <div class="cite">SOURCE &mdash; S. Haber &amp; W. S. Stornetta, &ldquo;How to Time-Stamp a Digital Document,&rdquo; Journal of Cryptology 3(2), 1991, pp. 99&ndash;111, DOI 10.1007/BF00196791.<br>Archived by Modulo 59 · Project B59 for permanent preservation. Rights review pending &mdash; see provenance.</div>
+</main>
+</body>
+</html>

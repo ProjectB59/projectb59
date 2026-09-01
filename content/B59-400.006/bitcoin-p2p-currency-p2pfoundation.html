@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-400.006 · Bitcoin open source implementation of P2P currency</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+  .msg{border:1px solid var(--hair);background:var(--panel);padding:14px 16px;margin:0 0 14px}
+  .msg.satoshi{border-left:2px solid var(--lime)}
+  .msg.sirius{border-left:2px solid var(--cyan)}
+  .msg .mh{font-family:ui-monospace,monospace;font-size:12px;color:var(--dim);margin-bottom:8px;line-height:1.5}
+  .msg pre{font-family:ui-monospace,monospace;font-size:13px;color:#cfd3dc;white-space:pre-wrap;word-wrap:break-word}
+  .toc{font-family:ui-monospace,monospace;font-size:12px;color:var(--dim);columns:2;margin-bottom:24px}
+  table.kv{border-collapse:collapse;font-family:ui-monospace,monospace;font-size:13px;margin:8px 0 20px;width:100%}
+  table.kv td{border:1px solid var(--hair);padding:6px 10px;vertical-align:top;color:#cfd3dc}
+  table.kv td:first-child{color:var(--dim);white-space:nowrap;width:1%}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-400.006">← back to the vault</a>
+  <div class="call">B59-400.006 · WRITING · CONSENSUS &amp; DISTRIBUTED SYSTEMS · 4.00 BITCOIN CORE</div>
+  <h1>Bitcoin open source implementation of P2P currency</h1>
+  <div class="by">Satoshi Nakamoto · P2P Foundation forum · 11 February 2009</div>
+
+  <div class="lede">The root problem with conventional currency is all the trust that’s required to make it work.</div>
+
+  <p>On 11 February 2009 Satoshi announced Bitcoin a second time, now to a general audience, on Ning's P2P Foundation forum. Where the metzdowd post was a cryptographer talking to cryptographers, this one states the motivation in plain terms: the problem Bitcoin exists to solve is <em>trust</em>.</p>
+  <p>The analogy it draws — that strong encryption once removed the need to trust a system administrator with your files, and cryptographic money can now do the same for your money — is the clearest short statement of the cypherpunk logic behind the project. It is reproduced here in full; these are Satoshi's words only.</p>
+  <h2>The post, verbatim</h2>
+  <div class="fn">The root problem with conventional currency is all the trust that's required to make it work. The central bank must be trusted not to debase the currency, but the history of fiat currencies is full of breaches of that trust. Banks must be trusted to hold our money and transfer it electronically, but they lend it out in waves of credit bubbles with barely a fraction in reserve. We have to trust them with our privacy, trust them not to let identity thieves drain our accounts. Their massive overhead costs make micropayments impossible.
+
+A generation ago, multi-user time-sharing computer systems had a similar problem. Before strong encryption, users had to rely on password protection to secure their files, placing trust in the system administrator to keep their information private. Privacy could always be overridden by the admin based on his judgment call weighing the principle of privacy against other concerns, or at the behest of his superiors. Then strong encryption became available to the masses, and trust was no longer required. Data could be secured in a way that was physically impossible for others to access, no matter for what reason, no matter how good the excuse, no matter what.
+
+It's time we had the same thing for money. With e-currency based on cryptographic proof, without the need to trust a third party middleman, money can be secure and transactions effortless.
+
+One of the fundamental building blocks for such a system is digital signatures. A digital coin contains the public key of its owner. To transfer it, the owner signs the coin together with the public key of the next owner. Anyone can check the signatures to verify the chain of ownership. It works well to secure ownership, but leaves one big problem unsolved: double-spending. Any owner could try to re-spend an already spent coin by signing it again to another owner. The usual solution is for a trusted company with a central database to check for double-spending, but that just gets back to the trust model. In its central position, the company can override the users, and the fees needed to support the company make micropayments impractical.
+
+Bitcoin's solution is to use a peer-to-peer network to check for double-spending. In a nutshell, the network works like a distributed timestamp server, stamping the first transaction to spend a coin. It takes advantage of the nature of information being easy to spread but hard to stifle. For details on how it works, see the design paper at http://www.bitcoin.org/bitcoin.pdf
+
+The result is a distributed system with no single point of failure. Users hold the crypto keys to their own money and transact directly with each other, with the help of the P2P network to check for double-spending.
+
+Satoshi Nakamoto
+http://www.bitcoin.org</div>
+
+  <div class="cite">SOURCE — Satoshi Nakamoto, "Bitcoin open source implementation of P2P currency," P2P Foundation Ning forum, 11 February 2009. Original host (p2pfoundation.ning.com) defunct; transcribed and archived at nakamotoinstitute.org/posts/p2pfoundation/1/ (“The Complete Satoshi”), snapshot retrieved 31 August 2026.<br>Archived by Modulo 59 · Project B59. SHA-256 is computed over the archived Nakamoto Institute snapshot.</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-303.021 · Mixminion: Design of a Type III Anonymous Remailer Protocol</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap;overflow-x:auto}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-303.021">&larr; back to the vault</a>
+  <div class="call">B59-303.021 · WRITING · ANONYMOUS REMAILERS · MIXMINION</div>
+  <h1>Mixminion: Design of a Type III Anonymous Remailer Protocol</h1>
+  <div class="by">George Danezis, Roger Dingledine &amp; Nick Mathewson · 11 May 2003</div>
+
+  <div class="lede">We present Mixminion, a message-based anonymous remailer protocol with secure single-use reply blocks.</div>
+
+  <p><a href="mixminion-type-iii-remailer.pdf">&darr; Read the full document (PDF, primary source)</a></p>
+
+  <h2>Abstract / opening (full text in the linked PDF)</h2>
+  <div class="fn">Mixminion: Design of a Type III Anonymous Remailer Protocol
+
+George Danezis University of Cambridge george.danezis@cl.cam.ac.uk
+
+Roger Dingledine The Free Haven Project
+arma@freehaven.net
+
+Nick Mathewson The Free Haven Project nickm@freehaven.net
+
+Abstract
+We present Mixminion, a message-based anonymous remailer protocol with secure single-use reply blocks. Mix nodes cannot distinguish Mixminion forward messages from reply messages, so forward and reply messages share the same anonymity set. We add directory servers that allow users to learn public keys and performance statistics of participating remailers, and we describe nymservers that provide long-term pseudonyms using single-use reply blocks as a primitive. Our design integrates link encryption between remailers to provide forward anonymity. Mixminion works in a real-world Internet environment, requires little synchronization or coordination between nodes, and protects against known anonymity-breaking attacks as well as or better than other systems with similar design parameters.
+1. Overview
+Chaum first introduced anonymous remailers over 20 years ago [7]. The research community has since introduced many new designs and proofs [1, 14, 16, 19, 28, 29], and discovered a variety of new attacks [3, 5, 6, 9, 23, 35]. But because many of the newer designs require considerable coordination, synchronization, bandwidth, or processing resources, deployed remailers still use Cottrell's Mixmaster design from 1994 [8, 26]. Here we describe Mixminion, a protocol for asynchronous, loosely federated remailers that maintains Mixmaster's flexibility while addressing the following flaws:
+� Replies: Mixmaster does not support replies or anonymous recipients -- people who want these functions must use the older and less secure Cypherpunk Type I remailer design [31], which is vulnerable to replay attacks. We introduce a new primitive called a singleuse reply block (SURB), which makes replies as secure as forward messages. Furthermore in Mixminion the remailers themselves cannot distinguish reply messages from forward messages. We also describe how
+
+to use these SURBs to securely build higher-level systems such as nymservers. By integrating reply capabilities into Mixminion, we can finally retire the Type I remailer network.
+� Forward anonymity: Mixmaster uses SMTP (normal mail) for transport. We use TLS over TCP for link encryption between remailers and use ephemeral keys to ensure forward anonymity for each message. Link encryption also blocks many active and passive attacks on the communication links.
+� Replay prevention and key rotation: If an adversary records the input and output batches of a mix and then replays a message, that message's decryption will remain the same. Thus an attacker can completely break the security of the mix-net [7]. Mixmaster 2.0 offered replay prevention by keeping a list of recent message IDs -- but because it expired old entries to keep the list short, the adversary simply has to wait until the mix has forgotten a message and replay it. Newer versions of Mixmaster keep a replay cache and also discard messages more than a certain number of days old. To block timestamp attacks, clients randomly add or subtract a few days from the timestamp. But this approach may still be open to statistical attacks; see Section 5.4. Mixminion instead counters replays by introducing key rotation: a message is addressed to a given key, and after the key changes no messages to the old key will be accepted, so the mix can forget about all the messages addressed to old keys. The number of IDs a node needs to remember between key rotations is not too great a burden.
+� Exit policies: Exit abuse is a serious barrier to widescale remailer deployment: most Internet Service Providers (ISPs) do not tolerate systems that potentially deliver hate mail, etc. Mixminion provides a consistent mechanism for each node to specify and advertise an exit policy. We further describe a protocol which allows recipients to opt out of receiving mail from remailers, but at the same time makes it difficult
+
+for an adversary to deny service to interested recipients.
+� Integrated directory servers: Mixmaster uses several ad hoc approaches to distribute information about remailer availability, performance, and keys. But the fact that users and remailers operate with different information introduces partitioning attacks. Mixminion uses a small group of synchronized redundant directory servers to provide uniform information about the network.
+� Dummy traffic: Cottrell briefly mentions dummy messages in [8], but they are not part of the specification [26]. Mixminion uses a simple dummy policy for now, but because we use our own transport, we support many link padding and dummy traffic schemes.
+We review mixes and mix-nets in Section 2, describe our goals and assumptions in Section 3, and then address the above list of improvements in Sections 4-7. We then summarize how our design stands up to known attacks, and conclude with a list of open problems.
+2. Background
+Chaum introduced the concept of using relay servers, or mixes, for anonymous communications [7]. Each mix has a public key which senders use to encrypt messages to it. The mix accumulates a batch of these encrypted messages, decrypts them, and delivers them. Because a decrypted output message looks nothing like the original encrypted input message, and because the mix collects a batch of messages and then sends out the decrypted messages in a rearranged order, an observer cannot learn which incoming message corresponds to which outgoing message. Chaum showed the security of a mix against a passive adversary who eavesdrops on all communications but is unable to observe the reordering inside the mix. Pfitzmann fixed a weakness in Chaum's original scheme based on the properties of raw RSA encryption [32].
+However, trusting a single mix is dangerous: the mix itself could be controlled by an adversary. Therefore users send their messages through a series of mixes: if some of the mixes are honest (not run by the adversary), some anonymity is preserved. In some schemes, such as Mixmaster [26] and Babel [14], the sender chooses the mixes that make up her message's path. Specifically, when Alice wants to send an anonymous message to Bob through mixes M1, M2, and M3, she encrypts her message successively with the public keys of the mixes in reverse order. She includes routing information at each hop, so that each mix Mi receives the address of Mi+1 along with the message intended for Mi+1 (all encrypted under Mi's public key).
+
+A mix network where Alice chooses her route freely from all mixes is called a free-route network. Another approach is a cascade network, where senders choose from a set of fixed paths through the mix-net. Cascades can provide greater anonymity against an adversary who owns many mixes [6], but they are also more vulnerable to blending attacks such as trickle or flooding attacks [36]. Further, cascade networks arguably have lower maximum anonymity because the number of people Alice can hide among (her anonymity set) is limited to the number of messages the weakest node in her cascade can handle. In a free-route network, larger anonymity sets are possible because no single mix acts as a bottleneck: many mixes handle traffic in parallel as messages traverse the network. Mix cascade research includes real-time mixes [18] and web mixes [4].
+More complex designs use zero-knowledge proofs and stronger assumptions to guarantee delivery or to detect and exclude misbehaving participants. These include flash mixes [16], hybrid mixes [17, 29], and provable shuffles [13, 28]. The properties of these designs are appealing, but they are often impractical since they assume fairly strong coordination and synchronization between the mixes and impose a heavy computational and communication overhead.
+Some mix-net designs allow recipients to construct reply blocks that allow others to send messages to them without knowing their identities. A reply block contains only the routing portion of a message; the actual contents are appended by the user who eventually sends a message to the recipient. In this case the contents are effectively encrypted at each step in the path rather than decrypted. The recipient knows all the keys used in the reply block and can peel off all the layers of encryption when the message arrives. Such a design was first introduced by Chaum [7] and later extended in Babel [14]. However, Babel's replies are indistinguishable from forward messages only by passive observers -- the mix nodes can still tell them apart. Babel's reply addresses are also multiple-use, making them less secure than forward messages due to replay vulnerabilities.
+The first widespread public implementations of mixes were produced by contributors to the Cypherpunks mailing list. These "Type I" anonymous remailers were inspired both by the problems surrounding the anon.penet.fi service [15], and by theoretical work on mixes. Hughes wrote the first Cypherpunk anonymous remailer [31]; Finney followed closely with a collection of scripts that used Phil Zimmermann's PGP to encrypt and decrypt remailed messages. Later, Cottrell implemented the Mixmaster system [8, 26], or "Type II" remailers, which added message padding, message pools, and other mix features lacking in the Cypherpunk remailers.</div>
+
+  <div class="cite">SOURCE - George Danezis, Roger Dingledine, and Nick Mathewson, "Mixminion: Design of a Type III Anonymous Remailer Protocol," Proceedings of the 2003 IEEE Symposium on Security and Privacy, May 2003, pp. 2-15. Archived by Modulo 59 / Project B59 for permanent preservation. Retrieved 2026-08-31 from https://www.mixminion.net/minion-design.pdf. SHA-256 (PDF): 790d0abe1a22f9ce849eb3386c5adc72aeef7e45bbb5ef5f0392039073f26067</div>
+</main>
+</body>
+</html>

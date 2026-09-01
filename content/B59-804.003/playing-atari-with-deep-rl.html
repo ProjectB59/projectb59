@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-804.003 · Playing Atari with Deep Reinforcement Learning</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-804.003">← back to the vault</a>
+  <div class="call">B59-804.003 · WRITING · RL &amp; AGENTS</div>
+  <h1>Playing Atari with Deep Reinforcement Learning</h1>
+  <div class="by">V. Mnih et al. (DeepMind) · arXiv:1312.5602 · 2013</div>
+
+  <div class="lede">“The model is a convolutional neural network, trained with a variant of Q-learning, whose input is raw pixels and whose output is a value function estimating future rewards.”</div>
+
+  <h2>Why it matters</h2>
+  <p>One network, one set of hyperparameters, learned to play seven Atari games from the screen pixels and the score alone, beating a human expert on three. It was the first convincing demonstration that deep networks and reinforcement learning could be combined to learn control policies straight from high-dimensional sensory input.</p>
+  <h2>What made it stable</h2>
+  <p>Two tricks that became standard: an <i>experience replay</i> buffer that breaks the correlation between consecutive training samples, and periodic freezing of the target network. Together they tamed the instability that had defeated earlier attempts to use neural nets as value functions.</p>
+  <h2>Lineage</h2>
+  <p>The 2015 <i>Nature</i> paper extended this to 49 games at human level. It launched deep reinforcement learning as a field and led directly to AlphaGo.</p>
+
+  <div class="cite">SOURCE: Volodymyr Mnih et al., &#34;Playing Atari with Deep Reinforcement Learning,&#34; arXiv:1312.5602 (2013); NIPS 2013 Deep Learning Workshop.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Snapshot from arXiv (arxiv.org/abs/1312.5602).</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<HTML>
+<HEAD>
+   <META name="reply-to" content="jamesd@echeque.com (James A. Donald)">
+   <META NAME="description" CONTENT="Utility for digital signatures and encryption">
+   <META NAME="keywords" CONTENT="digital signatures, encryption, cryptography, crypto, email, elliptic curves">
+   <META NAME="Author" CONTENT="James A. Donald">
+   <TITLE>How Kong Works</TITLE>
+<LINK HREF="mailto:jamesd@echeque.com" REV="made">
+<LINK HREF="Kong.htm" REV="parent">
+</HEAD>
+<BODY>
+
+
+<H2><CENTER>
+How Kong works</CENTER></H2>
+<P>You may well ask: How can Kong tell that two documents were signed using
+the same secret if it does not know that secret? And how can Kong encrypt
+a document so that only the possessor of a certain secret can decrypt it,
+if it does not know that secret?
+
+<P>The short answer is that the line in the signature that follows your
+name contains information about the secret, but is not itself the secret.
+It is generated from the secret using a one way function.  That line is called the public key.
+
+<P>  The two lines that look different in each signature must agree both with the document
+and with the public key.  That is to say they should have certain mathematical properties that
+relate the public key to the particular document.  Only a person who knows the secret key can
+create a signature that agrees both with the public key and with the document.
+
+<P> Thus if the signature agrees with the document, then the document has not been changed
+since the possessor of the secret corresponding to the public key signed it, and if two
+documents have the same public key and valid signatures, then they were signed using the
+same secret, and thus presumably signed by the same person.
+
+<P> We encrypt a document using the public key, and only the secret key can decrypt it.
+
+<HR>
+<H3>The long answer involves some mathematics.</H3>
+
+<P>Kong uses <A HREF="http://www.certicom.ca/ecc/weccrypt.htm">
+elliptic curves</A> to sign and encrypt documents.  Elliptic points can
+similarly be used to provide <A HREF="http://jim.com/kong/anon_transfer.htm">anonymous internet money</A>.
+
+<P>One can construct a third point on an elliptic curve from any two other
+points. This operation is commutative and associative, so we will call
+it addition, even though it is not addition, and we will use the plus sign
+for it.&nbsp;&nbsp;(In fact this operation is not mere addition, it involves several multiplications
+and additions modulo various quantities that thoroughly scramble the bits
+of the points together.)
+
+<P>If P, Q, and R, are points on an elliptic curve, then P+Q = Q+P, and
+(P+Q) + R = P + (Q+R)
+
+<P>What mathematicians call an elliptic curve, is not part of an ellipse,
+and is usually not a curve. We are using discrete elliptic curves, which
+are like modular integer arithmetic.
+
+<P>Because of associativity, we can efficiently add a point to itself a
+very large number of times. This means we can efficiently multiply elliptic
+curve points by ordinary numbers. For example 40*P can be efficiently calculated
+as follows
+
+<P>2P = P + P
+<BR>4P = 2P + 2P
+<BR>8P = 4P + 4P
+<BR>16P = 8P + 8P
+<BR>32P = 16P + 16P
+<BR>40P = 32P + 8P
+
+<P>Which requires only six additions, not 40 additions.  This gets more interesting if we multiply by enormous numbers.
+
+<P>For example if we multiply by a trillion, we only need about sixty additions,
+not a trillion additions.  So if we use very large numbers, much much larger 
+than a trillion, multiplication is a one way operation.
+
+<P>If P is an elliptic curve point, and <I>n</I> is a large integer, and Q = <I>n</I>*P, then 
+the attacker who is given P and Q cannot discover <I>n</I>.&nbsp;&nbsp;
+The order of the curve used by Crypto Kong is slightly more than 2<SUP>240</SUP>, thus to 
+discover <I>n</I> the attacker would need to perform about 2<SUP>120</SUP> additions of 
+elliptic curve points, which is around one billion billion billion billion additions.
+
+
+<P>So for our crypto system, we choose a certain elliptic curve, and a
+certain point on that elliptic curve, which we will call the generator.
+All the points that we will use will created by adding the generator to
+itself many times.
+
+<P>To generate your secret key, your computer hashes your passphrase, your
+secret file, and the name, to generate a big number, a two hundred and
+forty bit number. That is a number somewhere around 1000 000 000 000 000
+000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000
+000.&nbsp;&nbsp; It does this every time that you need the secret key.
+
+<P>So the secret generated from your secret key is really a very big number.
+
+<P>The public key, which appears in your signature, is an elliptic point,
+the generator multiplied by that number. This point is represented by the
+x coordinate of the elliptic point, a 255 bit number, plus a sign bit,
+represented in base 64 format.  Because division is hard, the adversary 
+cannot discover the secret key from the public key.
+
+<P>For compactness, these very large numbers are represented in base 64,
+instead of represented in base ten. The digits 0 to 63 are represented
+as: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/
+
+<P>High order digits are first, thus 10(base 64) = 64(base 10) 100 (base
+64) = 4096 (base 10) This means that order in the text is the reverse of
+the order in RAM.
+
+<P>The security of the system derives from the fact that to calculate the
+public key from the secret number merely takes a few hundred elliptic curve
+additions, but to do the reverse operation, to discover the number from
+the public key, would require billions and billions of elliptic curve additions,
+and elliptic curve additions are a rather slow operation. It would
+require roughly 1000 000 000 000 000 000 000 000 000 000 000 000 operations,
+which is well beyond the power of even a major government on a matter vital
+to national security.
+
+<P>The problem of solving the reverse problem is called the discrete logarithm
+problem by mathematicians, even though it does not involve what ordinary
+people think of as logarithms. Many mathematicians have studied this problem,
+and not found any efficient solution. Certicom has offered a hundred thousand
+dollar prize for a mathematician who finds a more efficient solution to
+the discrete logarithm problem for elliptic curves.
+
+<P>This is the one way operation, which makes it possible for Crypto Kong
+to tell that two documents were signed using the same secret when it does
+not know that secret and to encrypt a document so that only the possessor
+of a certain secret can decrypt it, when it does not know that secret.
+
+<P>
+<HR>
+<H3>
+Signing:</H3>
+Because of the kind of elliptic curve we are using, there is a large number,
+called the order of the generator, such that if you add the generator to
+a point that number of times, you get the original point again.
+
+<P>So all our long integer arithmetic is done modulo the order of the generator.
+
+<P>Let any lower case letter represent these large integers.
+<BR>Let any upper case letter represent a point on our elliptic curve.
+<BR>To sign data, one generates a one way hash of it using SHA
+
+<P>Let int(P) denote an integer generated from an elliptic curve point.
+
+<P>Let <I>h</I> be the hash code of the data to be signed
+
+<P>Let Ann's secret key be <I>a</I>, and her public key be A = <I>a</I>*G,
+where G is the generator.
+
+<P>Ann's secret key is a very large number generated by hashing her name,
+her secret passphrase, and her secret file. The secret file is treated
+as a continuation of her passphrase.
+
+<P>Ann's computer chooses a random number <I>k</I>, and computes <I>r =</I>
+int<I>(k</I>*G)+<I>h</I> and <I>s = k - a*r </I>where <I>h</I> is a hash
+of the data being signed.
+
+<P>The signature is the is Ann's name, followed by Ann's public key A =
+<I>a</I>*G, followed by <I>r</I>, followed by <I>s</I>+(hash of Ann's name).
+
+<P>Those are the four lines you see in the signature.
+<BR>&nbsp;
+<TABLE BORDER >
+<TR>
+<TD WIDTH="560">
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Name
+&nbsp;&nbsp;&nbsp;&nbsp; Public Key
+&nbsp;&nbsp;&nbsp;&nbsp; <I>r
+</I>&nbsp;&nbsp;&nbsp;&nbsp; <I>s</I>+(hash of name)</PRE>
+</TD>
+</TR>
+</TABLE>
+For example:
+<BR>&nbsp;
+<TABLE BORDER >
+<TR>
+<TD WIDTH="560">
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ann
+&nbsp;&nbsp;&nbsp;&nbsp; 8UnJhnG3uIciSsxf598ed1X+hu1dT7mF5VdligtNw4u
+&nbsp;&nbsp;&nbsp;&nbsp; MkpOPpUnnf5q9OdFGroBARk/tbf3Q2MUVnBE2UZt
+&nbsp;&nbsp;&nbsp;&nbsp; 769rwaBGXuGoufSTTY4EvJTe4uLu4QrNwn7s/mpj</PRE>
+</TD>
+</TR>
+</TABLE>
+To verify the signature, Bob calculates h, the one way hash of the document,
+and then checks that the following equation is true:
+
+<P><I>h= r - </I>int<I>(s</I>*G + <I>r</I>*A)
+
+<P>This equation must be true because of associativity <I>s</I>*G+<I>r</I>*A
+= (<I>k-a*r</I>)G +<I>r</I>*<I>a</I>*G = <I>k</I>*G , but no one can discover
+values for <I>r</I> and <I>s</I> such that it will be true, unless they
+know the secret key <I>a</I>
+
+<P>
+<HR>
+<H3>
+Encrypting:</H3>
+We wish to send a secret message to Alice, whose secret key, unknown to
+us, is <I>a</I>, and whose public key, known to us, is A=<I>a</I>*G. We
+generate a random integer, <I>k.</I> We generate <I>k</I>*A, the shared
+secret that we use to encrypt our message, and K=<I>k</I>*G, an elliptic
+point we will include with our message. Alice can discover the shared secret
+because she knows <I>a</I>, and thanks to associativity <I>k</I>*A =<I>
+a</I>*K, because they both equal <I>a</I>*<I>k</I>*G.
+
+<P>We can calculate <I>k</I>*A, because we know <I>k</I>, and everyone
+knows A, and she can calculate <I>a</I>*K, because she alone knows a, and
+we gave her K in the clear.
+
+<P>We use the shared secret to encrypt the message using Arc4.
+
+<P>Arc4 (RC4) is a very simple, very well known, very well studied symmetric
+key algorithm, produced by a great cryptographer. It has certain well known
+and well understood weaknesses, none of which are relevant because we are
+using it with 256 bit keys and using it to send signed messages. We use
+the shared secret <I>a</I>*K=<I>k</I>*A as the symmetric key.
+
+<P>Our encrypted message looks like this:
+<BR>&nbsp;
+<TABLE BORDER >
+<TR>
+<TD WIDTH="560">
+<PRE>&nbsp;&nbsp;&nbsp; --Key
+A
+K
+&nbsp;&nbsp;&nbsp; --Cryptotext</PRE>
+</TD>
+</TR>
+</TABLE>
+For example:
+<BR>&nbsp;
+<TABLE BORDER >
+<TR>
+<TD WIDTH="0">
+<PRE>&nbsp;&nbsp;&nbsp; --Key
+8UnJhnG3uIciSsxf598ed1X+hu1dT7mF5VdligtNw4u&nbsp;
+F/bObzQg/8mv2M+2ZtPTbxSpX4KOdC0/l2b/3JsObsX
+&nbsp;&nbsp;&nbsp; --Cryptotext
+0020nCapmnBpzhmvUOQDgnsqOnPYRiEeVYOy+N1EtxHErtiXYA4Wx1j4J8MHjXH6rdyJs+YO
+g+WMvam4v0k85EjYdMLHrk3vl+UsgdP2XUqAdCepONJVmnh2UaBnrU3Ka5QKzyiCPx3jJUFs
+7NL9l5PUMRRT96YC4hntjOX8Pa9ceuOus5ftAN7OHbqUpGluqwfj/kYZCZ9x8s9wvZOoWs3X
+E6mzivIc70wTwfr2VkidMV6V/LARTYAIGBJgsLVOJSzhO3x+QmJQTF3Rob6n</PRE>
+</TD>
+</TR>
+</TABLE>
+
+
+<P><A HREF="MulRecip.htm">Encryption for multiple recipients</A> is similar,
+though slightly more complicated.
+<BR>
+<HR>by <A HREF="mailto:jamesd@echeque.com">jamesd@echeque.com</A>
+
+<P><A HREF="index.html">Back to main CryptoKong page</A>
+</BODY>
+</HTML>

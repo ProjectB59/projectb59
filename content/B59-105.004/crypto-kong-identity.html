@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+   <META name="reply-to" content="jamesd@echeque.com (James A. Donald)">
+   <META NAME="description" CONTENT="Utility for digital signatures and encryption">
+   <META NAME="keywords" CONTENT="digital signatures, encryption, cryptography, crypto, email, elliptic curves">
+   <META NAME="Author" CONTENT="James A. Donald">
+   <LINK HREF="mailto:jamesd@echeque.com" REV="made">
+   <LINK HREF="index.html" REV="parent">
+   <TITLE>How Kong's identity model differs from that of Verisign/SMIME</TITLE>
+</HEAD>
+<BODY>
+
+<HR>
+<H2><CENTER>
+How Kong's identity model differs from that of Verisign/SMIME</CENTER></H2>
+A normal pen and ink signature is an expression of intent, that the person
+whose signature it is accepts what is said in the document, but it does
+not tell us which person signed the document. To prove authorship of a
+signature, we rely on other evidence, whatever evidence is handy. One such
+piece of evidence is that it is difficult, (though not impossible) to fake
+another persons signature, so we can compare the signatures on two documents,
+to argue, for example, that the person who agreed to pay some money is
+the same person who owns some money in a bank account.
+
+<P>This is how a Kong signature works. If two signatures match, then they
+must have been signed with the same secret. In order to imitate a signature
+on one document, one must somehow discover the secret used to sign that
+document. This can be done, but it is vastly harder than lifting a signature
+from one fax to another, and harder than imitating a pen and ink signature.
+
+<P>However Verisign signatures are not used to compare documents. They
+are used to "prove" identity.
+
+<P>So to sign a document with SMIME you must prove to Verisign who you
+are. (An SMIME signature is not much use without such certification from
+Verisign)
+
+<P>Then Verisign creates and signs a certificate that any document signed
+with your secret is the real you.
+
+<P>This certificate is like an ID card. The Kong equivalent would be a
+document containing another document, making an assertion about the author
+of the contained document.
+
+<P>So Verisign signatures provide evidence of identity, whereas Kong signatures
+merely provide evidence that the same person signed one thing, as signed
+another thing.
+
+<P>"Huh, what secret? I did not know I had a secret endorsed by Verisign!"
+
+
+<P> As with all digital signature systems, a Verisign signature works because anyone
+can tell that two documents were signed using the same secret, even though
+they do not know what the secret is.
+
+
+<P>As with any digital signature system, Verisign signatures are only as
+good as the management of Verisign secrets, and managing them correctly
+is not trivial. If you do not know where the file containing your verisign
+secret is located, or how many copies there are, and most people do not,
+it is probably located somewhere insecure.
+
+<P>For some purposes, the Verisign model is more convenient than the Kong
+model, but most of the time we do not want to know that Bob Jones is the
+one true Bob Jones, but merely that Bob Jones is the same customer as opened
+an account. In such cases the Kong model of identity is more convenient,
+because it is more convenient for the parties to create their own certificate.
+Most people are reluctant to go to the trouble and delay necessary to prove
+their identities to Verisign.
+
+<P>The Kong secret is usually a passphrase, plus data contained in an ordinary
+file.
+
+<P>The Verisign secret is sometimes kept in an ordinary file, like the
+Crypto Kong secret file, but in practice is usually stored by the CryptoAPI,
+which in effect usually means that it is in a group of files with no real
+passphrase.&nbsp; It is dispersed in a complicated way.&nbsp; This convoluted
+and obscure storage has the advantage that it is complicated and laborious
+for someone with access to your computer to copy the secret. It also has
+the great disadvantage that it is difficult and complicated for you (the
+rightful owner of the secret) to move the Verisign secret to a floppy disk,
+take the floppy disk out of the computer, and walk away from that computer,
+with the secret no longer in the computer, but in your pocket.
+<BR>&nbsp;
+
+<HR>
+by <A HREF="mailto:jamesd@echeque.com">jamesd@echeque.com</A>
+
+<P><A HREF="index.html">Back to main CryptoKong page</A>
+</BODY>
+</HTML>

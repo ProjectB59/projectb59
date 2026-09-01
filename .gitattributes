@@ -1,0 +1,4 @@
+# content/ holds byte-exact archival snapshots. Their SHA-256 is recorded in
+# vault-app/records.js for integrity verification, so line-ending normalisation
+# (core.autocrlf) must never rewrite them on add or checkout.
+content/** -text

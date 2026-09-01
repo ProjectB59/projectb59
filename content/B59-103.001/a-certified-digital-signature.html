@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-103.001 · A Certified Digital Signature — Merkle (1979, pub. 1989)</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-103.001">← back to the vault</a>
+  <div class="call">B59-103.001 · WRITING · HASH TREES</div>
+  <h1>A Certified Digital Signature</h1>
+  <div class="by">Ralph C. Merkle · written 1979, published in Advances in Cryptology — CRYPTO ’89</div>
+
+  <div class="lede">"A digital signature based only on a conventional encryption function... as secure as the underlying encryption function."</div>
+
+  <h2>Why it matters</h2>
+  <p>This paper shows you can build a general-purpose digital signature from a hash function alone, with no number theory, no factoring, no discrete logs. That makes the scheme immune to the quantum attacks that threaten RSA and elliptic-curve signatures, which is why hash-based signatures are back in the NIST post-quantum standards (SPHINCS+, XMSS, LMS) that trace directly to this construction.</p>
+
+  <h2>What it builds</h2>
+  <p>A one-time signature (Lamport style) lets you sign a single message by revealing pre-images of a hash. Merkle’s tree turns many one-time keys into one reusable public key: the root hash certifies every leaf, and each signature carries the authentication path proving its leaf belongs. The result signs an effectively unlimited number of messages, with signature size growing only logarithmically.</p>
+
+  <h2>A note on this record</h2>
+  <p>See the provenance field: this is the author-hosted "Certified Digital Signature" standing in for the paywalled 1987 CRYPTO paper of a similar name. The two papers develop the same family of ideas.</p>
+
+  <h2>From the author’s 2012 note (in the hosted file)</h2>
+  <div class="fn">This paper was originally submitted to Ron Rivest, then editor at the Communications of the ACM, in 1979. It was accepted subject to revisions, and was revised and resubmitted in November of 1979. Unfortunately, Ron Rivest passed over the editorship to someone else, the author became involved in a startup, and the referees reportedly never responded to the revised draft... It was finally published in Crypto 89, page 218.</div>
+
+  <div class="cite">SOURCE: Ralph C. Merkle, "A Certified Digital Signature," in G. Brassard (ed.), Advances in Cryptology — CRYPTO ’89, Lecture Notes in Computer Science 435, Springer, 1990, pp. 218-238. Manuscript first submitted to Communications of the ACM in 1979.<br>Archived by Modulo 59 &middot; Project B59 for permanent preservation. Primary-source snapshot: <a href="a-certified-digital-signature-source.pdf">a-certified-digital-signature-source.pdf</a>, retrieved from <a href="https://ralphmerkle.com/papers/Certified1979.pdf">https://ralphmerkle.com/papers/Certified1979.pdf</a> on 2026-08-31. SHA-256 of the snapshot: 18725c8593a7b8786ab02a0621f2e76ed525aef05290d2aa30769241441b56c6.</div>
+</main>
+</body>
+</html>

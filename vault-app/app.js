@@ -2,6 +2,7 @@
 (function(){
 'use strict';
 var R = window.B59_RECORDS || [];
+var B59_REDIRECT = {}; // old flat/provisional id -> BDC id (vault-app/id-redirect.json, loaded at boot)
 var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
 
 var TYPES = {
@@ -41,7 +42,7 @@ var VIEWS = ['archive','timeline','extropy','cryptowars','boards','feed','networ
 function route(){
   var h = (location.hash||'').replace(/^#\/?/,'');
   var parts = h.split('/');
-  if(parts[0]==='record' && parts[1]){ show('archive'); openRecord(parts[1]); return; }
+  if(parts[0]==='record' && parts[1]){ show('archive'); openRecord(B59_REDIRECT[parts[1]] || parts[1]); return; }
   var v = VIEWS.indexOf(parts[0])>=0 ? parts[0] : 'archive';
   show(v);
 }
@@ -414,4 +415,5 @@ document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX
 // ── Boot ───────────────────────────────────────────────────
 window.B59 = { openRecord:openRecord, records:R, collections:COLLECTIONS, types:TYPES };
 renderFacets(); renderResults(); renderExtropy(); renderCryptoWars(); route();
+fetch('vault-app/id-redirect.json').then(function(r){ return r.ok ? r.json() : null; }).then(function(j){ if(j){ B59_REDIRECT = j; route(); } }).catch(function(){});
 })();

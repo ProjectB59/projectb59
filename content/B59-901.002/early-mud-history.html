@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B59-901.002 · Early MUD History</title>
+<style>
+  :root{--bg:#0A0E1A;--panel:#0E1426;--lime:#CBEE1B;--cyan:#2CD4F2;--amber:#FFB627;--paper:#EDEAE0;--dim:#9AA0AE;--hair:rgba(237,234,224,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--paper);font-family:"Newsreader",Georgia,serif;line-height:1.65;padding:5vh 20px 12vh}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  main{max-width:720px;margin:0 auto}
+  .call{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.08;letter-spacing:-.01em;margin:14px 0 6px}
+  .by{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);margin-bottom:26px}
+  .lede{font-size:19px;color:var(--paper);border-left:2px solid var(--amber);padding:14px 20px;background:rgba(255,182,39,.05);font-style:italic;margin-bottom:30px}
+  h2{font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px;font-weight:600}
+  p{color:#cfd3dc;margin-bottom:16px;font-size:16.5px}
+  .fn{font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--hair);padding:16px 18px;line-height:1.7;white-space:pre-wrap}
+  a{color:var(--cyan)}
+  .cite{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--dim);border-top:1px solid var(--hair);margin-top:40px;padding-top:18px;line-height:1.7}
+  .back{display:inline-block;margin-bottom:28px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--dim)}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../../#/record/B59-901.002">← back to the vault</a>
+  <div class="call">B59-901.002 · WRITING · VIRTUAL WORLDS &amp; MUDs</div>
+  <h1>Early MUD History</h1>
+  <div class="by">Richard Bartle · Usenet, 15 November 1990</div>
+
+  <div class="lede">The very first MUD was written by Roy Trubshaw in MACRO-10. Date-wise, it was Autumn 1978.</div>
+
+  <p>Every multiplayer virtual world, from text MUDs to the graphical MMOs, traces back to one program: MUD, written by Roy Trubshaw and Richard Bartle at the University of Essex between 1978 and 1980. By 1990 the origin story was already being garbled in Usenet retellings, and this post is Bartle setting the record straight while the participants were still around to ask.</p>
+  <p>The details matter because they establish the pattern the whole genre inherited: a shared, persistent database of rooms and objects; a separate world-definition language (MUDDL) so content could be authored without recompiling; a wizard tier that started life as debug mode; and external players dialling in over early packet-switched links. Trubshaw built the engine; Bartle, by his own account here, wrote most of what made it a game.</p>
+  <p>This snapshot is the text of the 15 November 1990 post as preserved on Bartle’s own site. His longer academic treatment of player motivation, "Hearts, Clubs, Diamonds, Spades," is catalogued separately as B59-901.006.</p>
+
+  <h2>Full text — primary source</h2>
+  <div class="fn">From: Richard@tharr.UUCP (Richard Bartle)
+Subject: Early MUD history.
+Date: 15 Nov 90 19:00:55 GMT
+
+abermud@ed.ac.uk (Alan Cox) writes:
+&gt; The history of MUDs all starts in the UK, about 1979. Roy Trubshaw, a
+&gt; student at Essex University, started writing MUD, a game written in BCPL
+&gt; on a DEC-10. Along with Richard Bartle, who tidied up the system and added
+&gt; a very crude database compiler for it, they produced a very good combat
+&gt; game for it.
+
+Since most of this "early history" stuff got passed down by word of mouth,
+here's how it "really" happened...
+
+	The very first MUD was written by Roy Trubshaw in MACRO-10 (the
+machine code for DECsystem-10's). Date-wise, it was Autumn 1978. The game was
+originally little more than a series of inter-connected locations where you
+could move and chat. I don't think it was called MUD at that stage, but I'd
+have to ask Roy to be sure. Roy rewrote it almost immediately, and the next
+version, also in MACRO-10, was much more sophisticated. This one was
+definitely called MUD (I still have a printout of it). The database (ie. the
+rooms, objects, commands etc.) was defined in a separate file, but it could
+also be added to during play. However, the result was that people added new
+rooms that were completely out of keeping with the rest of the environment,
+and, worse, added new commands that removed any spirit of exploration and
+adventure that the game may have had.
+
+	In those days, memory was at a premium, and on Essex University's
+DEC-10 we had something like 50K maximum (36-bit words) to use. The game
+definition stuff took up too much memory, so Roy decided to ditch it. The
+program was also becoming unmanageable, as it was written in assembler.
+Hence, he rewrote everything in BCPL, starting late 1979 and working up
+to about Easter 1980. The finished product was the heart of the system which
+many people came to believe was the "original" MUD. In fact, it was version 3.
+
+	I had been helping Roy with the game-side of things for some time,
+starting with suggestions for version 1. Roy was mainly interested in the
+programming side of things, rather than the design of rooms, puzzles and so
+on. When he left Essex, I took over full control. At that point, there was no
+objective for the players, and only primitive communication. There was
+no points-scoring system, there were no mobiles, no containers, and even some
+of the infrastructure was missing (eg. two people in a dark room, one with a
+torch: the other still couldn't see). In terms of lines of code, Roy gave
+me about 25% of what was in the final program (mind you, it was the most
+essential 25%!). I added all the stuff about getting to be a wizard (which
+was previously 'debug mode' so implementors - Roy and I - could test out new
+room complexes we'd added).
+
+	Roy's reasons for writing MUD were twofold: to make a multi-player
+adventure game; to write an interpreter for a database definition language.
+The language he developed was rather crude, and I had to hack it to get it
+to do a lot of the things I wanted to do. This was partly because Roy didn't
+know the kind of things that would be needed from a game-design perspective,
+and partly because the multi-user aspect came to dominate the project.
+However, the core of the database definition language (MUD definition
+language - MUDDL) was all Roy's. I didn't add it, I added TO it.
+
+	Although Roy had written the basis of the system, it wasn't really
+a game, nor was it completely usable. Sometimes, the implication is given
+that I merely modified his program, or tidied up a few loose ends, whereas
+actually I wrote most of it (and unwrote some of it!). At other times, there's
+the suggestion that Roy just knocked together a basic shell devoid of anything
+really original or interesting; again, that's incorrect - Roy pioneered MUD
+programming, and had to design everything from scratch. So the writing of
+that first MUD was basically a team effort, and the way Roy and I expect to
+see it described is "MUD was created and written by Roy Trubshaw and Richard
+Bartle at Essex University in the UK", or words to that effect.
+
+	At this time, there was an experimental packet-switching system
+(EPSS) linking Essex University to ArpaNet in the USA. In Spring 1980, we got
+our first few external players logging in and trying the game out (one of
+whom I met recently by complete chance in a hotel in Annapolis, MD). There's
+a reference to MUD in an article on Zork in the December 1980 issue of
+Byte. Interestingly, it also mentions an earlier multi-player version of
+Zork, but neither I nor Roy were aware of it at the time. I've never found
+any other references to it, so I don't know how MUD-like it was.
+
+	MUD only had one database for the first couple of years, then I
+took out all the "generic" bits (eg. get/drop/quit commands, spells, common
+objects like doors &amp; keys) and put them into a set of include files. I
+then wrote another game called Valley, using the MUD interpreter and the
+include files, but with another set of rooms and puzzles. Although I'm only
+a year younger than Roy, I was able to stay on at Essex and work on the system
+because I became a postgraduate (and, later still, a lecturer) there. Some
+undergraduate friends took the interpreter and include files (with my
+permission), and used them as a basis for their own games. The first of these
+was Rock (based on Fraggle Rock, the TV show), but others that spring to mind
+were BLUD (very deadly), UNI (a simulation of the University, with spoof
+monsters for the members of staff), and MIST (about which you know). After I
+left Essex, I let them run MUD for two or three years for old time's sake,
+but after a while its code was adulterated by a new bunch of well-meaning
+undergrads, so I took it away; people were getting a false idea of what the
+game was meant to be like (and besides, they'd removed my name from the
+arch-wizard list!). The original MUD is back now, I understand, and will
+remain there until the DEC-10 is switched off (if it hasn't gone already).
+
+	The game was initially populated primarily by students at Essex, but
+as time wore on and we got more external lines to the DEC-10, outsiders
+joined in. Soon, the machine was swamped by games-players, but the University
+authorities were kind enough to allow people to log in from the outside
+solely to play MUD, so long as they did so between 2am and 6am in the morning
+(or 10pm to 10am weekends). Even at those hours, the game was always full to
+capacity. Thus, MUD became a popular pastime throughout the modem-using
+computer hobbyists of Britain. I also sent copies of the code to Norway,
+Sweden, Australia and the USA.
+
+I could go on, but then we stop being early days and start being present
+days, so I won't! Suffice to say that the original game was licensed to
+CompuServe, where it still runs to this day, labouring under the name of
+"British Legends".
+
+Richard Bartle.</div>
+
+  <div class="cite">SOURCE &mdash; Richard Bartle, "Early MUD history," Usenet post, 15 November 1990.<br>Archived by Modulo 59 · Project B59 for permanent preservation. Text mirrored from mud.co.uk/richard/mudhist.htm.</div>
+</main>
+</body>
+</html>
