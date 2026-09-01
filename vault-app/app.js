@@ -110,7 +110,7 @@ function renderFacets(){
   html += '<li data-cls="" class="'+(!state.cls?'act':'')+'">All records <span class="n">'+R.length+'</span></li>';
   CLASSES.forEach(function(c){
     if(!n.classes[c.id]) return;
-    html += '<li data-cls="'+c.id+'" class="'+(state.cls===c.id?'act':'')+'"><span class="mono" style="color:var(--lime)">'+c.id+'</span>&nbsp; '+esc(c.name)+' <span class="n">'+(n.classes[c.id]||0)+'</span></li>';
+    html += '<li data-cls="'+c.id+'" class="'+(state.cls===c.id?'act':'')+'"><span><span class="mono" style="color:var(--lime)">'+c.id+'</span>&nbsp; '+esc(c.name)+'</span><span class="n">'+(n.classes[c.id]||0)+'</span></li>';
   });
   html += '</ul></div>';
   html += '<div class="facet"><h3>Collections</h3><ul>';
