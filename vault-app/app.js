@@ -14,16 +14,20 @@ var TYPES = {
   code:{label:'Code', color:'#7AE8A4'}
 };
 
+// Curated cross-cuts. Tag lists are kept tight so the sidebar counts stay honest
+// against the full 240-record corpus; the B59 Decimal class (the id prefix) is the
+// primary taxonomy.
 var COLLECTIONS = [
-  {id:'hal',      name:'Hal Finney Papers',        tags:['hal-finney','rpow','als','cryonics','alcor']},
-  {id:'szabo',    name:'Szabo & Smart Contracts',  tags:['nick-szabo','smart-contracts','bit-gold','digital-property','legal-theory']},
-  {id:'lists',    name:'Lists & Remailers',        tags:['cypherpunks','mailing-list','remailers','anonymous-communication','irc','mirc']},
-  {id:'cash',     name:'Digital Cash',             tags:['digital-cash','ecash','digicash','david-chaum','blind-signatures','magic-money','netcash']},
-  {id:'wars',     name:'Crypto Wars',              tags:['crypto-wars','pgp','ssl','des','nsa','export-controls','clipper-chip','eff','bernstein','free-speech']},
-  {id:'extropy',  name:'Extropians',               tags:['extropians','transhumanism','max-more','crypto-anarchy']},
-  {id:'markets',  name:'Digital Markets',          tags:['phil-salin','amix','agorics','digital-markets','hayek','austrian-economics','economics']},
-  {id:'gaming',   name:'Retro Gaming',             tags:['gaming','video-games','atari','intellivision','aph','game-design']},
-  {id:'research', name:'Research & Reference',     tags:['research-compilation','external-reference','timeline','reference']}
+  {id:'hal',      name:'Hal Finney Papers',        tags:['hal-finney']},
+  {id:'szabo',    name:'Szabo & Smart Contracts',  tags:['nick-szabo']},
+  {id:'lists',    name:'Lists & Remailers',        tags:['remailers','mixmaster','mailing-list']},
+  {id:'cash',     name:'Digital Cash',             tags:['digital-cash','blind-signatures','b-money','bit-gold','ecash','digicash']},
+  {id:'wars',     name:'The Crypto Wars',          tags:['crypto-wars','export-controls','clipper-chip','des','bernstein']},
+  {id:'extropy',  name:'Extropians',               tags:['extropians','transhumanism','max-more','cryonics']},
+  {id:'markets',  name:'Digital Markets',          tags:['phil-salin','amix','information-markets','agoric']},
+  {id:'ai',       name:'Artificial Intelligence',  tags:['neural-networks','deep-learning','reinforcement-learning','ai-safety','machine-learning']},
+  {id:'gaming',   name:'Virtual Worlds & Games',   tags:['video-games','game-design','virtual-worlds','habitat','mud','intellivision','atari']},
+  {id:'research', name:'Research & Reference',     tags:['research-compilation','external-reference']}
 ];
 
 function collFor(rec){
