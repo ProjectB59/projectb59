@@ -1,4 +1,10 @@
+# Text files are stored and checked out with LF, on every platform. This keeps
+# vault-app/vault-manifest.tsv (and therefore VAULT.sha256) reproducible with a
+# plain `sha256sum` regardless of the checkout host's core.autocrlf setting, and
+# keeps the JS/JSON diffs clean.
+* text=auto eol=lf
+
 # content/ holds byte-exact archival snapshots. Their SHA-256 is recorded in
 # vault-app/records.js for integrity verification, so line-ending normalisation
-# (core.autocrlf) must never rewrite them on add or checkout.
+# must never rewrite them on add or checkout. This rule comes last so it wins.
 content/** -text
