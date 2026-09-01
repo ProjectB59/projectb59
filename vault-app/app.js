@@ -303,15 +303,15 @@ document.getElementById('ex-pri').addEventListener('click', function(){
 
 // ── Crypto Wars exhibit ────────────────────────────────────
 var CW_EVENTS = [
-  {y:'1976', t:'DES review at Stanford', d:'NBS/NSA meeting transcript — Diffie and Hellman challenge the 56-bit key. The first public battle over deliberately weakened cryptography.', rec:'B59-0031'},
+  {y:'1976', t:'DES review at Stanford', d:'NBS/NSA meeting transcript — Diffie and Hellman challenge the 56-bit key. The first public battle over deliberately weakened cryptography.', rec:'B59-301.001'},
   {y:'1991', t:'PGP 1.0 released', d:'Phil Zimmermann publishes Pretty Good Privacy; strong crypto reaches everyone with a modem — and triggers a federal export investigation.', rec:null},
-  {y:'1992', t:'Cypherpunks convene', d:'Hughes, May and Gilmore start the list; "Cypherpunks write code" becomes the movement\'s answer to policy.', rec:'B59-0042'},
-  {y:'1993', t:'Clipper Chip announced', d:'The White House proposes key-escrow encryption. The backlash unites technologists and civil libertarians.', rec:'B59-0011'},
-  {y:'1994', t:'Remailer networks mature', d:'Hal Finney operates and documents anonymous remailers — privacy infrastructure built while the law is still hostile.', rec:'B59-0017'},
-  {y:'1995', t:'The SSL Challenge', d:'Hal Finney\'s challenge to break Netscape\'s export-grade 40-bit SSL is solved in days — proving weak-by-law crypto protects no one.', rec:'B59-0040'},
-  {y:'1995', t:'Bernstein v. DOJ filed', d:'With EFF backing, Daniel Bernstein sues: code is speech. Courts eventually agree.', rec:'B59-0012'},
+  {y:'1992', t:'Cypherpunks convene', d:'Hughes, May and Gilmore start the list; "Cypherpunks write code" becomes the movement\'s answer to policy.', rec:'B59-002.003'},
+  {y:'1993', t:'Clipper Chip announced', d:'The White House proposes key-escrow encryption. The backlash unites technologists and civil libertarians.', rec:'B59-302.007'},
+  {y:'1994', t:'Remailer networks mature', d:'Hal Finney operates and documents anonymous remailers — privacy infrastructure built while the law is still hostile.', rec:'B59-303.004'},
+  {y:'1995', t:'The SSL Challenge', d:'Hal Finney\'s challenge to break Netscape\'s export-grade 40-bit SSL is solved in days — proving weak-by-law crypto protects no one.', rec:'B59-106.002'},
+  {y:'1995', t:'Bernstein v. DOJ filed', d:'With EFF backing, Daniel Bernstein sues: code is speech. Courts eventually agree.', rec:'B59-305.001'},
   {y:'1996', t:'Export controls loosen', d:'Crypto moves from the Munitions List to Commerce; the wall starts to crack.', rec:null},
-  {y:'2000', t:'The wars (mostly) won', d:'US export rules are liberalized. Strong cryptography ships by default in browsers everywhere.', rec:'B59-0092'}
+  {y:'2000', t:'The wars (mostly) won', d:'US export rules are liberalized. Strong cryptography ships by default in browsers everywhere.', rec:'B59-106.003'}
 ];
 function renderCryptoWars(){
   var tl = document.getElementById('cw-timeline');
