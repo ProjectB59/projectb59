@@ -134,8 +134,9 @@ function roster(){
   var cards = PEOPLE.map(function(p){
     var recs = recordsFor(p);
     return '<div class="p-card" data-slug="'+p.slug+'">'+
-      '<div><div class="nm">'+esc(p.name)+'</div>'+
-      '<div class="role">'+esc(p.role)+(p.dates?' · '+esc(p.dates):'')+'</div></div>'+
+      (p.dates?'<div class="mono" style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-mute)">'+esc(p.dates)+'</div>':'')+
+      '<div class="nm">'+esc(p.name)+'</div>'+
+      '<div class="role">'+esc(p.role)+'</div>'+
       '<div class="stat"><b>'+recs.length+'</b> record'+(recs.length===1?'':'s')+' in the vault</div>'+
     '</div>';
   }).join('');
