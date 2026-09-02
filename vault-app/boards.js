@@ -21,8 +21,8 @@ function buildChannels(){
   }
   var chans = [
     { name:'#vault-lobby', topic:'Welcome to the B59 boards, type /help for commands', msgs:[
-      { nick:'bot_admin', time:'', text:'Connected to irc.projectb59.net on port 6667.', sys:true },
-      { nick:'bot_admin', time:'', text:'These boards replay the vault\u2019s archived lists and essays as live channels.', sys:true },
+      { nick:'bot_admin', time:'', text:'This is an archive replay, not a live connection: real mailing list posts and essays from the vault, restaged as channel logs.', sys:true },
+      { nick:'bot_admin', time:'', text:'Timestamps are the original post dates, not the time you are reading this.', sys:true },
       { nick:'bot_admin', time:'', text:'Join a channel on the left. Click any message to open its record in the archive.', sys:true },
       { nick:'bot_admin', time:'', text:'Commands: /list  /join #channel  /whois nick  /topic  /clear  /help', sys:true }
     ]},
@@ -33,14 +33,15 @@ function buildChannels(){
     { name:'#crypto-wars', topic:'Clipper, PGP, SSL challenge, Bernstein: the fight for strong crypto', msgs:recMsgs('wars') },
     { name:'#arcade', topic:'Off-topic: Atari, Intellivision, APh and the coin-op years', msgs:recMsgs('gaming') }
   ];
-  // Extropy threads → chat lines
+  // Extropy threads → chat lines. One real post is one line, not one line per
+  // paragraph: a post is not a burst of separate messages from the same nick.
+  // The full body renders as a single block (see line()), clipped with an
+  // expand toggle when long.
   var ex = chans[1];
   (EX.threads||[]).forEach(function(t){
     ex.msgs.push({ nick:'bot_admin', time:t.month, text:'thread: '+t.subject+' ('+t.message_count+' messages)', sys:true });
     (t.messages||[]).forEach(function(m){
-      m.body.split(/\n\n+/).forEach(function(para,i){
-        ex.msgs.push({ nick:nickOf(m.author), time:(i===0?(m.date||'').replace(/^\w+,\s*/,'').slice(0,11):''), text:para.replace(/\n/g,' ') });
-      });
+      ex.msgs.push({ nick:nickOf(m.author), time:(m.date||'').replace(/^\w+,\s*/,'').slice(0,11), text:(m.body||'').trim(), post:true });
     });
   });
   return chans;
@@ -62,29 +63,55 @@ function paintNicks(){
   var nicks = {};
   c.msgs.forEach(function(m){ if(!m.sys) nicks[m.nick]=(nicks[m.nick]||0)+1; });
   var list = Object.keys(nicks).sort(function(a,b){ return nicks[b]-nicks[a]; });
-  el('irc-nicks').innerHTML = '<div class="irc-nick op">@bot_admin</div>' + list.map(function(n){
-    return '<div class="irc-nick" data-nick="'+esc(n)+'" style="color:'+nickColor(n)+'">'+esc(n)+'</div>';
-  }).join('');
+  // Not a live "who's here" roster: a real correspondent index for this
+  // channel, with the archive bot broken out below as what it is, a system
+  // utility, not a peer sitting alongside Hal Finney et al.
+  el('irc-nicks').innerHTML =
+    '<div class="irc-nick-label">Correspondents</div>' +
+    (list.length ? list.map(function(n){
+      return '<div class="irc-nick" data-nick="'+esc(n)+'" style="color:'+nickColor(n)+'">'+esc(n)+'</div>';
+    }).join('') : '<div class="irc-nick-empty">none archived here</div>') +
+    '<div class="irc-nick-label">Archive bot</div>' +
+    '<div class="irc-nick op" data-nick="bot_admin">@bot_admin</div>';
   el('irc-nicks').querySelectorAll('[data-nick]').forEach(function(d){
     d.addEventListener('click', function(){ whois(d.getAttribute('data-nick')); });
   });
 }
+function fmtBody(text){
+  return esc(text).replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>');
+}
 function line(m){
   if(m.sys) return '<div class="irc-line sys">-!- '+esc(m.text)+'</div>';
   var open = m.rec ? ' data-rec="'+m.rec+'" title="Open record '+m.rec+'"' : '';
-  return '<div class="irc-line'+(m.rec?' has-rec':'')+'"'+open+'>'+
+  var txt;
+  if(m.post){
+    var isLong = m.text.length > 420;
+    txt = '<span class="post-body'+(isLong?' clip':'')+'">'+fmtBody(m.text)+'</span>'+
+      (isLong ? '<button class="irc-more" data-more type="button">▸ expand full post</button>' : '');
+  } else {
+    txt = esc(m.text)+(m.sub?' <span class="sub">· '+esc(m.sub)+'…</span>':'');
+  }
+  return '<div class="irc-line'+(m.rec?' has-rec':'')+(m.post?' post':'')+'"'+open+'>'+
     (m.time?'<span class="ts">['+esc(m.time)+']</span>':'<span class="ts"></span>')+
     '<span class="nick" style="color:'+nickColor(m.nick)+'">&lt;'+esc(m.nick)+'&gt;</span>'+
-    '<span class="txt">'+esc(m.text)+(m.sub?' <span class="sub">· '+esc(m.sub)+'…</span>':'')+'</span></div>';
+    '<span class="txt">'+txt+'</span></div>';
 }
 function paintLog(){
   var c = chans[cur];
   el('irc-topic').innerHTML = '<b>'+esc(c.name)+'</b>: '+esc(c.topic);
-  el('irc-title').textContent = 'mIRC59: ['+c.name+'] connected to vault.projectb59.net';
+  el('irc-title').textContent = 'mIRC59 archive replay: ['+c.name+'], not a live connection';
   var log = el('irc-log');
   log.innerHTML = c.msgs.map(line).join('');
   log.querySelectorAll('[data-rec]').forEach(function(d){
-    d.addEventListener('click', function(){ location.hash = '#/record/'+d.getAttribute('data-rec'); });
+    d.addEventListener('click', function(e){ if(e.target.closest('[data-more]')) return; location.hash = '#/record/'+d.getAttribute('data-rec'); });
+  });
+  log.querySelectorAll('[data-more]').forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      var body = b.previousElementSibling;
+      body.classList.remove('clip');
+      b.remove();
+    });
   });
   log.scrollTop = log.scrollHeight;
 }
@@ -133,9 +160,23 @@ function paintLists(){
   });
 }
 
+var CSS = `
+#irc-nicks .irc-nick-label{ padding:10px 14px 4px; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#5a6172; }
+#irc-nicks .irc-nick-label:first-child{ padding-top:2px; }
+#irc-nicks .irc-nick-empty{ padding:4px 14px 2px; font-size:11px; color:#5a6172; font-style:italic; }
+.irc-line.post{ display:block; padding:8px 0 10px; }
+.irc-line.post .ts, .irc-line.post .nick{ display:inline; }
+.irc-line.post .txt{ display:block; margin-top:4px; }
+.irc-line.post .post-body{ display:block; }
+.irc-line.post .post-body.clip{ max-height:96px; overflow:hidden; -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent); mask-image:linear-gradient(180deg,#000 55%,transparent); }
+.irc-more{ font-family:var(--mono); font-size:11px; letter-spacing:.5px; color:var(--lime); background:none; border:none; padding:6px 0 0; cursor:pointer; display:block; }
+.irc-more:hover{ text-decoration:underline; }
+`;
+
 function ensure(){
   if(built) return;
   built = true;
+  var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
   chans = buildChannels();
   switchTo(0);
   paintLists();
