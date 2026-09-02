@@ -13,7 +13,12 @@
   body{margin:0;background:var(--navy);color:var(--paper);font-family:'Newsreader',Georgia,serif;min-height:100vh}
   a{color:var(--lime)}
   .wrap{max-width:860px;margin:0 auto;padding:48px 22px 80px}
-  .mark{display:flex;align-items:center;gap:14px;margin-bottom:34px}
+  .node-hero{display:grid;grid-template-columns:1fr;border-bottom:1px solid var(--hair)}
+  .node-hero .photo{position:relative;min-height:280px;background:#000}
+  .node-hero .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+  .node-hero .copy{padding:36px 22px}
+  @media(min-width:900px){ .node-hero{grid-template-columns:1fr 1fr} .node-hero .photo{min-height:100%} .node-hero .copy{padding:56px 48px} }
+  .mark{display:flex;align-items:center;gap:14px;margin-bottom:34px;text-decoration:none}
   .mark svg{filter:drop-shadow(0 0 10px rgba(174,196,78,.4))}
   .mark .mtext{display:flex;flex-direction:column;gap:1px;font-family:var(--mono)}
   .mark .p{font-size:11px;color:var(--lime);font-weight:600;letter-spacing:.34em;text-transform:uppercase}
@@ -43,19 +48,19 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <a class="mark" href="/">
-    <svg viewBox="0 0 52 52" width="46" height="46" aria-hidden="true">
-      <polygon points="26,3 46,14.5 46,37.5 26,49 6,37.5 6,14.5" fill="none" stroke="var(--lime)" stroke-width="2.4"/>
-      <polygon points="26,10 40,18 40,34 26,42 12,34 12,18" fill="none" stroke="var(--hair)" stroke-width="1"/>
-      <text x="26" y="33" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="17" font-weight="600" fill="var(--paper)">59</text>
-    </svg>
-    <span class="mtext"><span class="p">Project</span><span class="row2"><span class="b">B59</span><span class="sub">· The Vault</span></span></span>
-  </a>
-  <a class="back" href="/">&larr; back to the archive</a>
-  <div style="margin-top:26px" class="kicker">Infrastructure · Verify, don't trust</div>
-  <h1>The B59 Node</h1>
-  <p class="lead">Project B59 runs its own Bitcoin node. It downloads every block ever mined, checks every rule and every signature itself, and reads the chain directly instead of relying on an explorer or exchange. This page reads its live status straight from our machine.</p>
+<div class="node-hero">
+  <div class="photo"><img src="assets/vault/node.jpg" alt="The B59 node: a small machine and a CRT in a dark room"></div>
+  <div class="copy">
+    <a class="mark" href="/">
+      <svg viewBox="0 0 52 52" width="46" height="46" aria-hidden="true">
+        <polygon points="26,3 46,14.5 46,37.5 26,49 6,37.5 6,14.5" fill="color-mix(in oklab, var(--amber) 8%, transparent)" stroke="var(--amber)" stroke-width="2"/>
+        <text x="26" y="33" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="17" font-weight="500" fill="var(--amber)">59</text>
+      </svg>
+      <span class="mtext"><span class="p">Project</span><span class="row2"><span class="b">B59</span><span class="sub">· The Vault</span></span></span>
+    </a>
+    <div style="margin-top:26px" class="kicker">Infrastructure · Verify, don't trust</div>
+    <h1>The B59 Node</h1>
+    <p class="lead">Project B59 runs its own Bitcoin node. It downloads every block ever mined, checks every rule and every signature itself, and reads the chain directly instead of relying on an explorer or exchange. This page reads its live status straight from our machine.</p>
 
   <div class="panel">
     <div style="font-family:var(--mono);font-size:13px;margin-bottom:16px"><span class="dot" id="dot"></span><span id="state">contacting node…</span></div>
@@ -69,6 +74,11 @@
       <div class="t" id="synctext"></div>
     </div>
   </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <a class="back" href="/" style="display:inline-block;margin-top:28px">&larr; back to the archive</a>
 
   <div class="prose">
     <h2>Why run one</h2>

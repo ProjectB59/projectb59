@@ -159,9 +159,26 @@ function stop(){
   var b = el('tl-play'); if(b){ b.textContent = '▶ Play'; b.classList.remove('on'); }
 }
 
+function paintChrono(){
+  var host = document.getElementById('tl-chrono');
+  if(!host || host.childElementCount) return; // static list, paint once
+  var R = window.B59_RECORDS || [];
+  var sorted = R.slice().filter(function(r){ return r.date; }).sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; });
+  host.innerHTML = sorted.map(function(r){
+    var terminus = r.id==='B59-000';
+    return '<li class="'+(terminus?'terminus':'')+'" data-id="'+r.id+'"><span class="cdot"></span>'+
+      '<div class="meta"><span class="id">'+r.id+'</span><span>'+esc((r.date||'').slice(0,4))+'</span></div>'+
+      '<h3>'+esc(r.title)+'</h3>'+
+      '<div class="by">'+esc(r.author||'Unknown')+'</div></li>';
+  }).join('');
+  host.querySelectorAll('li').forEach(function(li){
+    li.addEventListener('click', function(){ location.hash = '#/record/'+li.getAttribute('data-id'); });
+  });
+}
+
 var tlBound = false;
 function init(){
-  paintChips(); paintRail(); paintDetail();
+  paintChips(); paintRail(); paintDetail(); paintChrono();
   if(tlBound) return;
   tlBound = true;
   el('tl-play').addEventListener('click', play);

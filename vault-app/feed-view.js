@@ -22,13 +22,12 @@ var CSS = `
 }
 #view-feed .fchip:hover{ color:var(--paper); border-color:var(--lime); }
 #view-feed .fchip.on{ background:var(--lime); color:var(--navy); border-color:var(--lime); font-weight:600; }
-#view-feed .feed-stream{ display:flex; flex-direction:column; gap:22px; position:relative; }
+#view-feed .feed-stream{ display:flex; flex-direction:column; border-top:1px solid var(--hair); }
 #view-feed .tx{
-  position:relative; background:var(--navy2);
-  border:1px solid var(--hair); border-left:2px solid var(--lime);
-  padding:18px 20px 16px;
+  position:relative; background:none;
+  border:none; border-bottom:1px solid var(--hair);
+  padding:24px 0;
 }
-#view-feed .tx.article{ border-left-color:var(--cyan); }
 #view-feed .tx-head{ display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
 #view-feed .tx-badge{
   font-family:var(--mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase;

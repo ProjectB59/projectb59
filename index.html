@@ -13,27 +13,38 @@
 </template>
 <style>
   :root{
-    --navy:#0A0E1A; --navy2:#0E1426; --panel:#101A2E;
-    --lime:#AEC44E; --cyan:#2CD4F2; --magenta:#FF2D95; --amber:#FFB627; --btc:#F7931A;
-    --paper:#EDEAE0; --paper-dim:#9AA0AE; --hair:rgba(237,234,224,.13); --hair-strong:rgba(174,196,78,.35);
+    --navy:#08090b; --navy2:#0c0d11; --panel:#12141a; --panel2:#181b23;
+    --lime:#c6e06a; --lime-dim:#8fa64a; --lime-ink:#14180a;
+    --cyan:#2CD4F2; --magenta:#FF2D95;
+    --amber:#e0b14a; --amber-hot:#f0c35a; --amber-ink:#1a1408;
+    --btc:#e0b14a;
+    --danger:#c45c4a; --ok:#7dba6a;
+    --paper:#e8e4d8; --paper-dim:#a9a494; --paper-mute:#6f6c62;
+    --hair:rgba(232,228,216,.12); --hair-strong:rgba(232,228,216,.22);
     --serif:"Newsreader",Georgia,serif; --mono:"IBM Plex Mono",monospace;
+    --ease-out:cubic-bezier(.23,1,.32,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{animation-duration:.001ms!important;transition-duration:.001ms!important} }
-  body{background:var(--navy);color:var(--paper);font-family:var(--serif);-webkit-font-smoothing:antialiased;line-height:1.5}
-  ::selection{background:var(--lime);color:#0a0e1a}
+  body{background:var(--navy);color:var(--paper);font-family:var(--serif);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.55}
+  ::selection{background:var(--lime);color:var(--lime-ink)}
   a{color:inherit;text-decoration:none}
   .mono{font-family:var(--mono)}
   .wrap{max-width:1320px;margin:0 auto;padding:0 40px}
   :focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+
+  /* site-wide CRT texture, same technique as the reference build */
+  .scanlines{pointer-events:none;position:fixed;inset:0;z-index:60;opacity:.045;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.55) 0,rgba(0,0,0,.55) 1px,transparent 1px,transparent 3px);mix-blend-mode:multiply}
+  .grain{pointer-events:none;position:fixed;inset:0;z-index:59;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>")}
+  @media (prefers-reduced-motion:reduce){ .scanlines,.grain{display:none} }
 
   header{position:sticky;top:0;z-index:20;background:var(--navy);border-bottom:1px solid var(--hair)}
   .bar{display:flex;align-items:center;justify-content:space-between;height:92px;gap:24px}
   .mark{display:flex;align-items:center;gap:14px;font-family:var(--mono);letter-spacing:.04em;flex-shrink:0}
   .mark .m59{flex-shrink:0;display:block;filter:drop-shadow(0 0 10px rgba(174,196,78,.4))}
   .mtext{display:flex;flex-direction:column;gap:1px}
-  .mark .p{font-size:11px;color:var(--lime);font-weight:600;letter-spacing:.34em;text-transform:uppercase}
+  .mark .p{font-size:10px;color:var(--paper-mute);font-weight:600;letter-spacing:.34em;text-transform:uppercase}
   .mark .row2{display:flex;align-items:baseline;gap:9px}
   .mark .b{font-size:29px;font-weight:700;color:var(--paper);letter-spacing:.01em}
   .mark .sub{font-size:11px;color:var(--paper-dim);letter-spacing:.1em;text-transform:uppercase}
@@ -44,23 +55,43 @@
   .node{font-family:var(--mono);font-size:11px;color:var(--cyan);display:flex;align-items:center;gap:7px;letter-spacing:.06em;flex-shrink:0}
   .node .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
 
-  /* hero */
-  .hero{position:relative;overflow:hidden;padding:68px 0 50px;border-bottom:1px solid var(--hair)}
-  .hero-grain{position:absolute;inset:0;opacity:.045;mix-blend-mode:overlay;pointer-events:none}
+  /* hero — full-bleed photo, matches the reference build */
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--lime);margin-bottom:20px}
-  .ledger{font-family:var(--mono);font-size:12px;color:#5a6172;letter-spacing:.02em;margin-bottom:26px;display:flex;flex-wrap:wrap;gap:4px 0}
-  .ledger span:not(:last-child)::after{content:"·";margin:0 10px;color:var(--hair-strong)}
-  .ledger b{color:var(--paper-dim);font-weight:500}
+  .hero-photo{position:relative;isolation:isolate;min-height:100svh;border-bottom:1px solid var(--hair);display:flex;align-items:flex-end;overflow:hidden}
+  .hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% center;z-index:-3}
+  .hero-photo .tint{position:absolute;inset:0;background:rgba(8,9,11,.15);z-index:-2}
+  .hero-photo .fade-x{position:absolute;inset:0;background:linear-gradient(to right, rgba(8,9,11,.72), rgba(8,9,11,.32) 42%, transparent 78%);z-index:-1}
+  .hero-photo .fade-y{position:absolute;inset:auto 0 0 0;height:34%;background:linear-gradient(to top, rgba(8,9,11,.92), transparent);z-index:-1}
+  .hero-photo-inner{position:relative;z-index:1;padding:150px 40px 70px;max-width:660px}
+  .hero-kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+  .hero-photo h1{margin-top:20px;font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.2vw,38px);line-height:1.3;letter-spacing:-.01em;color:var(--paper)}
+  .hero-photo h1 em{font-style:normal;color:var(--amber)}
+  .hero-sub{margin-top:20px;max-width:520px;font-family:var(--serif);font-size:19px;color:var(--paper-dim);line-height:1.5}
+  .hero-cap{margin-top:26px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-mute)}
+
+  /* thread pages — full-bleed photo per thread, same technique as the homepage hero */
+  .thread-hero{position:relative;isolation:isolate;min-height:92svh;border-bottom:1px solid var(--hair);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+  .thread-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3}
+  .thread-hero .tint{position:absolute;inset:0;background:rgba(8,9,11,.2);z-index:-2}
+  .thread-hero .fade-y{position:absolute;inset:auto 0 0 0;height:65%;background:linear-gradient(to top, rgba(8,9,11,.95), transparent);z-index:-1}
+  .thread-hero-inner{position:relative;z-index:1;padding:0 40px 34px;max-width:760px}
+  .thread-hero .short{margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-mute)}
+  .thread-hero .blurb{margin-top:18px;max-width:560px;font-family:var(--serif);font-size:18px;color:var(--paper-dim);line-height:1.5}
+  .thread-pills{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;padding:26px 40px 40px;max-width:1080px}
+  .thread-pill{height:36px;display:inline-flex;align-items:center;padding:0 14px;border:1px solid var(--hair-strong);background:rgba(8,9,11,.5);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper-dim);transition:.15s}
+  .thread-pill:hover{border-color:var(--lime);color:var(--paper)}
+  .thread-pill.on{border-color:var(--lime);background:var(--lime);color:var(--lime-ink);font-weight:600}
+  .thread-pill.on.terminus{border-color:var(--amber);background:var(--amber);color:var(--amber-ink)}
   .lede{max-width:780px;font-size:clamp(21px,3.4vw,29px);font-weight:400;color:var(--paper);line-height:1.38;letter-spacing:-.005em}
-  .search-row{margin-top:38px;display:flex;gap:14px;max-width:1080px;align-items:stretch;flex-wrap:wrap}
+  .search-row{display:flex;gap:14px;max-width:1080px;align-items:stretch;flex-wrap:wrap}
   .field{flex:1;min-width:300px;display:flex;align-items:center;gap:14px;border:none;border-bottom:2px solid var(--hair-strong);background:none;padding:14px 2px;transition:border-color .2s}
   .field:focus-within{border-bottom-color:var(--lime)}
   .field .pr{font-family:var(--mono);color:var(--lime);font-size:17px}
   .field input{flex:1;background:none;border:none;outline:none;color:var(--paper);font-family:var(--mono);font-size:17px}
   .field input::placeholder{color:#5a6172}
   .field .key{font-family:var(--mono);font-size:12px;color:#5a6172}
-  .ask-btn{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.04em;color:#0a0e1a;background:var(--lime);border-radius:2px;padding:0 30px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:10px}
-  .ask-btn:hover{box-shadow:0 0 24px rgba(203,238,27,.4)}
+  .ask-btn{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.04em;color:var(--lime-ink);background:var(--lime);border-radius:2px;padding:0 30px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:10px}
+  .ask-btn:hover{box-shadow:0 0 24px color-mix(in oklab, var(--lime) 40%25, transparent)}
   .hero-stats{display:flex;gap:40px;margin-top:30px;font-family:var(--mono);font-size:12px;color:var(--paper-dim);letter-spacing:.04em;flex-wrap:wrap}
   .hero-stats b{color:var(--paper);font-size:15px}
   .hero-stats .sia{color:var(--amber)}
@@ -82,27 +113,54 @@
   .search-ops span:not(:last-child)::after{content:"  ·  ";color:var(--hair-strong)}
   .search-ops b{color:var(--paper-dim);font-weight:500}
 
-  /* welcome strip + thread graphic */
-  .welcome-strip{background:rgba(232,163,61,.1);border-bottom:1px solid rgba(232,163,61,.3);padding:11px 0;font-family:var(--mono);font-size:12.5px;color:#e9c98a;display:flex;align-items:center;gap:10px}
-  .btc{color:var(--btc);font-style:italic}
-  .threads-wrap{position:relative;max-width:1080px;padding:64px 0 10px}
-  .threads-line{position:absolute;left:10px;right:10px;top:68px;height:1.5px;background:linear-gradient(90deg,var(--hair-strong),var(--hair-strong) 88%,transparent)}
+  /* new-here banner: shown on every page except the archive/home view */
+  #new-here-banner{background:var(--amber-ink);border-bottom:1px solid color-mix(in oklab, var(--amber) 25%, transparent)}
+  #new-here-banner p{padding:8px 0;font-family:var(--mono);font-size:12px;color:var(--amber)}
+  .btc{color:var(--amber)}
+
+  /* five-thread rail */
+  .threads-wrap{position:relative;max-width:1080px}
+  .threads-line{position:absolute;left:10px;right:10px;top:20px;height:1px;background:var(--hair-strong)}
   .threads{display:flex;position:relative}
-  .thread-node{display:flex;flex-direction:column;align-items:center;gap:12px;flex:1;text-align:center}
-  .thread-node svg{stroke:var(--paper-dim)}
-  .thread-node .dot{width:15px;height:15px;border-radius:50%;background:var(--navy);border:2px solid var(--paper-dim)}
-  .thread-node .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper-dim);line-height:1.4}
-  .thread-node:hover svg{stroke:var(--lime)}
-  .thread-node:hover .dot{border-color:var(--lime)}
-  .thread-node:hover .lbl{color:var(--lime)}
-  .thread-node.end .dot{width:21px;height:21px;background:var(--btc);border-color:var(--btc);box-shadow:0 0 20px rgba(247,147,26,.6)}
-  .thread-node.end svg{stroke:var(--btc)}
-  .thread-node.end .lbl{color:var(--btc);font-weight:600;font-size:12.5px}
-  .thread-node.end:hover svg,.thread-node.end:hover .lbl{stroke:var(--btc);color:var(--btc)}
-  .gterm-line{font-family:var(--mono);font-size:14px;color:var(--paper-dim);line-height:1.95;max-width:1080px;margin:44px 0 0}
-  .gterm-line b{color:var(--paper);font-weight:500}
+  .thread-node{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;text-align:center}
+  .thread-node .badge{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--hair-strong);background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--paper-dim);transition:.15s}
+  .thread-node .badge svg{width:20px;height:20px}
+  .thread-node:hover .badge{border-color:var(--lime);color:var(--lime)}
+  .thread-node .subdot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--paper-mute);margin-top:1px}
+  .thread-node .lbl{margin-top:5px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper-dim);transition:color .15s}
+  .thread-node:hover .lbl{color:var(--paper)}
+  .thread-node .yrs{font-family:var(--mono);font-size:10px;color:var(--paper-mute)}
+  .thread-node.end .badge{border-color:var(--amber);color:var(--amber)}
+  .thread-node.end .subdot{background:var(--amber);border-color:var(--amber)}
+  .thread-node.end .lbl{color:var(--amber);font-weight:600}
+  .thread-node.end:hover .badge{border-color:var(--amber);color:var(--amber)}
+  .thread-node.end:hover .lbl{color:var(--amber)}
+
+  /* what/why/how + stats, matches the reference's dl/grid layout */
+  .gterm-line{display:grid;gap:32px;max-width:1080px}
+  .gterm-line dt{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--lime)}
+  .gterm-line dd{margin-top:8px;color:var(--paper-dim);line-height:1.5}
+  .stats-grid{margin-top:10px;max-width:1080px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;border-top:1px solid var(--hair);padding-top:32px}
+  .stats-grid .n{font-family:var(--mono);font-size:26px;color:var(--paper)}
+  .stats-grid .l{margin-top:4px;font-family:var(--mono);font-size:11px;color:var(--paper-mute)}
   .net-line{margin-top:22px;font-family:var(--mono);font-size:11px;color:#5a6172}
   .net-line a:hover{color:var(--lime)}
+
+  /* homepage "reading room" featured strip */
+  .room-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+  .room-head h2{font-family:var(--serif);font-size:26px;font-weight:500;letter-spacing:-.01em}
+  .room-head a{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
+  .room-head a:hover{color:var(--lime)}
+  .room-grid{display:grid;gap:1px;background:var(--hair);grid-template-columns:1fr}
+  .room-card{background:var(--navy);padding:22px;transition:background .15s;cursor:pointer}
+  .room-card:hover{background:var(--panel)}
+  .room-card .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .room-card .id{font-family:var(--mono);font-size:11px;color:var(--lime)}
+  .room-card h3{margin-top:12px;font-family:var(--serif);font-size:20px;font-weight:500;line-height:1.3}
+  .room-card .by{margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--paper-dim)}
+  .room-card p{margin-top:12px;font-size:13.5px;color:var(--paper-dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  @media(min-width:640px){ .room-grid{grid-template-columns:repeat(2,1fr)} }
+  @media(min-width:960px){ .room-grid{grid-template-columns:repeat(3,1fr)} }
 
   /* archive grid */
   .grid{display:grid;grid-template-columns:250px 1fr;gap:52px;padding:44px 0 90px}
@@ -153,8 +211,8 @@
   .d-tags{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
   .d-tags span{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--paper-dim);border:1px solid var(--hair);border-radius:100px;padding:4px 11px}
   .d-actions{margin-top:28px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  .btn-lime{font-family:var(--mono);font-size:12px;font-weight:600;color:#0a0e1a;background:var(--lime);padding:11px 20px;border-radius:2px}
-  .btn-lime:hover{box-shadow:0 0 18px rgba(203,238,27,.4)}
+  .btn-lime{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--lime-ink);background:var(--lime);padding:11px 20px;border-radius:2px}
+  .btn-lime:hover{box-shadow:0 0 18px color-mix(in oklab, var(--lime) 40%25, transparent)}
   .btn-ghost{font-family:var(--mono);font-size:12px;color:var(--paper);border:1px solid var(--hair);padding:10px 18px;border-radius:2px}
   .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
   .d-sia{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.04em}
@@ -176,7 +234,7 @@
   .d-seealso a{display:block;color:var(--paper-dim);padding:4px 0}
   .d-seealso a:hover{color:var(--lime)}
   .d-seealso a b{color:var(--paper);font-weight:500}
-  .cls-badge{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--paper-dim);border:1px solid var(--hair);border-radius:100px;padding:2px 8px;display:inline-block}
+  .cls-badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;color:var(--lime);border:1px solid color-mix(in oklab, var(--lime) 40%, transparent);background:color-mix(in oklab, var(--lime) 10%, transparent);border-radius:2px;padding:1px 6px;display:inline-block}
 
   /* section shells */
   .section-head{padding:56px 0 30px}
@@ -189,12 +247,12 @@
   .ex-tabs{display:flex;gap:6px;margin-bottom:16px}
   .ex-tab{flex:1;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim);border:1px solid var(--hair);background:var(--navy2);padding:9px 10px;cursor:pointer;transition:.18s}
   .ex-tab:hover{color:var(--paper)}
-  .ex-tab.act{color:#0a0e1a;background:var(--lime);border-color:var(--lime)}
+  .ex-tab.act{color:var(--lime-ink);background:var(--lime);border-color:var(--lime)}
   .ex-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;font-family:var(--mono);font-size:11px;color:#5a6172}
   .ex-toolbar #ex-month-search{flex:1;background:none;border:none;border-bottom:1.5px solid var(--hair-strong);color:var(--paper);font-family:var(--mono);font-size:12px;padding:8px 2px;outline:none}
   .ex-toolbar #ex-month-search:focus{border-bottom-color:var(--lime)}
   #ex-pri{font-family:var(--mono);font-size:10px;color:var(--paper-dim);border:1px solid var(--hair);border-radius:100px;padding:5px 11px;cursor:pointer;letter-spacing:.06em;white-space:nowrap}
-  #ex-pri.on{color:#0a0e1a;background:var(--lime);border-color:var(--lime)}
+  #ex-pri.on{color:var(--lime-ink);background:var(--lime);border-color:var(--lime)}
   #ex-threads,#ex-months{max-height:66vh;overflow-y:auto}
   .ex-thread{display:flex;gap:12px;padding:14px 4px;border:none;border-bottom:1px solid var(--hair);margin-bottom:0;cursor:pointer;transition:.18s;background:none}
   .ex-thread:hover,.ex-thread.act{border-bottom-color:var(--lime)}
@@ -216,7 +274,7 @@
   .ex-launch{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
   .ex-launch a{font-family:var(--mono);font-size:12px;color:var(--paper);border:1px solid var(--hair);padding:10px 16px;transition:.18s}
   .ex-launch a:hover{border-color:var(--lime);color:var(--lime)}
-  .ex-launch a.primary{color:#0a0e1a;background:var(--lime);border-color:var(--lime)}
+  .ex-launch a.primary{color:var(--lime-ink);background:var(--lime);border-color:var(--lime)}
   .ex-views{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
   .ex-views a{font-family:var(--mono);font-size:11px;color:var(--cyan);border:1px solid var(--hair);padding:7px 12px}
   .ex-views a:hover{border-color:var(--cyan);background:rgba(44,212,242,.08)}
@@ -279,6 +337,17 @@
   #irc-input::placeholder{color:#5a6172}
 
   /* network */
+  .net-schematic{border:1px solid var(--hair);margin-bottom:36px;background:
+    linear-gradient(90deg, color-mix(in oklab, var(--lime) 8%, transparent) 1px, transparent 1px) 0 0/28px 28px,
+    linear-gradient(color-mix(in oklab, var(--lime) 8%, transparent) 1px, transparent 1px) 0 0/28px 28px,
+    var(--navy2)}
+  .net-schematic svg{display:block;width:100%;height:auto}
+  .net-schematic a{cursor:pointer}
+  .net-schematic .arm-dot{fill:var(--navy);stroke:var(--paper-dim);stroke-width:1;transition:.15s}
+  .net-schematic a:hover .arm-dot{stroke:var(--lime)}
+  .net-schematic .arm-lbl{fill:var(--paper-dim);font-family:var(--mono);font-size:11px;transition:.15s}
+  .net-schematic a:hover .arm-lbl{fill:var(--paper)}
+  .net-schematic .arm-line{stroke:var(--hair-strong);stroke-width:1}
   .net-grid{display:flex;flex-direction:column;padding:10px 0 60px}
   .net-card{border:none;border-bottom:1px solid var(--hair);background:none;padding:26px 0;display:flex;flex-direction:column;gap:8px;transition:.18s;cursor:pointer}
   .net-card:hover{border-bottom-color:var(--hair-strong)}
@@ -293,8 +362,9 @@
   /* ask panel */
   #ask-panel{position:fixed;top:0;right:0;bottom:0;width:min(480px,100vw);z-index:70;background:var(--navy2);border-left:1px solid var(--hair);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column}
   #ask-panel.open{transform:none}
-  .ask-head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--hair)}
-  .ask-head h2{font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--lime)}
+  .ask-head{position:relative;display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--hair);overflow:hidden;background-image:linear-gradient(rgba(8,9,11,.78),rgba(8,9,11,.86)),url('assets/vault/crt.jpg');background-size:cover;background-position:center}
+  .ask-head h2{position:relative;font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--lime)}
+  .ask-head button{position:relative}
   #ask-close{background:none;border:none;color:var(--paper-dim);font-size:22px;cursor:pointer}
   #ask-close:hover{color:var(--lime)}
   #ask-log{flex:1;overflow-y:auto;padding:22px 24px;display:flex;flex-direction:column;gap:18px}
@@ -310,7 +380,7 @@
   .ask-input-row{display:flex;gap:10px;padding:16px 24px 22px;border-top:1px solid var(--hair)}
   #ask-input{flex:1;background:none;border:none;border-bottom:1.5px solid var(--hair-strong);color:var(--paper);font-family:var(--mono);font-size:14px;padding:12px 2px;outline:none}
   #ask-input:focus{border-bottom-color:var(--lime)}
-  #ask-send{font-family:var(--mono);font-size:12px;font-weight:600;color:#0a0e1a;background:var(--lime);border:none;border-radius:2px;padding:0 20px;cursor:pointer}
+  #ask-send{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--lime-ink);background:var(--lime);border:none;border-radius:2px;padding:0 20px;cursor:pointer}
 
   /* channel 59 modal */
   .ch59{position:relative;max-width:900px;width:100%;background:#0B0F1C;border:2px solid #3a4152;border-radius:6px;padding:0 0 0;overflow:hidden}
@@ -320,13 +390,15 @@
   .ch59-foot{display:flex;justify-content:space-between;gap:16px;padding:12px 18px;font-family:var(--mono);font-size:12px;color:var(--paper-dim)}
   .ch59-foot a{color:var(--cyan)}.ch59-foot a:hover{color:var(--lime)}
 
-  footer{border-top:1px solid var(--hair);padding:44px 0 60px;font-family:var(--mono)}
-  .foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-bottom:38px}
-  .stat .v{font-family:var(--serif);font-size:38px;font-weight:500;color:var(--paper);line-height:1}
-  .stat .v span{color:var(--lime)}
-  .stat .l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim);margin-top:9px}
-  .foot-b{display:flex;justify-content:space-between;gap:20px;font-size:11px;color:#5a6172;letter-spacing:.06em;border-top:1px solid var(--hair);padding-top:22px;flex-wrap:wrap}
+  footer{border-top:1px solid var(--hair);padding:44px 0;font-family:var(--mono)}
+  .foot-inner{display:flex;flex-direction:column;gap:20px}
+  .foot-census-k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-mute)}
+  .foot-census{margin-top:8px;font-size:13px;color:var(--paper-dim)}
+  .foot-census b{color:var(--paper);font-weight:500}
+  .foot-census span:not(:last-child)::after{content:"  ·  ";color:var(--hair-strong)}
+  .foot-b{font-size:11px;color:var(--paper-mute);letter-spacing:.04em}
   .foot-b a{color:var(--paper-dim)}.foot-b a:hover{color:var(--lime)}
+  @media(min-width:960px){ .foot-inner{flex-direction:row;align-items:flex-end;justify-content:space-between} }
 
   /* timeline */
   .tl-wrap{padding:6px 0 90px}
@@ -357,6 +429,17 @@
   .tl-playhead{position:absolute;top:20px;width:2px;height:52px;background:var(--paper);transform:translateX(-50%);transition:left .35s cubic-bezier(.4,0,.2,1);z-index:1}
   .tl-playhead::before{content:"";position:absolute;top:-5px;left:-4px;width:10px;height:10px;border-radius:50%;background:var(--paper)}
   .tl-detail{border:none;border-left:2px solid var(--lime);background:none;padding:6px 0 6px 30px;min-height:200px;max-width:760px}
+  .tl-chrono-head{font-family:var(--serif);font-size:22px;font-weight:500;margin:56px 0 8px;padding-top:40px;border-top:1px solid var(--hair)}
+  .tl-chrono{list-style:none;border-left:1px solid var(--hair-strong);margin-left:8px}
+  .tl-chrono li{position:relative;padding:18px 0 18px 30px;cursor:pointer}
+  .tl-chrono .cdot{position:absolute;left:-6px;top:26px;width:11px;height:11px;border-radius:50%;border:1.5px solid var(--paper-mute);background:var(--navy)}
+  .tl-chrono li.terminus .cdot{border-color:var(--amber);background:var(--amber)}
+  .tl-chrono .meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--paper-mute)}
+  .tl-chrono .meta .id{color:var(--lime)}
+  .tl-chrono li.terminus .meta .id{color:var(--amber)}
+  .tl-chrono h3{margin-top:5px;font-family:var(--serif);font-size:19px;font-weight:500;transition:color .15s}
+  .tl-chrono li:hover h3{color:var(--lime)}
+  .tl-chrono .by{margin-top:3px;font-family:var(--mono);font-size:11px;color:var(--paper-dim)}
   .tl-year{font-family:var(--mono);font-size:34px;font-weight:600;line-height:1;letter-spacing:.02em}
   .tl-star{font-size:18px}
   .tl-strand{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--c);margin:14px 0 10px}
@@ -374,7 +457,7 @@
   .boards-mode{display:flex;gap:8px;margin-bottom:16px}
   .bmode{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--paper-dim);border:1px solid var(--hair);background:var(--navy2);padding:10px 18px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.16s}
   .bmode:hover{color:var(--paper)}
-  .bmode.act{color:#0a0e1a;background:var(--lime);border-color:var(--lime)}
+  .bmode.act{color:var(--lime-ink);background:var(--lime);border-color:var(--lime)}
   .live-dot{width:8px;height:8px;border-radius:50%;background:var(--magenta);box-shadow:0 0 8px var(--magenta);animation:livepulse 1.6s infinite}
   @keyframes livepulse{50%{opacity:.35}}
   .live-bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:12px}
@@ -386,7 +469,7 @@
   .live-net{font-size:11px;color:#5a6172}
   .live-join input{background:none;border:none;border-bottom:1.5px solid var(--hair-strong);color:var(--paper);font-family:var(--mono);font-size:12px;padding:8px 2px;width:130px;outline:none}
   .live-join input:focus{border-bottom-color:var(--lime)}
-  .live-join button{font-family:var(--mono);font-size:12px;color:#0a0e1a;background:var(--lime);border:none;padding:8px 14px;cursor:pointer}
+  .live-join button{font-family:var(--mono);font-size:12px;color:var(--lime-ink);background:var(--lime);border:none;padding:8px 14px;cursor:pointer}
   .live-frame{border:2px solid #3a4152;border-radius:6px;overflow:hidden;background:#0B0F1C;height:64vh;min-height:460px}
   .live-frame iframe{width:100%;height:100%;border:0;display:block}
   .live-note{font-family:var(--mono);font-size:12px;color:var(--paper-dim);line-height:1.7;margin-top:14px;max-width:80ch}
@@ -397,7 +480,7 @@
   .m59-chans{display:flex;flex-wrap:wrap;gap:6px}
   .m59-chan{font-family:var(--mono);font-size:12px;color:var(--paper-dim);border:1px solid var(--hair);background:var(--navy2);padding:5px 11px;cursor:pointer;transition:.15s}
   .m59-chan:hover{color:var(--lime);border-color:var(--lime)}
-  .m59-chan.act{color:#0a0e1a;background:var(--lime);border-color:var(--lime)}
+  .m59-chan.act{color:var(--lime-ink);background:var(--lime);border-color:var(--lime)}
   .m59-status{font-family:var(--mono);font-size:12px;color:#5a6172}
   .m59-status.on{color:var(--lime)}
   .m59-status.on::before{content:'● '}
@@ -410,7 +493,7 @@
   .m59-prompt{font-family:var(--mono);color:var(--lime)}
   .m59-input-row input{flex:1;background:none;border:none;border-bottom:1.5px solid var(--hair-strong);color:var(--paper);font-family:var(--mono);font-size:14px;padding:9px 2px;outline:none}
   .m59-input-row input:focus{border-bottom-color:var(--lime)}
-  .m59-input-row button{font-family:var(--mono);font-size:12px;color:#0a0e1a;background:var(--lime);border:none;padding:9px 16px;cursor:pointer}
+  .m59-input-row button{font-family:var(--mono);font-size:12px;color:var(--lime-ink);background:var(--lime);border:none;padding:9px 16px;cursor:pointer}
   .live-elsewhere{margin-top:16px;padding-top:14px;border-top:1px solid var(--hair)}
   .live-elsewhere .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#5a6172;margin-right:6px}
 
@@ -421,14 +504,15 @@
   .brand-copy p{color:var(--paper-dim);font-size:15px;line-height:1.55;margin-top:8px;max-width:60ch}
   .brand-copy .go{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--lime)}
 
-  /* people: roster + author pages */
-  .roster-grid{display:flex;flex-direction:column;padding:10px 0 90px}
-  .p-card{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:16px;padding:20px 0;border-bottom:1px solid var(--hair);cursor:pointer;transition:.18s}
-  .p-card:hover{border-bottom-color:var(--hair-strong)}
-  .p-card .nm{font-size:19px;font-weight:500}
+  /* people: roster + author pages — hairline grid, same technique as the reading room */
+  .roster-grid{display:grid;gap:1px;background:var(--hair);grid-template-columns:1fr;padding-bottom:90px}
+  @media(min-width:640px){ .roster-grid{grid-template-columns:repeat(2,1fr)} }
+  .p-card{background:var(--navy);padding:24px;cursor:pointer;transition:background .15s}
+  .p-card:hover{background:var(--panel)}
+  .p-card .nm{margin-top:4px;font-size:22px;font-weight:500;transition:color .15s}
   .p-card:hover .nm{color:var(--lime)}
-  .p-card .role{font-family:var(--mono);font-size:11px;color:var(--paper-dim);line-height:1.5;margin-top:4px}
-  .p-card .stat{font-family:var(--mono);font-size:11px;color:#5a6172;white-space:nowrap}
+  .p-card .role{font-family:var(--mono);font-size:11px;color:var(--lime);margin-top:4px}
+  .p-card .stat{margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--paper-mute)}
   .p-card .stat b{color:var(--paper-dim)}
   .person-head{padding:10px 0 20px;border-bottom:1px solid var(--hair)}
   .person-head .dates{font-family:var(--mono);font-size:13px;color:var(--paper-dim);margin-top:10px}
@@ -492,13 +576,17 @@
 </style>
 </head>
 <body>
+<div class="scanlines"></div>
+<div class="grain"></div>
+<div id="new-here-banner" style="display:none">
+  <div class="wrap"><p>New here? This is a library, not a coin or a wallet. Records are classified, hash-sealed, and hosted in full.</p></div>
+</div>
 <header>
   <div class="wrap bar">
     <a class="mark" href="#/archive">
       <svg class="m59" viewBox="0 0 52 52" aria-hidden="true" width="50" height="50">
-        <polygon points="26,3 46,14.5 46,37.5 26,49 6,37.5 6,14.5" fill="none" stroke="var(--lime)" stroke-width="2.4"/>
-        <polygon points="26,10 40,18 40,34 26,42 12,34 12,18" fill="none" stroke="var(--hair-strong)" stroke-width="1"/>
-        <text x="26" y="33" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="17" font-weight="600" fill="var(--paper)">59</text>
+        <polygon points="26,3 46,14.5 46,37.5 26,49 6,37.5 6,14.5" fill="color-mix(in oklab, var(--amber) 8%, transparent)" stroke="var(--amber)" stroke-width="2"/>
+        <text x="26" y="33" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="17" font-weight="500" fill="var(--amber)">59</text>
       </svg>
       <span class="mtext"><span class="p">Project</span><span class="row2"><span class="b">B59</span><span class="sub">· The Vault</span></span></span>
     </a>
@@ -520,13 +608,20 @@
 <main>
   <!-- ═══ ARCHIVE ═══ -->
   <section id="view-archive" data-screen-label="Archive">
-    <div class="welcome-strip"><div class="wrap" style="display:flex;align-items:center;gap:10px">
-      <span style="font-size:15px">👋</span>
-      <span>New here? This is a library, not a coin or a wallet. Here's what's inside, below.</span>
-    </div></div>
-    <div class="wrap hero">
-      <svg class="hero-grain" width="100%" height="100%"><filter id="heroNoise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#heroNoise)"/></svg>
-      <p class="lede" style="max-width:640px">Five threads that all led to the same place: the cypherpunks, the Extropians, the digital-cash attempts, the crypto wars, and the arcade years, traced on one timeline down to <span class="btc">Bitcoin</span>.</p>
+    <section class="hero-photo">
+      <img src="assets/vault/hero.jpg" alt="The reading room: a CRT terminal, floppy-disk stacks, and a brass 59 plaque">
+      <div class="tint"></div>
+      <div class="fade-x"></div>
+      <div class="fade-y"></div>
+      <div class="hero-photo-inner">
+        <p class="hero-kicker">Research · Archive · Preserve</p>
+        <h1>Five threads that all led to the same place: the cypherpunks, the Extropians, the digital-cash attempts, the crypto wars, and the arcade years, traced on one timeline down to <em>Bitcoin.</em></h1>
+        <p class="hero-sub">A classified, hash-sealed reading room. Every record has an accession number, a class, and a SHA-256 vault seal.</p>
+        <p class="hero-cap">Reading room · CRT and stacks</p>
+      </div>
+    </section>
+
+    <div class="wrap" style="padding:44px 0">
       <div class="search-row">
         <div class="field">
           <span class="pr mono">find&nbsp;&rsaquo;</span>
@@ -539,52 +634,63 @@
       <div class="search-ops">
         <span><b>author:</b>szabo</span><span><b>tag:</b>remailers</span><span><b>year:</b>1990-2000</span><span><b>class:</b>3</span><span><b>has:</b>offline</span><span><b>in:</b>text trusted third party</span>
       </div>
+    </div>
 
+    <div class="wrap" style="padding:8px 0 40px">
       <div class="threads-wrap">
         <div class="threads-line"></div>
         <div class="threads">
-          <a class="thread-node" href="#/cryptowars">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-            <div class="dot"></div><div class="lbl">Cypherpunks</div>
+          <a class="thread-node" href="#/thread/cypherpunks">
+            <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 14c-5 0-9 4-9 9v5h-3v22h24V28h-3v-5c0-5-4-9-9-9zm0 3c3.3 0 6 2.7 6 6v5H26v-5c0-3.3 2.7-6 6-6z"/></svg></span>
+            <span class="subdot"></span><span class="lbl">Cypherpunks</span><span class="yrs">1992+</span>
           </a>
-          <a class="thread-node" href="#/extropy">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M7 12c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5c-1.4 0-2.6-.5-3.5-1.5"/><path d="M9 15.5 7 17l0-3"/></svg>
-            <div class="dot"></div><div class="lbl">Extropians</div>
+          <a class="thread-node" href="#/thread/extropians">
+            <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 30a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0-16c8 0 16 7.2 16 16s-8 16-16 16S16 39.8 16 30 24 14 32 14zm14 16c0-3.6-1.8-7.1-5-10.2M21 19.8C17.8 22.9 16 26.4 16 30m5 10.2C21.8 43.1 26.6 46 32 46s10.2-2.9 11-5.8"/></svg></span>
+            <span class="subdot"></span><span class="lbl">Extropians</span><span class="yrs">1988+</span>
           </a>
-          <a class="thread-node" href="#/archive">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10a2.3 2.3 0 0 1 2.5-1.6c1.3 0 2.5.6 2.5 1.8s-1.2 1.6-2.5 1.8-2.5.6-2.5 1.8S10.7 16 12 16a2.3 2.3 0 0 0 2.5-1.6"/></svg>
-            <div class="dot"></div><div class="lbl">Digital Cash</div>
+          <a class="thread-node" href="#/thread/digital-cash">
+            <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 12c11 0 20 8 20 18s-9 18-20 18S12 40 12 30s9-18 20-18zm-6 18c0 4 2.7 7 6 7s6-3 6-7-2.7-7-6-7-6 3-6 7z"/></svg></span>
+            <span class="subdot"></span><span class="lbl">Digital Cash</span><span class="yrs">1982-2008</span>
           </a>
-          <a class="thread-node" href="#/cryptowars">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/></svg>
-            <div class="dot"></div><div class="lbl">Crypto Wars</div>
+          <a class="thread-node" href="#/thread/crypto-wars">
+            <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 10l18 6v14c0 10-7.5 18.5-18 22-10.5-3.5-18-12-18-22V16l18-6z"/></svg></span>
+            <span class="subdot"></span><span class="lbl">Crypto Wars</span><span class="yrs">1991-2000</span>
           </a>
-          <a class="thread-node" href="#/archive">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="9" width="18" height="8" rx="4"/><path d="M8 11v4M6 13h4"/><circle cx="16" cy="12" r="1"/><circle cx="18.5" cy="14" r="1"/></svg>
-            <div class="dot"></div><div class="lbl">Game History</div>
+          <a class="thread-node" href="#/thread/arcade">
+            <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M22 38c0-8 4.5-14 10-14s10 6 10 14v8H22v-8zm10-18a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM18 48h28v4H18z"/></svg></span>
+            <span class="subdot"></span><span class="lbl">Arcade Years</span><span class="yrs">1971+</span>
           </a>
-          <a class="thread-node end" href="#/record/B59-000">
-            <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 8.5h4.2a2 2 0 0 1 0 4H9m0 0h4.6a2.1 2.1 0 0 1 0 4.2H9M11 7v10"/></svg>
-            <div class="dot"></div><div class="lbl">Bitcoin<br>2008</div>
+          <a class="thread-node end" href="#/thread/bitcoin">
+            <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M24 16h12c6 0 10 3.2 10 8.2 0 3.2-1.8 5.6-4.6 6.8 3.4 1 5.6 3.8 5.6 7.4 0 5.4-4.2 9.6-11.2 9.6H24V16zm6 4.8v8.4h5.4c2.8 0 4.4-1.4 4.4-4.2s-1.6-4.2-4.4-4.2H30zm0 13.2v10.2h6.2c3.2 0 5.2-1.8 5.2-5.1s-2-5.1-5.2-5.1H30z"/></svg></span>
+            <span class="subdot"></span><span class="lbl">Bitcoin</span><span class="yrs">2008-2009</span>
           </a>
         </div>
       </div>
-
-      <div class="gterm-line">
-        <b>What:</b>&nbsp; 241 records across those five threads, hash-verified and hosted in full.<br>
-        <b>Why:</b>&nbsp; the mailing lists and mirrors they live on now could go dark any day, so we keep our own copies, connected.<br>
-        <b>How:</b>&nbsp; search above, browse the timeline, or open any thread's own room from the menu.
-      </div>
-
-      <div class="hero-stats">
-        <span><b id="stat-records">···</b> records catalogued</span>
-        <span><b id="stat-offline">···</b> hosted copies in vault</span>
-        <span><b id="stat-threads">···</b> months of boards linked</span>
-        <span class="sia">Sia upload · queued</span>
-      </div>
-      <div class="net-line">Part of the Project B59 network: <a href="https://officialbuckazoids.com" target="_blank" rel="noopener" class="btc">Buckazoids</a> · <a href="https://modulo59.com" target="_blank" rel="noopener">Modulo59</a> · <a href="https://nodeb59.com" target="_blank" rel="noopener">nodeb59.com</a></div>
     </div>
-    <div class="wrap grid">
+
+    <div class="wrap" style="padding:8px 0 40px">
+      <dl class="gterm-line" style="grid-template-columns:repeat(3,1fr)">
+        <div><dt>What</dt><dd>241 records across those five threads, hash-verified and hosted in full.</dd></div>
+        <div><dt>Why</dt><dd>The mailing lists and mirrors they live on now could go dark any day, so we keep our own copies, connected.</dd></div>
+        <div><dt>How</dt><dd>Search above, browse the timeline, or open any thread's own room from the menu. Verify a seal on any record.</dd></div>
+      </dl>
+      <div class="stats-grid">
+        <div><div class="n" id="stat-records">···</div><div class="l">records catalogued</div></div>
+        <div><div class="n" id="stat-offline">···</div><div class="l">hosted copies in vault</div></div>
+        <div><div class="n" id="stat-offline2">···</div><div class="l">offline-ready</div></div>
+        <div><div class="n" id="stat-threads">···</div><div class="l">months of boards linked</div></div>
+      </div>
+    </div>
+
+    <div class="wrap" style="padding:8px 0 60px">
+      <div class="room-head">
+        <h2>Reading room</h2>
+        <a href="javascript:void(0)" id="room-catalog-link">Full catalog →</a>
+      </div>
+      <div class="room-grid" id="reading-room"></div>
+    </div>
+
+    <div class="wrap grid" id="catalog-anchor">
       <aside class="facets" id="facets"></aside>
       <section class="results">
         <div class="res-controls">
@@ -621,6 +727,8 @@
       </div>
       <div class="tl-rail" id="tl-rail"></div>
       <div class="tl-detail" id="tl-detail"></div>
+      <h2 class="tl-chrono-head">Every record, one chronology</h2>
+      <ol class="tl-chrono" id="tl-chrono"></ol>
     </div>
   </section>
 
@@ -680,6 +788,11 @@
     <div class="wrap reader-wrap" id="reader-wrap"></div>
   </section>
 
+  <!-- ═══ THREAD ═══ -->
+  <section id="view-thread" style="display:none" data-screen-label="Thread">
+    <div id="thread-body"></div>
+  </section>
+
   <!-- ═══ BOARDS (mIRC) ═══ -->
   <section id="view-boards" style="display:none" data-screen-label="Boards: mIRC reader">
     <div class="wrap section-head">
@@ -724,6 +837,9 @@
         </div>
         <p class="live-note"><b>Modulo59</b> is our own IRC network, running on our own server: that's why it embeds right here instead of kicking you to another site. You join as a guest; pick a nick with <span class="mono">/nick yourname</span>, or open a full IRC client and register to hold one. The buttons above under <b>Also on IRC</b> jump to the wider rooms on <b>Libera.Chat</b>, which only allows its own webchat, so those open in a new tab. The vault's own archived lists live under <b>Archive replay</b>.</p>
       </div>
+
+      <h2 class="tl-chrono-head">Lists on file</h2>
+      <div id="boards-lists"></div>
     </div>
   </section>
 
@@ -738,6 +854,26 @@
       <p>Everything lives under <b>Modulo 59</b>, the parent company and sovereign infrastructure stack. The Vault is its preservation arm. Here are the others.</p>
     </div>
     <div class="wrap">
+      <div class="net-schematic">
+        <svg viewBox="0 0 640 380" preserveAspectRatio="xMidYMid meet">
+          <line class="arm-line" x1="320" y1="190" x2="320" y2="60"/>
+          <line class="arm-line" x1="320" y1="190" x2="458" y2="140"/>
+          <line class="arm-line" x1="320" y1="190" x2="458" y2="300"/>
+          <line class="arm-line" x1="320" y1="190" x2="320" y2="380"/>
+          <line class="arm-line" x1="320" y1="190" x2="181" y2="300"/>
+          <line class="arm-line" x1="320" y1="190" x2="181" y2="140"/>
+          <polygon points="320,158 356,178 356,218 320,238 284,218 284,178" fill="color-mix(in oklab, var(--amber) 10%, transparent)" stroke="var(--amber)" stroke-width="1.5"/>
+          <text x="320" y="196" text-anchor="middle" fill="var(--amber)" font-family="'IBM Plex Mono',monospace" font-size="16">59</text>
+          <text x="320" y="252" text-anchor="middle" fill="var(--paper-mute)" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="2">MODULO 59</text>
+
+          <a href="#/archive"><circle class="arm-dot" cx="320" cy="60" r="16"/><text class="arm-lbl" x="320" y="34" text-anchor="middle">Vault</text></a>
+          <a href="node.html"><circle class="arm-dot" cx="458" cy="140" r="14"/><text class="arm-lbl" x="458" y="116" text-anchor="middle">Node</text></a>
+          <a href="https://nodeb59.com" target="_blank" rel="noopener"><circle class="arm-dot" cx="458" cy="300" r="14"/><text class="arm-lbl" x="458" y="332" text-anchor="middle">Arcade</text></a>
+          <a data-ch59><circle class="arm-dot" cx="320" cy="380" r="14"/><text class="arm-lbl" x="320" y="360" text-anchor="middle">Ch.59</text></a>
+          <a href="https://officialbuckazoids.com" target="_blank" rel="noopener"><circle class="arm-dot" cx="181" cy="300" r="14"/><text class="arm-lbl" x="181" y="332" text-anchor="middle">Buckazoids</text></a>
+          <a href="https://github.com/ProjectB59/projectb59" target="_blank" rel="noopener"><circle class="arm-dot" cx="181" cy="140" r="14"/><text class="arm-lbl" x="181" y="116" text-anchor="middle">Source</text></a>
+        </svg>
+      </div>
       <div class="brand-strip">
         <img src="assets/m59-lockup.png" alt="Modulo 59 · NodeB59 · Buckazoids · Project B59" />
         <div class="brand-copy">
@@ -786,17 +922,17 @@
 </main>
 
 <footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div class="stat"><div class="v"><span id="foot-records">···</span></div><div class="l">Records catalogued</div></div>
-      <div class="stat"><div class="v"><span id="foot-hosted">···</span></div><div class="l">Hosted source copies</div></div>
-      <div class="stat"><div class="v">100<span>%</span></div><div class="l">Hash-verified</div></div>
-      <div class="stat"><div class="v">∞</div><div class="l">Retention horizon</div></div>
+  <div class="wrap foot-inner">
+    <div>
+      <p class="foot-census-k">Vault census</p>
+      <p class="foot-census">
+        <span><b id="foot-records">···</b> records catalogued</span>
+        <span><b id="foot-hosted">···</b> hosted copies</span>
+        <span><b id="foot-months">···</b> months of boards linked</span>
+        <span>Sia upload · queued</span>
+      </p>
     </div>
-    <div class="foot-b">
-      <span>PROJECT B59: historical &amp; archival engine · a Modulo 59 company</span>
-      <span><a href="https://modulo59.com" target="_blank" rel="noopener">modulo59</a> · <a href="https://nodeb59.com" target="_blank" rel="noopener">arcade</a> · <a href="https://officialbuckazoids.com" target="_blank" rel="noopener">buckazoids</a> · <a href="https://github.com/ProjectB59/projectb59" target="_blank" rel="noopener">github</a></span>
-    </div>
+    <p class="foot-b">Part of the Project B59 network: <a href="node.html">The B59 Node</a> · <a href="https://nodeb59.com" target="_blank" rel="noopener">nodeB59</a> · <a href="https://officialbuckazoids.com" target="_blank" rel="noopener">Buckazoids</a> · <a href="https://modulo59.com" target="_blank" rel="noopener">Modulo59</a> · <a href="https://github.com/ProjectB59/projectb59" target="_blank" rel="noopener">github</a></p>
   </div>
 </footer>
 
@@ -829,6 +965,7 @@
 <script src="vault-app/boards.js"></script>
 <script src="vault-app/people.js"></script>
 <script src="vault-app/reader.js"></script>
+<script src="vault-app/thread.js"></script>
 <script src="vault-app/app.js"></script>
 <script src="vault-app/m59irc.js"></script>
 <script src="vault-app/feed-view.js"></script>

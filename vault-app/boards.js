@@ -114,11 +114,31 @@ function command(v){
   else sysMsg('The boards are read-only, this is an archive, not a live wire. (Yet.) Try /help.');
 }
 
+function paintLists(){
+  var host = el('boards-lists');
+  if(!host) return;
+  host.innerHTML = chans.map(function(c){
+    var n = c.msgs.filter(function(m){ return !m.sys; }).length;
+    return '<article class="rec" data-chan="'+c.name+'"><div class="call">'+esc(c.name)+'</div>'+
+      '<div><div class="title">'+esc(c.topic)+'</div>'+
+      '<div class="meta"><span><b>'+n+'</b> messages</span></div></div></article>';
+  }).join('');
+  host.querySelectorAll('[data-chan]').forEach(function(a){
+    a.addEventListener('click', function(){
+      var i = chans.findIndex(function(c){ return c.name===a.getAttribute('data-chan'); });
+      if(i>=0) switchTo(i);
+      document.querySelector('[data-bmode="archive"]').click();
+      window.scrollTo(0,0);
+    });
+  });
+}
+
 function ensure(){
   if(built) return;
   built = true;
   chans = buildChannels();
   switchTo(0);
+  paintLists();
   var input = el('irc-input');
   input.addEventListener('keydown', function(e){
     if(e.key==='Enter' && input.value.trim()){ command(input.value); input.value=''; }

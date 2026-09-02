@@ -67,13 +67,14 @@ R.forEach(function(r){ r._colls = collFor(r); });
 var state = { q:'', type:null, coll:null, cls:null, view:'archive', sort:'date-desc', yrFrom:null, yrTo:null };
 
 // ── Routing ────────────────────────────────────────────────
-var VIEWS = ['archive','timeline','extropy','cryptowars','people','boards','feed','network','reader'];
+var VIEWS = ['archive','timeline','extropy','cryptowars','people','boards','feed','network','reader','thread'];
 function route(){
   var h = (location.hash||'').replace(/^#\/?/,'');
   var parts = h.split('/');
   if(parts[0]==='record' && parts[1]){ show('archive'); openRecord(B59_REDIRECT[parts[1]] || parts[1]); return; }
   if(parts[0]==='people' && parts[1] && window.B59People){ show('people'); window.B59People.openPerson(parts[1]); return; }
   if(parts[0]==='read' && parts[1] && window.B59Reader){ show('reader'); window.B59Reader.open(B59_REDIRECT[parts[1]] || parts[1]); return; }
+  if(parts[0]==='thread' && parts[1] && window.B59Thread){ show('thread'); window.B59Thread.open(parts[1]); return; }
   var v = VIEWS.indexOf(parts[0])>=0 ? parts[0] : 'archive';
   show(v);
 }
@@ -89,6 +90,8 @@ function show(v){
   if(v==='feed' && window.B59Feed) window.B59Feed.init();
   if(v==='people' && window.B59People) window.B59People.ensure();
   if(v==='timeline' && window.B59Timeline){ window.B59Timeline.init(); } else if(window.B59Timeline){ window.B59Timeline.stop(); }
+  var nhb = document.getElementById('new-here-banner');
+  if(nhb) nhb.style.display = (v==='archive') ? 'none' : '';
   window.scrollTo(0,0);
 }
 window.addEventListener('hashchange', route);
@@ -241,8 +244,9 @@ function renderResults(){
   var el = document.getElementById('results');
   el.innerHTML = list.map(function(r){
     var year = (r.date||'').slice(0,4);
+    var cls = classOf(r);
     return '<article class="rec" data-id="'+r.id+'">'+
-      '<div class="call">'+r.id+'<span class="era">'+esc(year)+' · '+esc((TYPES[r.type]||{}).label||r.type)+'</span></div>'+
+      '<div class="call">'+r.id+(cls?' <span class="cls-badge">'+cls+'</span>':'')+'<span class="era">'+esc(year)+' · '+esc((TYPES[r.type]||{}).label||r.type)+'</span></div>'+
       '<div><div class="title">'+esc(r.title)+'</div>'+
       '<p class="desc">'+esc((r.description||'').slice(0,220))+((r.description||'').length>220?'…':'')+'</p>'+
       '<div class="meta">'+
@@ -597,13 +601,41 @@ if(yrFrom) yrFrom.addEventListener('input', function(){ state.yrFrom = readYr(yr
 if(yrTo) yrTo.addEventListener('input', function(){ state.yrTo = readYr(yrTo); renderResults(); });
 
 // ── Stats ──────────────────────────────────────────────────
+var hostedCount = R.filter(function(r){ return r.local; }).length;
 document.getElementById('stat-records').textContent = R.length;
 var ledgerCount = document.getElementById('ledger-count'); if(ledgerCount) ledgerCount.textContent = R.length;
-document.getElementById('stat-offline').textContent = R.filter(function(r){ return r.local; }).length;
+document.getElementById('stat-offline').textContent = hostedCount;
+var statOffline2 = document.getElementById('stat-offline2'); if(statOffline2) statOffline2.textContent = hostedCount;
 document.getElementById('stat-threads').textContent = ((window.B59_EXTROPY_INDEX||{}).months||[]).length;
 var footRecords = document.getElementById('foot-records'); if(footRecords) footRecords.textContent = R.length;
-var footHosted = document.getElementById('foot-hosted'); if(footHosted) footHosted.textContent = R.filter(function(r){ return r.local; }).length;
-var offlineDocCount = document.getElementById('offline-doc-count'); if(offlineDocCount) offlineDocCount.textContent = R.filter(function(r){ return r.local; }).length;
+var footHosted = document.getElementById('foot-hosted'); if(footHosted) footHosted.textContent = hostedCount;
+var footMonths = document.getElementById('foot-months'); if(footMonths) footMonths.textContent = ((window.B59_EXTROPY_INDEX||{}).months||[]).length;
+var offlineDocCount = document.getElementById('offline-doc-count'); if(offlineDocCount) offlineDocCount.textContent = hostedCount;
+
+// ── Reading room (homepage featured strip) ──────────────────
+(function(){
+  var room = document.getElementById('reading-room');
+  if(!room) return;
+  var FEATURED = ['B59-000','B59-204.003','B59-302.004','B59-106.002','B59-402.001','B59-904.003'];
+  var picks = FEATURED.map(function(id){ return R.filter(function(r){ return r.id===id; })[0]; }).filter(Boolean);
+  room.innerHTML = picks.map(function(r){
+    var cls = classOf(r);
+    return '<div class="room-card" data-id="'+r.id+'">'+
+      '<div class="top"><span class="id">'+r.id+'</span>'+(cls?'<span class="cls-badge">'+cls+'</span>':'')+'</div>'+
+      '<h3>'+esc(r.title)+'</h3>'+
+      '<div class="by">'+esc(r.author||'Unknown')+' · '+esc((r.date||'').slice(0,4))+'</div>'+
+      '<p>'+esc(r.description||'')+'</p>'+
+    '</div>';
+  }).join('');
+  room.querySelectorAll('.room-card').forEach(function(c){
+    c.addEventListener('click', function(){ openRecord(c.getAttribute('data-id')); });
+  });
+  var catalogLink = document.getElementById('room-catalog-link');
+  if(catalogLink) catalogLink.addEventListener('click', function(){
+    var anchor = document.getElementById('catalog-anchor');
+    if(anchor) anchor.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+})();
 
 // ── Boards mode toggle + live IRC ─────
 // Primary: our OWN Modulo59 network, embedded (see vault-app/m59irc.js);
