@@ -71,6 +71,17 @@ var VIEWS = ['archive','timeline','extropy','cryptowars','people','boards','feed
 function route(){
   var h = (location.hash||'').replace(/^#\/?/,'');
   var parts = h.split('/');
+  // Overlays (record detail, Channel 59, donate) float on top of whatever
+  // view is showing and were previously only closed by their own × button,
+  // Escape, or a backdrop click, never by navigation. That left a stale
+  // overlay stuck on screen after following any link out of it, e.g.
+  // "Read in the vault": the destination rendered correctly underneath,
+  // just invisibly, behind the still-open record card. Close everything
+  // not tied to the route we're headed to before acting on it.
+  closeCh59();
+  var donateOv = document.getElementById('bz-donate-overlay');
+  if(donateOv) donateOv.classList.remove('open');
+  if(parts[0]!=='record') closeRecord();
   if(parts[0]==='record' && parts[1]){ show('archive'); openRecord(B59_REDIRECT[parts[1]] || parts[1]); return; }
   if(parts[0]==='people' && parts[1] && window.B59People){ show('people'); window.B59People.openPerson(parts[1]); return; }
   if(parts[0]==='read' && parts[1] && window.B59Reader){ show('reader'); window.B59Reader.open(B59_REDIRECT[parts[1]] || parts[1]); return; }
@@ -520,8 +531,14 @@ function openCh59(){
     '<div class="ch59-foot"><span>If the signal is down, the mainframe sleeps.</span>'+
     '<a href="https://nodeb59.com/channel59.html" target="_blank" rel="noopener">Open full Channel 59 ↗</a></div></div>';
   ov.classList.add('open');
-  ov.querySelector('.d-close').addEventListener('click', function(){ ov.classList.remove('open'); ov.innerHTML=''; });
-  ov.addEventListener('click', function(e){ if(e.target===ov){ ov.classList.remove('open'); ov.innerHTML=''; } });
+  ov.querySelector('.d-close').addEventListener('click', closeCh59);
+  ov.addEventListener('click', function(e){ if(e.target===ov) closeCh59(); });
+}
+// Clears innerHTML (not just hides) so the live stream iframe actually stops,
+// rather than continuing to load/play muted behind whatever view comes next.
+function closeCh59(){
+  var ov = document.getElementById('ch59-overlay');
+  if(ov && ov.classList.contains('open')){ ov.classList.remove('open'); ov.innerHTML=''; }
 }
 document.querySelectorAll('[data-ch59]').forEach(function(b){ b.addEventListener('click', openCh59); });
 
