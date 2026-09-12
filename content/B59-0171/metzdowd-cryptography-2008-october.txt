@@ -1,0 +1,2973 @@
+From stefan.kelm at secorvo.de  Wed Oct  1 09:45:28 2008
+From: stefan.kelm at secorvo.de (Stefan Kelm)
+Date: Wed, 01 Oct 2008 15:45:28 +0200
+Subject: EV certs: Doing more of what we already know doesn't work
+In-Reply-To: <E1Ki0sp-0000sI-FV@wintermute01.cs.auckland.ac.nz>
+References: <E1Ki0sp-0000sI-FV@wintermute01.cs.auckland.ac.nz>
+Message-ID: <48E37EF8.2030509@secorvo.de>
+
+Cool!  ;-)
+
+Verisign's CPS has been an inspiration for me for quite
+a few years now. E.g., this statement has been in there
+for a number of years:
+
+  The Certificate, however, provides no proof of the identity
+  of the Subscriber.
+
+Taken from page 12 of the current version, obviously (?)
+referring to so-called "Class 3 certificates".
+
+Cheers,
+
+	Stefan.
+
+---------------------------------------------------------
+Stefan Kelm
+Security Consulting
+
+Secorvo Security Consulting GmbH
+Ettlinger Strasse 12-14, D-76137 Karlsruhe
+Tel. +49 721 255171-304, Fax +49 721 255171-100
+stefan.kelm at secorvo.de, http://www.secorvo.de/
+PGP: 87AE E858 CCBC C3A2 E633 D139 B0D9 212B
+
+Mannheim HRB 108319, Geschaeftsfuehrer: Dirk Fox
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Fri Oct  3 14:46:19 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Fri, 3 Oct 2008 14:46:19 -0400
+Subject: "unbreakable" quantum crypto cracked by a laser
+Message-ID: <20081003144619.2796f7f7@cs.columbia.edu>
+
+http://technology.newscientist.com/channel/tech/dn14866-laser-cracks-unbreakable-quantum-communications.html?feedId=online-news_rss20
+
+Not surprisingly, it's attacking the implementation, not the physics --
+but of course we use implementations to communicate, rather than
+theories.
+
+
+
+		--Steve Bellovin, http://www.cs.columbia.edu/~smb
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From rah at shipwright.com  Sun Oct  5 10:22:37 2008
+From: rah at shipwright.com (R.A. Hettinga)
+Date: Sun, 5 Oct 2008 10:22:37 -0400
+Subject: What does knot theory have to do with P^#P != NP ?  
+Message-ID: <8DEDEA86-A62C-4C50-96CF-B037E6A3BADC@shipwright.com>
+
+<http://ephermata.livejournal.com/190880.html?mode=reply>
+
+
+David Molnar (ephermata) wrote,
+@ 2008-10-04 01:59:00
+
+
+
+Current music:
+Crystal Castles - Air War
+What does knot theory have to do with P^#P != NP ?
+I didn't know, but Michael H. Freedman has an answer - by assuming  
+that the complexity class P^#P is not equal to NP, you can prove a new  
+theorem in knot theory!
+
+Complexity Classes as Mathematical Axioms
+
+M. Freedman
+(Submitted on 30 Sep 2008)
+
+Abstract: Treating a conjecture, P^#P != NP, on the separation of  
+complexity classes as an axiom, an implication is found in three  
+manifold topology with little obvious connection to complexity theory.  
+This is reminiscent of Harvey Friedman's work on finitistic  
+interpretations of large cardinal axioms.
+
+http://arxiv.org/abs/0810.0033
+
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From pgut001 at cs.auckland.ac.nz  Mon Oct  6 00:51:50 2008
+From: pgut001 at cs.auckland.ac.nz (Peter Gutmann)
+Date: Mon, 06 Oct 2008 17:51:50 +1300
+Subject: Who cares about side-channel attacks?
+Message-ID: <E1Kmi4U-0001Sx-VS@wintermute01.cs.auckland.ac.nz>
+
+For the past several years I've been making a point of asking users of crypto 
+on embedded systems (which would be particularly good targets for side-channel 
+attacks, particularly ones that provide content-protection capabilities) 
+whether they'd consider enabling side-channel attack (SCA - no, not that SCA) 
+protection in their use of crypto.  So far I've never found anyone who's made 
+an informed decision to trade off performance for SCA protection.  By 
+"informed decision" I mean the following:
+
+- SCA protection isn't enabled by default, i.e. they don't just get it whether 
+  they want it or not.
+
+- The SCA protection is more than just a token throw-some-blinding-at-the-RSA, 
+  it extends to things like pubic/private key validation on load (for example 
+  via MACs) to detect key-manipulation attacks, checksumming of key data after 
+  each crypto op to detect memory-disturb attacks, and so on.
+
+- There is a tangible cost/tradeoff in enabling SCA protection, i.e. it's not 
+  just chicken-soup protection, "turn it on, it's a 2GHz multicore CPU it 
+  can't hurt".
+
+In other words the user has to make a conscious decision that SCA protection 
+is important enough that performance/power consumption can be sacrificed for 
+it.  Can anyone provide any data on users making this tradeoff?  And since 
+negative results are also results, a response of "I've never found anyone who 
+cares either" is also useful.  Since the information may be commercially 
+sensitive, respond in private email if you'd rather not discuss it in public 
+and I'll summarise if there's any interest.
+
+(Pre-emptive response to the inevitable "OpenSSL/NSS/xyz smart card/... have 
+had RSA blinding enabled by default since ...": Yes, I know, and now go back 
+and re-read points 1 and 2 above).
+
+Peter.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From mheyman at gmail.com  Mon Oct  6 13:10:00 2008
+From: mheyman at gmail.com (mheyman at gmail.com)
+Date: Mon, 6 Oct 2008 13:10:00 -0400
+Subject: Quantum Crypto broken again
+Message-ID: <5c8fcb9c0810061010i5209ecf9r8fc333d1a4ce435d@mail.gmail.com>
+
+A failure in implementation leads to the ability to eavesdrop on a
+quantum-secrecy based key exchange on 2/3 of the types of quantum
+equipment used.
+
+From: <http://technology.newscientist.com/article/dn14866-laser-cracks-unbreakable-quantum-communications.html>
+
+    Makarov and colleagues from Sweden and Russia have shown that Eve
+could control
+    Bob's equipment, so that they both decode exactly the same digits
+from Alice's
+    transmission...The method exploits the way a common type of photon
+counter can have
+    its sensitivity reduced by a very bright flash of light. The
+attack begins when Eve fires a
+    pulse of laser light to all four detectors in Bob's
+equipment...[Eve leverages this into
+    getting the key] by sending on a sequence of encoded photons that
+are identical to the
+    ones she receives from Alice, Eve can safely intercept a message
+without leaving the
+    tell-tale quantum errors...Makarov and colleagues have now uncovered such
+    vulnerabilities in two of the three types of quantum equipment
+commonly used. They
+    are now investigating ways to solve the flaw without introducing
+more weaknesses.
+
+A paper, "Can Eve control PerkinElmer actively-quenched single-photon
+detector?" is available at
+<http://arxiv.org/ftp/arxiv/papers/0809/0809.3408.pdf>.
+
+-Michael Heyman
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From ben at links.org  Sun Oct 12 07:39:50 2008
+From: ben at links.org (Ben Laurie)
+Date: Sun, 12 Oct 2008 12:39:50 +0100
+Subject: once more, with feeling.
+In-Reply-To: <E1KhyVp-0000W1-LL@wintermute01.cs.auckland.ac.nz>
+References: <E1KhyVp-0000W1-LL@wintermute01.cs.auckland.ac.nz>
+Message-ID: <48F1E206.8080504@links.org>
+
+Peter Gutmann wrote:
+>> If this had been done in the beginning, before users -- and web site
+>> designers, and browser vendors -- were mistrained, it might have worked.
+>> Now, though?  I'm skeptical.
+> 
+> For existing apps with habituated users, so am I.  So how about the following
+> strawman: Take an existing browser (say Firefox), brand it as some special-
+> case secure online banking browser, and use the "new developments" solution
+> above, i.e. it only talks mutual-auth challenge-response crypto and nothing
+> else.  At that point you've reduced "Reformat user and reinstall browsing
+> habits" to "Train users to only use safe-browser when they do their banking,
+> i.e. 'Never enter banking details using anything other than safe-browser'".
+> Even if you only get a subset of users doing this, it's still a massive attack
+> surface reduction because you've raised the bar from any idiot who buys a
+> phishing kit to having to perform a man-in-the-browser attack.
+
+We've been debating this a lot at Google lately. One argument that I
+have increasing sympathy with is that SSO (or if you want to be modern,
+federated login) provides an opportunity to change the playing field
+sufficiently that we can reprogram users to be less vulnerable to
+phishing - or just switch them to protocols that make phishing irrelevant.
+
+To that end, we've released some usability research...
+
+http://google-code-updates.blogspot.com/2008/09/usability-research-on-federated-login.html
+
+Obviously the end game here is that the user only has to protect his
+login to a small number of sites - i.e. those that provide the IdP. Once
+we get there, perhaps users can be persuaded to authenticate to those
+sites using something stronger than username/password.
+
+A sidenote that provides me with some amusement: although the modern
+trend is towards using OpenID, no-one wants to use it in the mode it is
+designed for, i.e. where the user can pick any old IdP and the RP will
+just trust it. In practice where we seem to be headed is that RPs will
+trust some smallish number of trusted IdPs. This is, of course, exactly
+what the Liberty guys have been working on all along. I predict that
+over time, most of the elements of Liberty will be incorporated into OpenID.
+
+Which makes me think that if Liberty had done what it claimed to be
+doing when it started, i.e. be a community-based, open-source-friendly
+protocol suite, it would have worked much better.
+
+Cheers,
+
+Ben.
+
+-- 
+http://www.apache-ssl.org/ben.html           http://www.links.org/
+
+"There is no limit to what a man can do or how far he can go if he
+doesn't mind who gets the credit." - Robert Woodruff
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Sun Oct 12 18:00:00 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Sun, 12 Oct 2008 18:00:00 -0400
+Subject: Using GPUs to crack crypto
+Message-ID: <20081012180000.10b33144@cs.columbia.edu>
+
+Elcomsoft has a product that uses GPUs to do password-cracking on a
+variety of media.  They claim a speed-up of up to 67x, depending on the
+application being attacked.
+
+http://www.elcomsoft.com/edpr.html?r1=pr&r2=wpa
+
+(This has led to a variety of stories (see, for example,
+http://www.scmagazineuk.com/WiFi-is-no-longer-a-viable-secure-connection/article/119294/)
+claiming that WPA is dead. The correct answer, though, is that
+passwords are dead, especially bad ones.)
+
+
+		--Steve Bellovin, http://www.cs.columbia.edu/~smb
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From pgut001 at cs.auckland.ac.nz  Thu Oct 16 02:46:42 2008
+From: pgut001 at cs.auckland.ac.nz (Peter Gutmann)
+Date: Thu, 16 Oct 2008 19:46:42 +1300
+Subject: Snatching defeat from the jaws of victory
+Message-ID: <E1KqMd8-0007xv-Uq@wintermute01.cs.auckland.ac.nz>
+
+The DailyWTF has an entertainnig writeup on how not to use strong crypto to 
+protect an embedded device, in this case a Wii, at 
+http://thedailywtf.com/Articles/Anatomii-of-a-Hack.aspx.  The 
+signature-verification function was particularly entertaining:
+
+  decrypt_rsa(signature, public_key, decrypted_signature);
+  if(strncmp(content_sha1, decrypted_signature + 236, 20) == 0)
+  [...]
+
+(And before you burst out laughing, Apple did something only slightly less bad
+in the iPhone).
+
+Peter.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From gnu at toad.com  Thu Oct 16 18:24:06 2008
+From: gnu at toad.com (John Gilmore)
+Date: Thu, 16 Oct 2008 15:24:06 -0700
+Subject: Chip-and-pin card reader supply-chain subversion 'has netted millions from British shoppers' 
+Message-ID: <200810162224.m9GMO6Ww010832@new.toad.com>
+
+[British shoppers were promised high security by switching from credit
+cards to cards that have a chip in them and require that a PIN be entered
+for each transaction.  That was the reason for changing everything over,
+at high cost in both money and inconvenience to shops and shoppers.  Perhaps
+chip-and-pin HAS reduced overall fraud -- but check out this elaborate 
+scheme that beat their security for tens of millions of UK pounds.  
+
+Now, why is this being announced by the US National Counter-
+intelligence Executive, Joel Brenner?  Because none of the banks or
+stores is willing to admit it?  Still, why publicize it at all?  I
+find his quote very telling: "Previously only a nation state's
+intelligence service would have been capable of pulling off this type
+of operation."  How would he know this?  Which nation-states have done
+similar types of operation, and why isn't he telling the public about
+THEM instead of about these other criminals?
+
+I've long suspected that NSA's (still secret) budget (approved by a
+tiny number of manipulated Congressmen) has been, uh, augmented, by
+its ability to manipulate financial markets using inside information
+obtained from domestic and global mass wiretaps.  You don't suppose
+NSA is behind the recent market volatility, do you?  It's easiest to
+skim off billions when trillions are hurriedly sloshing around in a
+panic.  --gnu]
+
+Forwarded-By: Kurt Albershardt <kurt at nv.net>
+
+Clever (and a tad frightening)
+
+http://www.telegraph.co.uk/news/newstopics/politics/lawandorder/3173346/Chip-and-pin-scam-has-netted-millions-from-British-shoppers.html
+
+http://www.telegraph.co.uk/news/worldnews/asia/pakistan/3173161/Credit-card-scam-How-it-works.html
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From rah at shipwright.com  Sat Oct 18 09:36:45 2008
+From: rah at shipwright.com (R.A. Hettinga)
+Date: Sat, 18 Oct 2008 09:36:45 -0400
+Subject: German data rentention law
+References: <20081018110822.GX11968@leitl.org>
+Message-ID: <4798353A-B0D3-4327-A912-E252BECE5E2D@shipwright.com>
+
+
+
+Begin forwarded message:
+
+From: Eugen Leitl <eugen at leitl.org>
+Date: October 18, 2008 7:08:22 AM GMT-04:00
+To: cypherpunks at al-qaeda.net
+Subject: German data rentention law
+
+----- Forwarded message from "Karsten N." <tor-admin at privacyfoundation.de 
+ > -----
+
+From: "Karsten N." <tor-admin at privacyfoundation.de>
+Date: Sat, 18 Oct 2008 10:49:08 +0200
+To: or-talk at freehaven.net
+Subject: German data rentention law
+User-Agent: Thunderbird 2.0.0.6 (Macintosh/20070728)
+Reply-To: or-talk at freehaven.net
+
+Hi,
+
+I. part: A short overview about the data rentention law in Germany.
+
+  1: ISPs have to log the start and end of a user dial-in with
+     time stamp and IP address. They have not to log any content.
+
+  2: Public provider of electronic mail have to log all connections of
+     users with time stamp, IP address, login account and the email
+     addresses of sender and recipient for every mail (send and
+     receive).
+
+  3: VoIP provider have to log all connections with timestamp,
+     IP address and phone number of caller and recipient.
+
+  4: Fon and mobile fon provider have to log all connections and
+     tries with timestamp, phone number and location.
+
+  5: Anon services have to log the rewrite of any information, which
+     will be logged by a third party. (Thats all, not very clear.)
+
+
+At the moment, it seems not clear, how tor is affected by this law.
+I read some papers from the gouverment: "An anon service (like tor or
+JAP) has to log, because the law will be useless otherwise."
+
+Some papers of non-gouverment organizations like ULD: "Tor and JAP are
+not affected by the telecommunication law, because it is not a
+telecommunication service (in the case of law) and tor nodes have NOT
+to log."
+
+Together with the JonDos GmbH (JAP) the GPF try to get a legal
+non-logging solution for tor, but the result is open and we are late.
+(May be too late?)
+
+
+II. part: suggestion of a technical solution
+
+May be, tor can use geoip and divide the world in a logging area and a
+non-logging area. If the target host is inside the logging area
+(Germany), the exit node has to be outside. Otherwise a german node
+can be an exit too.
+
+In this case, we have two possibilities:
+
+  1: the target host is outside the logging area -> no logging
+
+  2: the target host is inside the logging area -> the exit is
+     outside and writes no logs -> an german entry or middle man
+     has to log nothing, because it routes to a not logging exit.
+
+Because not all clients will update to a new version very quickly,
+we need a feature for german exit nodes to reject all routes from old
+clients, when the node is the exit of the route.
+
+Or, if it was more simple for the developer, a feature for exit nodes
+to define a country (based on geoip) to reject all exit routes. If all
+german relays used this feature, it may work.
+
+Otherwise, all german nodes have to switch to middle man.
+
+It is only one suggestion, not the really best solution.
+
+Karsten N.
+
+----- End forwarded message -----
+-- 
+Eugen* Leitl <a href="http://leitl.org">leitl</a> http://leitl.org
+______________________________________________________________
+ICBM: 48.07100, 11.36820 http://www.ativel.com http://postbiota.org
+8B29F6BE: 099D 78BA 2FD3 B014 B08A  7779 75B0 2443 8B29 F6BE
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From arshad.noor at strongauth.com  Thu Oct 23 12:54:29 2008
+From: arshad.noor at strongauth.com (Arshad Noor)
+Date: Thu, 23 Oct 2008 12:54:29 -0400 (EDT)
+Subject: Pulling Keystrokes Out of the Air
+Message-ID: <10023977.21224780869791.JavaMail.root@gw.noorhome.net>
+
+"Computer keyboards are often used to transmit sensitive information such as 
+username/password (e.g. to log into computers, to do e-banking money transfer, 
+etc.). A vulnerability on these devices will definitely kill the security of 
+any computer or ATM."
+
+http://lasecwww.epfl.ch/keyboard/
+
+Arshad Noor
+StrongAuth, Inc.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jsd at av8n.com  Fri Oct 24 08:29:36 2008
+From: jsd at av8n.com (John Denker)
+Date: Fri, 24 Oct 2008 05:29:36 -0700
+Subject: combining entropy
+In-Reply-To: <48E0C673.6040005@systemics.com>
+References: <48E0C673.6040005@systemics.com>
+Message-ID: <4901BFB0.2080403@av8n.com>
+
+On 09/29/2008 05:13 AM, IanG wrote:
+> My assumptions are:
+> 
+>  * I trust no single source of Random Numbers.
+>  * I trust at least one source of all the sources.
+>  * no particular difficulty with lossy combination.
+
+
+> If I have N pools of entropy (all same size X) and I pool them
+> together with XOR, is that as good as it gets?
+
+Yes.
+
+The second assumption suffices to prove the result,
+since (random bit) XOR (anything) is random.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From perry at piermont.com  Fri Oct 24 08:31:25 2008
+From: perry at piermont.com (Perry E. Metzger)
+Date: Fri, 24 Oct 2008 08:31:25 -0400
+Subject: ADMIN: backlog cleared
+Message-ID: <87hc7218f6.fsf@snark.cb.piermont.com>
+
+
+Moderator's note: Yes, I'm alive. I've just been insanely busy. I'm
+planning on adding a system so I can turn the list over to guest
+moderators before this happens again (in about a month, I'm
+anticipating.)
+
+Perry
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jkatz at cs.umd.edu  Fri Oct 24 08:51:41 2008
+From: jkatz at cs.umd.edu (Jonathan Katz)
+Date: Fri, 24 Oct 2008 08:51:41 -0400 (EDT)
+Subject: combining entropy
+In-Reply-To: <48E0C673.6040005@systemics.com>
+References: <48E0C673.6040005@systemics.com>
+Message-ID: <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+
+[Moderator's note: top posting is not tasteful. --Perry]
+
+I think it depends on what you mean by "N pools of entropy".
+
+Are you assuming that one of these is sources is (pseudo)random, but you 
+don't know which one? Are you assuming independence of these difference 
+sources? If both these assumptions hold, then XOR will do the trick.
+
+If your only assumption is that one of the sources has high min-entropy 
+(but may not necessarily be uniform), or if the independence assumption 
+does not hold, then you may need to use some form of randomness 
+extraction.
+
+On Mon, 29 Sep 2008, IanG wrote:
+
+> If I have N pools of entropy (all same size X) and I pool them
+> together with XOR, is that as good as it gets?
+>
+> My assumptions are:
+>
+> * I trust no single source of Random Numbers.
+> * I trust at least one source of all the sources.
+> * no particular difficulty with lossy combination.
+>
+> iang
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From benl at google.com  Fri Oct 24 09:14:27 2008
+From: benl at google.com (Ben Laurie)
+Date: Fri, 24 Oct 2008 14:14:27 +0100
+Subject: combining entropy
+In-Reply-To: <48E0C673.6040005@systemics.com>
+References: <48E0C673.6040005@systemics.com>
+Message-ID: <1b587cab0810240614u7c1d8846h5e32a5819dce913b@mail.gmail.com>
+
+On Mon, Sep 29, 2008 at 1:13 PM, IanG <iang at systemics.com> wrote:
+> If I have N pools of entropy (all same size X) and I pool them
+> together with XOR, is that as good as it gets?
+
+Surely not. Consider N pools each of size 1 bit. Clearly you can do
+better than the 1 bit your suggestion would yield.
+
+More concretely, concatenation would seem better than XOR.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From neuhaus at st.cs.uni-sb.de  Fri Oct 24 09:37:45 2008
+From: neuhaus at st.cs.uni-sb.de (Stephan Neuhaus)
+Date: Fri, 24 Oct 2008 15:37:45 +0200
+Subject: combining entropy
+In-Reply-To: <4901BFB0.2080403@av8n.com>
+References: <48E0C673.6040005@systemics.com> <4901BFB0.2080403@av8n.com>
+Message-ID: <B7A9B579-F114-4865-9116-FCE44B0342D0@st.cs.uni-sb.de>
+
+
+On Oct 24, 2008, at 14:29, John Denker wrote:
+
+> On 09/29/2008 05:13 AM, IanG wrote:
+>> My assumptions are:
+>>
+>> * I trust no single source of Random Numbers.
+>> * I trust at least one source of all the sources.
+>> * no particular difficulty with lossy combination.
+>
+>
+>> If I have N pools of entropy (all same size X) and I pool them
+>> together with XOR, is that as good as it gets?
+>
+> Yes.
+>
+> The second assumption suffices to prove the result,
+> since (random bit) XOR (anything) is random.
+
+Ah, but for this to hold, you will also have to assume that the N  
+pools are all independent.  If they are not, you cannot even guarantee  
+one single bit of "entropy" (whatever that is).  For example, if N =  
+2, your trusted source is pool 1, and I can read pool 1 and control  
+pool 2, I set pool 2 = pool 1, and all you get is zeros. And that  
+surely does not contain X bits of "entropy" for any reasonable  
+definition of "entropy".
+
+Fun,
+
+Stephan
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From eugen at leitl.org  Fri Oct 24 09:50:10 2008
+From: eugen at leitl.org (Eugen Leitl)
+Date: Fri, 24 Oct 2008 15:50:10 +0200
+Subject: 26 historic Enigmas found in Spain
+Message-ID: <20081024135010.GW11968@leitl.org>
+
+
+http://www.theregister.co.uk/2008/10/24/spanish_enigmas/
+
+Spanish discover cache of 26 Enigma machines
+
+Franco's 'secret weapon' tracked to army HQ
+
+By Lester Haines 
+
+Posted in Science, 24th October 2008 10:03 GMT
+
+Spanish newspaper El Pa?s last week tracked down 26 examples of Franco's
+"secret weapon" against Republican forces in the country's civil war - a
+cache of perfectly-preserved Enigma machines hidden for years in a "gloomy
+office" in the army's main headquarters in Madrid.
+
+Nationalist forces led by Franco acquired their first ten Enigma machines
+from Germany in 1936. While Hitler "had already decided to offer Franco his
+full support" in the Spanish civil war, this didn't actually extend to the
+full-fat military versions of Enigma, and his Iberian ally had to make do
+with the "vastly inferior" commercial "D" model.
+
+The German High Command was apparently concerned that careless Spaniards
+might let the Republicans get their hands on an Enigma. Indeed, even
+Germany's Condor Legion - dispatched to Spain to aid the Nationalist cause -
+also reportedly used commercial Enigmas in the field.
+
+Nonetheless, the Republicans were never able to decipher Enigma
+communications between Franco and his top brass, and the machines' success
+led to further acquisitions. Commander Antonio Sarmiento, charged with
+training operators in Franco's Salamanca headquarters, enthusiastically
+reported in 1936: ?To give some idea of the level of security these machines
+offer, it's suffice to say that the number of possible combinations is an
+astounding 1,252,962,387,456.?
+
+The total number of machines eventually bought by Spain is unknown, although
+estimates vary from 30 to 50. They were not withdrawn from service until the
+early 1950s, which offers the rather agreeable possibility that the British
+were able to read the Spanish dictatorship's military communications while
+Franco remained blissfully unaware that his Nazi sponsors' device had been
+laid bare by Bletchley Park years before. 
+
+Bootnote
+
+El Reg is, of course, supporting Bletchley Park and the National Museum of
+Computing with our splendid Enigma t-shirt. Get it before Cash'n'Carrion's
+free shipping offer ends on 31 October.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From wouter at yourcreativesolutions.nl  Fri Oct 24 10:23:36 2008
+From: wouter at yourcreativesolutions.nl (Wouter Slegers)
+Date: Fri, 24 Oct 2008 16:23:36 +0200
+Subject: combining entropy
+In-Reply-To: <48E0C673.6040005@systemics.com>
+References: <48E0C673.6040005@systemics.com>
+Message-ID: <20081024142336.GA10595@gossamer.internal.yourcreativesolutions.nl>
+
+L.S.,
+
+> If I have N pools of entropy (all same size X) and I pool them
+> together with XOR, is that as good as it gets?
+> 
+> My assumptions are:
+> 
+>  * I trust no single source of Random Numbers.
+>  * I trust at least one source of all the sources.
+>  * no particular difficulty with lossy combination.
+I take the last item to mean that you do not mind wasting entropy but
+want to be sure the resulting random number is unpredictable.
+
+If you add one additional assumption:
+* The sources are independent of each other
+then the XOR of the random sources will be at least as unpredictable as
+the most unpredictable individual random source (to keep away from the
+entropy discussion). As far as I can se, this the "if at least one
+source is unpredictable for a workload of x, the resulting random is
+also at least that unpredictable" property that you seem to be looking
+for.
+
+If the sources are not independent, in the most extreme case: the sources
+are the same, the result is not so good. XORing in the same RNG stream
+twice, however good the RNG, is not so useful ;-)
+
+Without the threatmodel, I am not sure if this is a problem for you, but 
+if the attacker has control or knowledge of some of the sources, he 
+also knows the XOR of the remaining ones. In the case he knows all but
+one sources, and the remaining source is not so unpredictable (LFSR,
+poorly biased noise source), the result can be quite predictable (and in
+weak RNG designs, the remaining source might be compromised).
+Note that this could also be used to force the combined RNG to more
+likely generate a chosen output.
+
+Using hashfunctions to combine the randoms makes it computationally
+harder for such chosen results to be generated, it quickly becomes
+effectively a search problem for hash-collisions where you have only
+limited choice on the input. Also temporary lulls in the quality of the
+random sources are much better handled. Peter Gutmann's dissertation
+has a very good description of what he did for hardening his cryptolib's
+the random generation from many such attacks/mistakes.
+
+With kind regards,
+Wouter Slegers
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From neuhaus at st.cs.uni-sb.de  Fri Oct 24 10:36:04 2008
+From: neuhaus at st.cs.uni-sb.de (Stephan Neuhaus)
+Date: Fri, 24 Oct 2008 16:36:04 +0200
+Subject: combining entropy
+Message-ID: <1D8BDB24-644A-4480-9085-E5AF4367EF52@st.cs.uni-sb.de>
+
+On Oct 24, 2008, at 15:37, Stephan Neuhaus wrote:
+
+> Ah, but for this to hold, you will also have to assume that the N  
+> pools are all independent.
+
+Slight correction: You will have to assume that one of the trusted  
+pools is independent from the others.
+
+Best,
+
+Stephan
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From thierry.moreau at connotech.com  Fri Oct 24 11:23:07 2008
+From: thierry.moreau at connotech.com (Thierry Moreau)
+Date: Fri, 24 Oct 2008 10:23:07 -0500
+Subject: combining entropy
+In-Reply-To: <48E0C673.6040005@systemics.com>
+References: <48E0C673.6040005@systemics.com>
+Message-ID: <4901E85B.1040808@connotech.com>
+
+
+
+IanG wrote:
+
+> If I have N pools of entropy (all same size X) and I pool them
+> together with XOR, is that as good as it gets?
+> 
+> My assumptions are:
+> 
+>  * I trust no single source of Random Numbers.
+>  * I trust at least one source of all the sources.
+>  * no particular difficulty with lossy combination.
+> 
+
+Do you really trust that no single source of entropy can have knowledge 
+of the other source's output, so it can surreptitiously correlate its own?
+
+I.e, you are are also assuming that these sources are *independent*.
+
+
+-- 
+
+- Thierry Moreau
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From trscavo at gmail.com  Fri Oct 24 12:08:02 2008
+From: trscavo at gmail.com (Tom Scavo)
+Date: Fri, 24 Oct 2008 12:08:02 -0400
+Subject: once more, with feeling.
+In-Reply-To: <48F1E206.8080504@links.org>
+References: <E1KhyVp-0000W1-LL@wintermute01.cs.auckland.ac.nz>
+	 <48F1E206.8080504@links.org>
+Message-ID: <ea2af9bd0810240908x258cf8cdv3028639b49fe4247@mail.gmail.com>
+
+On Sun, Oct 12, 2008 at 7:39 AM, Ben Laurie <ben at links.org> wrote:
+>
+> One argument that I
+> have increasing sympathy with is that SSO (or if you want to be modern,
+> federated login)
+
+Federated identity is the fancy modern term for cross-domain SSO.
+
+> Obviously the end game here is that the user only has to protect his
+> login to a small number of sites - i.e. those that provide the IdP. Once
+> we get there, perhaps users can be persuaded to authenticate to those
+> sites using something stronger than username/password.
+
+I think this is putting the cart before the horse.  Today I don't see
+many IdPs (OpenID, SAML, or otherwise) that support more than
+username/password.  Until that happens, the relying party will
+continue to maintain its own username/passwords since there's little
+incentive to federate.
+
+> A sidenote that provides me with some amusement: although the modern
+> trend is towards using OpenID, no-one wants to use it in the mode it is
+> designed for, i.e. where the user can pick any old IdP and the RP will
+> just trust it. In practice where we seem to be headed is that RPs will
+> trust some smallish number of trusted IdPs. This is, of course, exactly
+> what the Liberty guys have been working on all along. I predict that
+> over time, most of the elements of Liberty will be incorporated into OpenID.
+
+I mostly agree with this observation, but I'd replace the word
+"Liberty" with "SAML" throughout the above paragraph.  The Liberty
+Identity Federation Framework (ID-FF) was donated to the OASIS
+Security Services Technical Committee in late 2003.  This gave rise to
+SAML V2.0 in March 2005.  For all practical purposes, Liberty ID-FF is
+dead.
+
+If RPs end up trusting a small number of IdPs, then there is much to
+be gained (obviously) by being one of those IdPs.  Thus there are
+strong forces at work to *prevent* federated identity from taking hold
+since everyone is competing to be one of those IdPs.  I wonder what it
+will take to break the log-jam that holds back the anticipated rise of
+federated identity?
+
+> Which makes me think that if Liberty had done what it claimed to be
+> doing when it started, i.e. be a community-based, open-source-friendly
+> protocol suite, it would have worked much better.
+
+I'm not sure I follow that line of reasoning.  Are you referring to
+Liberty the specification or Liberty the implementation?  In any
+event, it is better to talk about SAML, not Liberty, since the latter
+is history with respect to browser-based federated identity.
+
+I agree with you that the goal is to replace username/password with
+something stronger, but evidently neither OpenID nor SAML are helping
+us get there.  I still have some hope that information cards will make
+a dent in this problem, but who knows.
+
+Tom
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From lloyd at randombit.net  Fri Oct 24 13:50:07 2008
+From: lloyd at randombit.net (Jack Lloyd)
+Date: Fri, 24 Oct 2008 13:50:07 -0400
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <E1Kmi4U-0001Sx-VS@wintermute01.cs.auckland.ac.nz>
+References: <E1Kmi4U-0001Sx-VS@wintermute01.cs.auckland.ac.nz>
+Message-ID: <20081024175007.GC30456@randombit.net>
+
+On Mon, Oct 06, 2008 at 05:51:50PM +1300, Peter Gutmann wrote:
+> For the past several years I've been making a point of asking users of crypto
+> on embedded systems (which would be particularly good targets for side-channel
+> attacks, particularly ones that provide content-protection capabilities)
+> whether they'd consider enabling side-channel attack (SCA - no, not that SCA)
+> protection in their use of crypto.  So far I've never found anyone who's made
+[...]
+
+> In other words the user has to make a conscious decision that SCA protection
+> is important enough that performance/power consumption can be sacrificed for
+> it.  Can anyone provide any data on users making this tradeoff?  And since
+> negative results are also results, a response of "I've never found anyone who
+> cares either" is also useful.  Since the information may be commercially
+
+I have little experience on the embedded crypto side but I do maintain
+a crypto library that has some non-zero number of users on general
+desktop and server machines.
+
+Basic protections ala your point 2 are provided and enabled by default
+(blinding, and checking private key operations for consistency with
+the public, to prevent the really easy attacks). There used to be a
+toggle to disable blinding, which as far as I know was never used - or
+at least nobody complained when I removed the toggle.
+
+To my memory nobody has ever asked about what SCA measures are or are
+not enabled, or how to toggle them, though I do have a FAQ entry about
+it, so perhaps people who really wanted serious side-channel
+resistence just read that FAQ and moved on to another implementation
+without ever bothering to contact me - certainly there are some
+self-selection problems with my sampling.
+
+When FlexSecure wrote Botan's ECC implementation for BSI, they
+implemented a number of anti-timing attack countermeasures - but they
+were being paid to care about that, so this is probably not a valid
+datapoint.
+
+-Jack
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jon at callas.org  Fri Oct 24 15:42:59 2008
+From: jon at callas.org (Jon Callas)
+Date: Fri, 24 Oct 2008 12:42:59 -0700
+Subject: combining entropy
+In-Reply-To: <48E0C673.6040005@systemics.com>
+References: <48E0C673.6040005@systemics.com>
+Message-ID: <1DE4897E-85E7-4475-8027-925E66ADEEE9@callas.org>
+
+
+On Sep 29, 2008, at 5:13 AM, IanG wrote:
+
+> If I have N pools of entropy (all same size X) and I pool them
+> together with XOR, is that as good as it gets?
+>
+> My assumptions are:
+>
+> * I trust no single source of Random Numbers.
+> * I trust at least one source of all the sources.
+> * no particular difficulty with lossy combination.
+
+It's within epsilon for a good many epsilon.
+
+I'm presuming you want the resultant size to be X, as well. Otherwise,  
+the suggestion that Ben has, concatenation is obviously better, and  
+you can solve obvious problems.
+
+Another solution is to hash the N pools together with a suitably  
+secure function. (Most the available algorithms are suitably secure  
+for this purpose.) The downside of this is that you are capping your  
+entropy at the size of the hash function. It's better than XOR because  
+it's not linear, blah, blah, blah.
+
+However, if you had three pools, each relatively large, it doesn't  
+hurt anything to XOR them together. It's pretty easy to prove that the  
+result does not decrease entropy, but I think it's impossible to prove  
+that it increases it. XORing is really taking the max of the N pools.
+
+You have to realize that XOR is bad if there's a chance to leak the  
+entropy pool, XOR is a bad function. If whoever produced pool X sees  
+X^Y, then they know Y. But you know that, too.
+
+	Jon
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From lloyd at randombit.net  Fri Oct 24 16:12:32 2008
+From: lloyd at randombit.net (Jack Lloyd)
+Date: Fri, 24 Oct 2008 16:12:32 -0400
+Subject: combining entropy
+In-Reply-To: <4901E85B.1040808@connotech.com>
+References: <48E0C673.6040005@systemics.com> <4901E85B.1040808@connotech.com>
+Message-ID: <20081024201232.GG30456@randombit.net>
+
+On Fri, Oct 24, 2008 at 10:23:07AM -0500, Thierry Moreau wrote:
+
+> Do you really trust that no single source of entropy can have knowledge of 
+> the other source's output, so it can surreptitiously correlate its own?
+>
+> I.e, you are are also assuming that these sources are *independent*.
+
+I do not think one means the other here.
+
+An omniscient malicious RNG source seems quite unlikely in most threat
+models. However that is a very different statement from saying that
+lacking such an attacker, you can safely assume your 'pools of
+entropy' (to quote the original question) are independent in the
+information-theoretic sense.
+
+Say you execute (on a Linux machine) two commands, like ifconfig -a
+and netstat -s (which print ASCII text with statistics about network
+interfaces and network protocols, resp), capturing the output as two
+of your entropy sources.
+
+Both have some amount of entropy (perhaps zero if an attacker is on
+the machine and runs his commands at the same time as yours - and
+perhaps quite a bit more if the local machine happens to be safe). But
+they are certainly not statistically independent!  Information in one
+will be somewhat reflected in the other (packet counters), and of
+course at the macro level all your inputs have high bit unset, so if
+you combined via XOR your output will have at best .875 bits of
+entropy per bit.
+
+To address IanG's question more directly, my first thought would be to
+use something like the design Hugo Krawczyk describes in "On
+Extract-then-Expand Key Derivation Functions and an HMAC-based KDF"
+(http://www.ee.technion.ac.il/~hugo/kdf/kdf.pdf) or one of the related
+PRNG designs he references. Then use the output of the HMAC PRF to
+feed the DT vector of an X9.31 PRNG (using block cipher du jour), a
+trick AFAIK invented by Peter Gutmann which has always seemed like a
+good worst-case-scenario trick to me (for instance, if the code for
+the hash's compression function is miscompiled), though at the cost of
+extra code/design complexity (and thus points of failure) - as always
+there are tradeoffs to make.
+
+-Jack (IANAC)
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jsd at av8n.com  Fri Oct 24 18:20:24 2008
+From: jsd at av8n.com (John Denker)
+Date: Fri, 24 Oct 2008 15:20:24 -0700
+Subject: combining entropy
+In-Reply-To: <20081024201232.GG30456@randombit.net>
+References: <48E0C673.6040005@systemics.com> <4901E85B.1040808@connotech.com> <20081024201232.GG30456@randombit.net>
+Message-ID: <49024A28.3050608@av8n.com>
+
+On 10/24/2008 01:12 PM, Jack Lloyd wrote:
+
+> .... is a very different statement from saying that
+> lacking such an attacker, you can safely assume your 'pools of
+> entropy' (to quote the original question) are independent in the
+> information-theoretic sense.
+
+The question, according to the original poster, is not 
+whether it is "safe" to assume that one of the entropy
+sources can be trusted.  Safe or not, the question explicitly 
+assumed that one of the sources was trusted ... and asked 
+what the consequences of that assumption would be.
+
+In particular, evidently the scenario was that we started
+with N high-entropy randomness generators, but N-1 of
+them have failed.  One of them is still working, but we
+don't know which one.
+
+In that scenario, XOR is a good-enough combining function,
+and nothing else would be any better.
+
+If somebody wants to discuss a different scenario, please
+clarify what the new scenario is.
+
+Suggesting that the "trusted" source is correlated with one
+of the other sources is quite contrary to the requirements
+expressed in the original question.
+
+That is to say, if the source is not independent, it was
+never eligible to be a trusted entropy source.
+
+If you want to quantify this, write down the _joint_ probability
+distribution for all the sources, and calculate the entropy
+of that distribution in the usual way.
+
+1) There is _one_ very precise meaning for "entropy" that is 
+well-established and conventional across a wide range of 
+fields ... everything from kitchen appliances to cosmology.
+  http://www.av8n.com/physics/thermo-laws.htm#sec-relevance
+
+2) Authors are allowed to define and redefine terms however
+they please ... _provided_ they define any nonstandard terms
+that they use.  Anybody who takes a well-established standard
+term and uses it in a nonstandard way has a double-extra-special
+duty to explain what he's doing.
+
+I assume the original poster was using the term "entropy"
+in the conventional, precise sense ... and until I hear
+otherwise I will continue to do so.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From lloyd at randombit.net  Fri Oct 24 18:40:25 2008
+From: lloyd at randombit.net (Jack Lloyd)
+Date: Fri, 24 Oct 2008 18:40:25 -0400
+Subject: combining entropy
+In-Reply-To: <49024A28.3050608@av8n.com>
+References: <48E0C673.6040005@systemics.com> <4901E85B.1040808@connotech.com> <20081024201232.GG30456@randombit.net> <49024A28.3050608@av8n.com>
+Message-ID: <20081024224025.GH30456@randombit.net>
+
+On Fri, Oct 24, 2008 at 03:20:24PM -0700, John Denker wrote:
+> On 10/24/2008 01:12 PM, Jack Lloyd wrote:
+> 
+> > .... is a very different statement from saying that
+> > lacking such an attacker, you can safely assume your 'pools of
+> > entropy' (to quote the original question) are independent in the
+> > information-theoretic sense.
+> 
+> The question, according to the original poster, is not 
+> whether it is "safe" to assume that one of the entropy
+> sources can be trusted.  Safe or not, the question explicitly 
+> assumed that one of the sources was trusted ... and asked 
+> what the consequences of that assumption would be.
+
+Perhaps our seeming disagreement is due to a differing interpretation
+of 'trusted'. I took it to mean that at least one pool had a
+min-entropy above some security bound. You appear to have taken it to
+mean that it will be uniform random?
+
+-Jack
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From pgut001 at cs.auckland.ac.nz  Fri Oct 24 22:25:25 2008
+From: pgut001 at cs.auckland.ac.nz (Peter Gutmann)
+Date: Sat, 25 Oct 2008 15:25:25 +1300
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <4901E15F.3030503@connotech.com>
+Message-ID: <E1KtYqD-0000al-Fg@wintermute01.cs.auckland.ac.nz>
+
+Thierry Moreau <thierry.moreau at connotech.com> writes:
+
+>I find the question should be refined.
+
+It could if there was a large enough repondent base to draw samples from :-). 
+This is one of those surveys that can never be done because no vendor will 
+publicly talk to you about security measures in their embedded systems.
+
+In fact none of the people/organisations I queried about this fitted into any 
+of the proposed categories, it was all embedded devices, typically SCADA 
+systems, home automation, consumer electronics, that sort of thing, so it was 
+really a single category which was "Embedded systems".  Given the string of 
+attacks on crypto in embedded devices (XBox, iPhone, iOpener, Wii, some 
+not-yet-published ones on HDCP devices :-), etc) this is by far the most 
+at-risk category because there's a huge incentive to attack them, the result 
+affects tens/hundreds of millions of devices, and the attacks are immediately 
+and widely actively exploited (modchips/device unlocking/etc, an important 
+difference between this and academic proof-of-concept attacks), so this is the 
+one where I'd expect the vendors to care most.
+
+>Also, for organizations mandated to comply with IT security 
+>certification/guidelines/best-practice, a risk analysis is performed to 
+>keep the auditor at bay, in which SCA protection has very little chance 
+>of even merely being mentioned. How can the SCA protection mechanism fit 
+>the risk analysis discipline? I.e., is it possible to even define SCA 
+>protection in a way that might trigger interest from security 
+>consultants or their clients?
+
+Actually that's a special case, or more generally having certification/ 
+auditing requirements (which a private-email responder also mentioned) is a 
+special case in that the risk analysis is now "if I don't do this I don't get 
+sign-off" rather than "it makes good security sense to do this so we'll do 
+it".  In the immortal words of the Bastard Operator from Hell, when you have 
+the audit/certification gun pointed at someone's head you can pretty much 
+"[get them to] to run naked across campus with a power-cord rammed up [their] 
+backside" and they'd do it not because they thought it was a terribly good 
+idea but because they had a gun pointed at their head.
+
+An associated problem with this is that if vendors are motivated solely by 
+checkbox requirements then they'll often ship the product in a non-approved 
+mode (coughFIPS140cough) to reduce manufacturing or support costs/increase 
+performance/increase ease of use/whatever.  It's a nasty catch-22, hold a gun 
+to someone's head and they'll only do what you tell them for as long as the 
+gun is applied.
+
+Getting back to the SCADA/home automation/consumer electronics embedded 
+market, the only certification that applies is the likes of FCC Class B, ROHS, 
+CE, and UL.  This is why I was interested in finding cases (or 
+counterexamples) of informed-consent use of SCA countermeasures, because in 
+the general embedded-systems case vendor cost/benefit analysis is the only 
+deciding factor on whether it gets used or not, and vendors seem to be 
+deciding (from my own experience and some private-email replies) that it's not 
+worth it.
+
+Peter.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jsd at av8n.com  Fri Oct 24 23:07:37 2008
+From: jsd at av8n.com (John Denker)
+Date: Fri, 24 Oct 2008 20:07:37 -0700
+Subject: combining entropy
+In-Reply-To: <20081024224025.GH30456@randombit.net>
+References: <48E0C673.6040005@systemics.com> <4901E85B.1040808@connotech.com> <20081024201232.GG30456@randombit.net> <49024A28.3050608@av8n.com> <20081024224025.GH30456@randombit.net>
+Message-ID: <49028D79.5080402@av8n.com>
+
+On 10/24/2008 03:40 PM, Jack Lloyd wrote:
+
+> Perhaps our seeming disagreement is due to a differing interpretation
+> of 'trusted'. I took it to mean that at least one pool had a
+> min-entropy above some security bound. You appear to have taken it to
+> mean that it will be uniform random?
+
+Thanks, that question advances the discussion.
+
+The answer, however, is no, I did not assume 100% entropy
+density.  Here is the critical assumption that I did make:
+
+We consider the scenario where we started with N randomness
+generators, but N-1 of them have failed.  One of them is
+still working, but we don't know which one.
+
+To say the same thing in more detail:  Suppose we start
+with N generators, each of which puts out a 160 bit word
+containing 80 bits of _trusted_ entropy.  That's a 50%
+entropy density.
+
+Here _trusted_ means we have a provable lower bound on the
+entropy.  I assume this is the same as the aforementioned
+"min-entropy above some security bound".
+
+We next consider the case where N-1 of the generators have 
+failed, or can no longer be trusted, which is essentially the
+same thing for present purposes.  Now we have N-1 generators 
+putting out zero bits of trusted entropy, plus one generator 
+putting out 80 bits of trusted entropy.  I emphasize that
+these 80 bits of trusted entropy are necessarily uncorrelated
+with anything happening on the other N-1 machines, for the
+simple reason that they are uncorrelated with anything 
+happening anywhere else in the universe ... otherwise they
+would not qualify as trusted entropy.
+
+XORing together all N of the 160 bit output words produces
+a single 160 bit word containing 80 bits of trusted entropy.
+Therefore, unless there is some requirement or objective
+that I don't know about, the previously-stated conclusion
+holds:
+
+>> XOR is a good-enough combining function,
+>> and nothing else would be any better.
+
+XOR is provably correct because it is _reversible_ in the 
+thermodynamic sense.  That means it cannot increase or 
+decrease the entropy.
+
+=============
+
+Obviously this numerical example generalizes to any entropy
+density from zero to 100% inclusive.
+
+To summarize:  The key assumptions are that we have N-1
+broken generators and one working generator.  We don't
+know which one is working, but we know that it is working 
+correctly.
+
+
+
+For more about the theory and practice of high-entropy
+randomness generators, see
+  http://www.av8n.com/turbid/
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From iang at systemics.com  Sat Oct 25 07:40:16 2008
+From: iang at systemics.com (IanG)
+Date: Sat, 25 Oct 2008 13:40:16 +0200
+Subject: combining entropy
+In-Reply-To: <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+References: <48E0C673.6040005@systemics.com> <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+Message-ID: <490305A0.8050104@systemics.com>
+
+Jonathan Katz wrote:
+> I think it depends on what you mean by "N pools of entropy".
+
+
+I can see that my description was a bit weak, yes.  Here's a better
+view, incorporating the feedback:
+
+   If I have N people, each with a single pool of entropy,
+   and I pool each of their contributions together with XOR,
+   is that as good as it gets?
+
+My assumptions are:
+
+ * I trust no single person and their source of entropy.
+
+ * I trust at least one person + pool.
+
+ * Entropy by its definition is independent and is private
+   (but it is worth stating these, as any leaks will kill us!)
+
+ * Efficiency is not a concern, we just expand the pool size
+   (each pool is size X, and the result is size X).
+
+ * The people have ordinary skill.
+
+
+
+now to respond to the questions:
+
+
+1.  I am assuming that at least one pool is good entropy.  This is
+partly an assumption of desperation or simplicity.
+
+In practice, no individual (source or person) is trusted at an
+isolated level.  But this leads to a sort of circular argument that
+says, nobody is trusted.  We can solve this two ways:
+
+    I join the circle.  I trust myself, *but* I don't trust
+    my source of entropy.  So this is still hopeful.
+
+    We ensure that there are at least two cartels in the
+    circle that don't trust each other!  Then, add a dash
+    of game theory, and the two cartel pools should at
+    least be independent of each other, and therefore the
+    result should be good entropy.
+
+I suspect others could more logically arrive at a better assumption,
+but for now, the assumption of one trusted person/pool seems to
+cover it.
+
+2.  Having thought about Stephan's comment a bit more (because it
+arrived first), and a bit more about John D's entropy comments
+(because they were precise), it is clear that I need to stress the
+privacy / independence criteria, even if strictly covered by the
+definition of entropy.  Too much of the practical aspects will
+depend on ensuring independence of the pools to just lean blithely
+on the definitions.  I had missed that dependency.
+
+3.  The proposals on concatenation and cleanup are tempting.  In
+Jon's words, it can solve obvious problems.  However, they introduce
+a complexity of understanding the cleanup function, and potential
+for failures.  Jack's tradeoffs.  This has made me realise the last
+assumption, now added:
+
+   The people have ordinary skill.
+
+Which means they are unable to determine whether a cryptographically
+complex cleanup function is indeed cleaning, or not.
+
+Here, then, we reach an obvious limit, in that the people have to be
+able to determine that the XOR is doing its job, and they need to be
+able to do a bit of research to decide what is their best guess at
+their private entropy source.
+
+
+
+Thanks to all.
+
+iang
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From muir.james.a at gmail.com  Sat Oct 25 10:36:13 2008
+From: muir.james.a at gmail.com (James Muir)
+Date: Sat, 25 Oct 2008 10:36:13 -0400
+Subject: "Cube" cryptanalysis?
+In-Reply-To: <48DCEF75.5030608@gmail.com>
+References: <878wusmz7u.fsf@snark.cb.piermont.com>
+	 <48AB4B73.1000503@qualcomm.com> <48AC4288.8020804@cs.smu.ca>
+	 <48AC8F4D.9090301@qualcomm.com>
+	 <ed843b100808211009m79623415q4f82a7a819277ee7@mail.gmail.com>
+	 <48ADAF06.6060003@qualcomm.com> <p06240801c4f303934add@10.20.30.152>
+	 <48DCEF75.5030608@gmail.com>
+Message-ID: <da7d938b0810250736j529b0890ibf65d61329c2149e@mail.gmail.com>
+
+Paul Hoffman wrote:
+> At 11:08 AM -0700 8/21/08, Greg Rose wrote:
+>> Adi mentioned that the slides and paper will go online around the
+>> deadline for Eurocrypt submission; it will all become much clearer
+>> than my wounded explanations then.
+>
+> There now: <http://eprint.iacr.org/2008/385>
+>
+
+Given all the excitement over the Cube attack, readers may be interested
+to have a closer look at an earlier paper by Vielhaber:
+
+Breaking ONE.FIVIUM by AIDA (an Algebraic IV Differential Attack)
+Michael Vielhaber
+http://eprint.iacr.org/2007/413
+
+Vielhaber claims that AIDA anticipates the Cube attack; see his post on
+the iacr eprint forum:
+
+http://eprint.iacr.org/forum/read.php?8,59
+
+-James
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From benl at google.com  Sat Oct 25 15:10:54 2008
+From: benl at google.com (Ben Laurie)
+Date: Sat, 25 Oct 2008 20:10:54 +0100
+Subject: combining entropy
+In-Reply-To: <490305A0.8050104@systemics.com>
+References: <48E0C673.6040005@systemics.com>
+	 <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+	 <490305A0.8050104@systemics.com>
+Message-ID: <1b587cab0810251210j647b6b46j602478685b136fe9@mail.gmail.com>
+
+On Sat, Oct 25, 2008 at 12:40 PM, IanG <iang at systemics.com> wrote:
+> Jonathan Katz wrote:
+>> I think it depends on what you mean by "N pools of entropy".
+>
+>
+> I can see that my description was a bit weak, yes.  Here's a better
+> view, incorporating the feedback:
+>
+>   If I have N people, each with a single pool of entropy,
+>   and I pool each of their contributions together with XOR,
+>   is that as good as it gets?
+
+I think you need to define what you mean by "as good as it gets".
+Clearly XOR loses entropy that might be there, so on the measure of
+"good == most entropy", it is not.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jsd at av8n.com  Sat Oct 25 16:40:58 2008
+From: jsd at av8n.com (John Denker)
+Date: Sat, 25 Oct 2008 13:40:58 -0700
+Subject: combining entropy
+In-Reply-To: <490305A0.8050104@systemics.com>
+References: <48E0C673.6040005@systemics.com> <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu> <490305A0.8050104@systemics.com>
+Message-ID: <4903845A.2010106@av8n.com>
+
+On 10/25/2008 04:40 AM, IanG gave us some additional information.
+
+Even so, it appears there is still some uncertainty as to
+interpretation, i.e. some uncertainty as to the requirements
+and objectives.
+
+I hereby propose a new scenario.  It is detailed enough to
+be amenable to formal analysis.  The hope is that it will
+satisfy the requirements and objectives ... or at least
+promote a more precise discussion thereof.
+
+We start with a group comprising N members (machines or 
+persons).  Each of them, on demand, puts out a 160 bit 
+word, called a "member" word.  We wish to combine these 
+to form a single word, the "group" word, also 160 bits 
+in length.
+
+We must find a combining function.  The primary objective
+is to maximize the entropy of the group word.  A secondary
+objective is computational simplicity.
+
+The members can be categorized as follows:
+ a) Some of them are abjectly broken.  Their outputs have
+  zero entropy density.  Constant outputs and/or predictable
+  outputs fall into this category.
+ b) Some of them are malicious.  Their outputs may appear
+  random, but are in fact predictable by our adversary.
+ c) M of them have an entropy density greater than XX.
+  As a concrete example, we consider the case where XX=50%, 
+  i.e. 80 bits of entropy in a 160 bit word.
+ d) Some of them could contain a high entropy density,
+  very close to 100%.  For our example, we assume there
+  are none of these;  otherwise the problem would be
+  too easy.
+
+If we do things properly, case (b) is no worse than case
+(a), for reasons that will become apparent shortly, so
+we can lump these cases together.
+
+We don't know which generator falls into which category.
+All we need to know is that M of the generators are
+putting out useful entropy.
+
+I recommend the following combining function:  concatenate
+all N of the member words, and then feed that through a
+hash function to produce the group word.  Since SHA-1 is
+efficient and has a 160 bit output word, it will serve 
+nicely in our example.
+
+In the sub-case where M=1, the recommended hash-based
+procedure produces a group word with 80 bits of entropy, 
+i.e. a 50% entropy density, which is the best we can 
+do.  In this sub-case, SHA-1 is no better than XOR.
+
+As M increases, the entropy density of the output word
+converges rather rapidly to 100%.  This is subject to
+mild assumptions about the hash function actually working
+as a hash function, i.e. not being grossly broken.
+
+When M is greater than 1, the hash function approach
+is much better than the XOR approach.  Here is an
+easy proof:  Consider the case where each member in
+category (c) puts out a 160 bit word consisting of 80 
+totally random bits in the left half and 80 constant
+bits in the right half.  XORing these together only
+gets you to 80 bits of entropy in the group word,
+whereas hashing is better by a factor of 2.  Actually
+(2 minus epsilon) if you want to be fussy about it.
+
+In the case where the entropy is evenly distributed
+within the member word, i.e. 160 bits each with a 50%
+entropy density, the result is more subtle:  The group
+word will converge to 100% entropy density, but the
+hash version converges _faster_ than the XOR version.
+Here "faster" means you can get by with a smaller M.
+Considerably smaller.  Also (!) beware that to get XOR 
+to converge at all, this paragraph depends on some 
+properties of the members that may be hard to realize 
+in practice ... whereas the hash approach has no
+such dependence.
+
+=========
+
+To summarize:  In the special sub-case where M=1, XOR
+is as good as it gets.  In all other cases I can think
+of, the hash approach is much better.
+
+My analysis applies to a specific set of requirements.
+If somebody wants to discuss other requirements, please
+be specific about what the requirements are.  There
+are innumerable creeping features that we could discuss.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jsd at av8n.com  Sat Oct 25 16:53:55 2008
+From: jsd at av8n.com (John Denker)
+Date: Sat, 25 Oct 2008 13:53:55 -0700
+Subject: combining entropy
+In-Reply-To: <490305A0.8050104@systemics.com>
+References: <48E0C673.6040005@systemics.com> <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu> <490305A0.8050104@systemics.com>
+Message-ID: <49038763.6090101@av8n.com>
+
+Alas on 10/25/2008 01:40 PM, I wrote:
+
+
+> To summarize:  In the special sub-case where M=1, XOR
+> is as good as it gets.  In all other cases I can think
+> of, the hash approach is much better.
+
+I should have said that in the special sub-case where 
+the member word has entropy density XX=100% _or_ in 
+the special sub-case where M=1, XOR is as good as it
+gets.  In all other cases I can think of, the hash 
+approach is much better.
+
+(I excluded the XX=100% case earlier in the note, but
+I should have included it in the summary.  Sorry.)
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From sandyinchina at gmail.com  Sat Oct 25 22:47:34 2008
+From: sandyinchina at gmail.com (Sandy Harris)
+Date: Sun, 26 Oct 2008 10:47:34 +0800
+Subject: combining entropy
+In-Reply-To: <49028D79.5080402@av8n.com>
+References: <48E0C673.6040005@systemics.com> <4901E85B.1040808@connotech.com>
+	 <20081024201232.GG30456@randombit.net> <49024A28.3050608@av8n.com>
+	 <20081024224025.GH30456@randombit.net> <49028D79.5080402@av8n.com>
+Message-ID: <c5528eee0810251947pfc4d1d4o996923b43c5a0ff2@mail.gmail.com>
+
+John Denker <jsd at av8n.com> wrote:
+
+> To say the same thing in more detail:  Suppose we start
+> with N generators, each of which puts out a 160 bit word
+> containing 80 bits of _trusted_ entropy.  That's a 50%
+> entropy density.
+
+So you need a 2:1 or heavier compression that won't lose
+entropy. If you just need one 160 word out per N in, then
+hashing them is the obvious way to do that.
+
+> We next consider the case where N-1 of the generators have
+> failed, or can no longer be trusted, ...
+
+> XOR is provably correct because it is _reversible_ in the
+> thermodynamic sense.  That means it cannot increase or
+> decrease the entropy.
+
+Yes, but the proof holds for any reversible mapping. XOR
+makes each output bit depend on exactly two inputs bits.
+Sometimes you want a mapping that mixes them better.
+
+If one input is entirely random, XOR is fine; random ^ x is
+random for any x. It is also fine in the case above, where
+only one generator works.
+
+If  > 1 inputs have some entropy but none have enough,
+which seems to me the commonest case, XOR is not
+the best choice; it does not mix well enough.
+
+Nyberg's perfect s-boxes are in some ways the ideal
+mixer. 2n bits in, n out, all columns and all linear
+combinations of columns are bent functions. Big
+S-boxes are expensive though, and building even
+small Nyberg S-boxes is going to take significant
+effort. Designing something that uses a bunch of say
+8 by 4 S-boxes to do good mixing on 160-bit chunks
+is not trivial either.
+
+You could use IDEA multiplication in mixing. Two 16-bit
+words in, one out, and every output bit depends on all
+input bits.
+
+If every 16-bit input word has 50% entropy density
+(not the same as every 160-bit word does, but perhaps
+close enough) then the output should have 100%.
+
+For N > 1, you need to combine those and worry about
+overall mixing. If entropy density is known to be ~50%,
+you can combine pairs with IDEA to get ~100%, then
+use cheaper operations for any other mixing needed.
+I'd use addition, which costs about the same as XOR
+but gives slightly better mixing because of carries.
+
+For N > 2 and density < 50%, you could use a cascade
+of IDEA operations 8->4->2->1 or whatever. Or do
+something like: combine two 160-bit chunks with 10
+IDEA multiplications, circular shift the result 8 bits,
+combine with next 160-bit input, ...
+
+At some point, you may find yourself designing a hash.
+If that happens, just give up and use a standard hash.
+
+-- 
+Sandy Harris,
+Quanzhou, Fujian, China
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From gnu at toad.com  Sun Oct 26 03:27:46 2008
+From: gnu at toad.com (John Gilmore)
+Date: Sun, 26 Oct 2008 00:27:46 -0700
+Subject: data rape once more, with feeling. 
+In-Reply-To: <48F1E206.8080504@links.org> 
+References: <E1KhyVp-0000W1-LL@wintermute01.cs.auckland.ac.nz> <48F1E206.8080504@links.org>
+Message-ID: <200810260727.m9Q7RkWw025695@new.toad.com>
+
+"Usability research" about how to track web users?  How Google-like.
+Can't you just dump a 25-year cookie on them from twelve different 
+directions, and be done with it?
+
+> Federated Login has been a "holy grail" in the identity community
+> for a long time.  We have known how to do the technical part for a
+> long time.  However the industry has constantly tried, and failed,
+> to find a model that was (1) simple for end users, and (2) had a
+> reasonable trust model between the RP (the relying party, which is
+> the site you want to log into) and the IDP (the identity provider,
+> who will identify you to the RP).
+
+Explicitly ignoring the trust model between the end users and the RP,
+and the trust between the end users and the IDP.  Why should end users
+trust your web site?  Why should they trust an IDP like Google?
+
+It's not that every website that requires a login is a privacy swamp.
+But the big ones pretty much all are, and those are the ones who want
+to impose this new model without bothering the end user's little head
+about whether he should trust them.
+
+And if every little wiki that just uses logins to slightly limit spam
+today, began using "federated identity", then ALL of them would become
+privacy swamps.
+
+> For example, the site might require users to agree to a Terms of Service.
+
+Let's see an example of how you're automating how the USER might
+require the SITE to agree to a Terms of Service.  Doesn't seem to be
+part of the model, which is that the SITE has something valuable it
+needs lawyers to protect, while the USER is just an
+eyeball-with-attached-wallet to be sold to the highest bidder.
+
+> When users are presented with a traditional signup page that asks
+> for E-mail, password, & password confirmation, it is quite common
+> for 30-50% of users to not finish the process.
+
+I wonder why not!  Perhaps they do not want to be tracked, numbered,
+wiretapped, monitored, herded, logged, datamined, folded, spindled,
+and mutilated.  Perhaps they just want to look at a web site without
+tying their reading habits to their social security number and
+their medical records.
+
+Similar percentages describe how many people lie through their teeth
+to get into random websites.  So half won't even login, half of those
+will lie like hell; a quarter of the people either think you're
+trustworthy, or are too stupid to care.  Which fraction is "federated
+identity" aimed at?  Catching the liars, i.e. fencing in the people
+who actually take care to protect their privacy?  Yeah, those are
+the guys this community wants you to screw as hard as you can. :-(
+
+> In this scenario, buy.com could detect that the domain name is for
+> an IDP that it trusts.  It could then redirect the user to AOL to
+> verify their identity.  Assuming the user approves sharing their
+> identity, then the user will be redirected back to buy.com which can
+> automatically create an account for them, and log them in.
+
+That's an interesting assumption.  Why would you assume that AOL would
+give users the choice?  AOL is not famous for choice.  Wouldn't AOL
+just read the user's 25-year AOL cookie, and redirect the browser back
+to buy.com with full account information supplied, without any
+interaction with the user at all?  AOL could probably even charge the
+RP a few bucks for doing so.  How simple.  How evil.  Franchising your
+privacy violations.
+
+> The RP can control what IDPs it trusts, and even switch their users
+> back to legacy logins if the IDP becomes untrustworthy
+
+You can pretty well guarantee that RP websites will somehow decline to
+trust any IDP that provides privacy to the end user -- like
+mailinator.com, for example.  A few web sites that "send you an email
+to verify you are who you say you are" already blacklist mailinator,
+though it's usually easy to bypass the blacklist by using one of its
+alternative domain names.
+
+	John
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sun Oct 26 04:42:23 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Sun, 26 Oct 2008 18:42:23 +1000
+Subject: Cloning resistance in bluetooth
+In-Reply-To: <ed843b100809120855r6cd81efawb4d09f19f358f7cd@mail.gmail.com>
+References: <ed843b100809120855r6cd81efawb4d09f19f358f7cd@mail.gmail.com>
+Message-ID: <49042D6F.60305@echeque.com>
+
+Suppose one has a system that automatically signs you on to anything if 
+your cell phone is within bluetooth range of your computer, and 
+automatically signs you off out of everything, and puts up a screen 
+saver that will not go away, when your cell phone is out of range of 
+your computer.
+
+What is the basis for cloning resistance of a cell phone with blue tooth?
+
+NFC provides physical authenticity - privacy on the model of whispering 
+one's ear, and authentication by touching.  Is there any mechanism 
+intended for mapping that to keys, so that when two NFC devices meet, 
+they can give each other petnames, and subsequently recognize public 
+keys by petname?
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From ben at links.org  Sun Oct 26 18:00:48 2008
+From: ben at links.org (Ben Laurie)
+Date: Sun, 26 Oct 2008 22:00:48 +0000
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <E1KtYqD-0000al-Fg@wintermute01.cs.auckland.ac.nz>
+References: <E1KtYqD-0000al-Fg@wintermute01.cs.auckland.ac.nz>
+Message-ID: <4904E890.8040505@links.org>
+
+Peter Gutmann wrote:
+> In fact none of the people/organisations I queried about this fitted into any 
+> of the proposed categories, it was all embedded devices, typically SCADA 
+> systems, home automation, consumer electronics, that sort of thing, so it was 
+> really a single category which was "Embedded systems".  Given the string of 
+> attacks on crypto in embedded devices (XBox, iPhone, iOpener, Wii, some 
+> not-yet-published ones on HDCP devices :-), etc) this is by far the most 
+> at-risk category because there's a huge incentive to attack them, the result 
+> affects tens/hundreds of millions of devices, and the attacks are immediately 
+> and widely actively exploited (modchips/device unlocking/etc, an important 
+> difference between this and academic proof-of-concept attacks), so this is the 
+> one where I'd expect the vendors to care most.
+
+But they've all been unlocked using easier attacks, surely?
+
+-- 
+http://www.apache-ssl.org/ben.html           http://www.links.org/
+
+"There is no limit to what a man can do or how far he can go if he
+doesn't mind who gets the credit." - Robert Woodruff
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Mon Oct 27 13:01:12 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Mon, 27 Oct 2008 13:01:12 -0400
+Subject: Rubber-hose cryptanalysis?
+Message-ID: <20081027130112.7b10b05b@cs.columbia.edu>
+
+http://news.cnet.com/8301-13739_3-10069776-46.html?tag=mncol
+
+
+		--Steve Bellovin, http://www.cs.columbia.edu/~smb
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Mon Oct 27 17:05:06 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Mon, 27 Oct 2008 17:05:06 -0400
+Subject: Cryptologic History Symposium: Call for Papers
+Message-ID: <20081027170506.1450d0ea@cs.columbia.edu>
+
+Forwarded with permission.
+
+
+-----------
+From: "Sieg, Kent G" <kgsieg at nsa.gov>
+Subject: Symposium Call for Papers
+Date: Mon, 27 Oct 2008 10:23:50 -0400
+
+Just sending notice of our upcoming Symposium, especially if you can
+present or know of a colleague who would like to do so.  Dr. Kent Sieg  
+
+The Center for Cryptologic History announces a call for papers for its
+biennial Symposium on Cryptologic History.  The Symposium will occur on
+15-16 October 2009 in Laurel, Maryland, at the Johns-Hopkins Applied
+Physics Laboratory located in the Baltimore-Washington corridor.  The
+theme for the Symposium will be "Global Perspectives on Cryptologic
+History".  We will consider all proposals relating to any aspect of
+cryptologic history.  The deadline for submission of proposals, to
+include a minimum two-page topic prospectus, a brief source list, and a
+biography, is 10 January 2009.  Selected presenters will received
+notification by 1 March 2009.  For further information, contact Dr.
+Kent Sieg, Symposium coordinator, at 301-688-2336 or kgsieg at nsa.gov.
+
+		--Steve Bellovin, http://www.cs.columbia.edu/~smb
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From DaveHowe at gmx.co.uk  Mon Oct 27 18:03:54 2008
+From: DaveHowe at gmx.co.uk (Dave Howe)
+Date: Mon, 27 Oct 2008 22:03:54 +0000
+Subject: combining entropy
+In-Reply-To: <4901BFB0.2080403@av8n.com>
+References: <48E0C673.6040005@systemics.com> <4901BFB0.2080403@av8n.com>
+Message-ID: <49063ACA.9000602@gmx.co.uk>
+
+John Denker wrote:
+> On 09/29/2008 05:13 AM, IanG wrote:
+>> My assumptions are:
+>>
+>>  * I trust no single source of Random Numbers.
+>>  * I trust at least one source of all the sources.
+>>  * no particular difficulty with lossy combination.
+> 
+> 
+>> If I have N pools of entropy (all same size X) and I pool them
+>> together with XOR, is that as good as it gets?
+> 
+> Yes.
+> 
+> The second assumption suffices to prove the result,
+> since (random bit) XOR (anything) is random.
+
+unless you have a possible case where (say) for any given pool,
+alternate bits are predictable; XORing all 'n' pools would still give a
+maximum entropy of 50%, as the XOR of all 'n' predictable bits is
+predictable.
+
+using a hash which performs error diffusion, I would expect that 'n'
+equal to 3 would give a suitable combined stream in that case (assuming
+the 50% of random bits *are* random of course) 2 is possibly good
+enough, but I would probably over-engineer at 3, in case one pool went
+non-random.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jkatz at cs.umd.edu  Mon Oct 27 18:53:38 2008
+From: jkatz at cs.umd.edu (Jonathan Katz)
+Date: Mon, 27 Oct 2008 18:53:38 -0400 (EDT)
+Subject: combining entropy
+In-Reply-To: <4903845A.2010106@av8n.com>
+References: <48E0C673.6040005@systemics.com> <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+ <490305A0.8050104@systemics.com> <4903845A.2010106@av8n.com>
+Message-ID: <Pine.GSO.4.64.0810271852270.14731@ringding.cs.umd.edu>
+
+On Sat, 25 Oct 2008, John Denker wrote:
+
+> On 10/25/2008 04:40 AM, IanG gave us some additional information.
+>
+> Even so, it appears there is still some uncertainty as to
+> interpretation, i.e. some uncertainty as to the requirements
+> and objectives.
+>
+> I hereby propose a new scenario.  It is detailed enough to
+> be amenable to formal analysis.  The hope is that it will
+> satisfy the requirements and objectives ... or at least
+> promote a more precise discussion thereof.
+>
+> We start with a group comprising N members (machines or
+> persons).  Each of them, on demand, puts out a 160 bit
+> word, called a "member" word.  We wish to combine these
+> to form a single word, the "group" word, also 160 bits
+> in length.
+
+<snip>
+
+If you are interested in something with a formal analysis, you should 
+check out work on (single-source or multiple-source) extractors.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From leichter_jerrold at emc.com  Tue Oct 28 12:43:11 2008
+From: leichter_jerrold at emc.com (Leichter, Jerry)
+Date: Tue, 28 Oct 2008 12:43:11 -0400 (EDT)
+Subject: combining entropy
+In-Reply-To: <4903845A.2010106@av8n.com>
+References: <48E0C673.6040005@systemics.com> <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+ <490305A0.8050104@systemics.com> <4903845A.2010106@av8n.com>
+Message-ID: <Pine.SOL.4.61.0810281232210.25171@mental>
+
+On Sat, 25 Oct 2008, John Denker wrote:
+
+| On 10/25/2008 04:40 AM, IanG gave us some additional information.
+| 
+| Even so, it appears there is still some uncertainty as to
+| interpretation, i.e. some uncertainty as to the requirements
+| and objectives.
+| 
+| I hereby propose a new scenario.  It is detailed enough to
+| be amenable to formal analysis.  The hope is that it will
+| satisfy the requirements and objectives ... or at least
+| promote a more precise discussion thereof.
+| 
+| We start with a group comprising N members (machines or 
+| persons).  Each of them, on demand, puts out a 160 bit 
+| word, called a "member" word.  We wish to combine these 
+| to form a single word, the "group" word, also 160 bits 
+| in length.
+This isn't enough.  Somehow, you have to state that the values emitted
+on demand in any given round i (where a round consists of exactly one
+demand on all N member and produces a single output result) cannot
+receive any input from any other members.  Otherwise, if N=2 and member
+0 produces true random values that member 1 can see before it responds
+to the demand it received, then member 1 can cause the final result to
+be anything it likes.
+
+This is an attack that must be considered because you already want to
+consider the case:
+
+|  b) Some of [the members] are malicious.  Their outputs may appear
+|   random, but are in fact predictable by our adversary.
+
+Stating this requirement formally seems to be quite difficult.  You can
+easily make it very strong - the members are to be modeled as
+probabilistic TM's with no input.  Then, certainly, no one can see
+anyone else's value, since they can't see *anything*.  But you really
+want to say something along the lines of "no malicious member can see
+the value output by any non-malicious member", which gets you into
+requiring an explicit failure model - which doesn't fit comfortably with
+the underlying problem.
+
+If the issue is how to make sure you get out at least all the randomness
+that was there, where the only failures are that some of your sources
+become predictable, the XOR is fine.  But once you allow for more
+complicated failure/attack modes, it's really not clear what is going on
+and what the model should to be.
+							-- Jerry
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jsd at av8n.com  Tue Oct 28 15:09:04 2008
+From: jsd at av8n.com (John Denker)
+Date: Tue, 28 Oct 2008 12:09:04 -0700
+Subject: combining entropy
+In-Reply-To: <Pine.SOL.4.61.0810281232210.25171@mental>
+References: <48E0C673.6040005@systemics.com> <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu> <490305A0.8050104@systemics.com> <4903845A.2010106@av8n.com> <Pine.SOL.4.61.0810281232210.25171@mental>
+Message-ID: <49076350.8020506@av8n.com>
+
+On 10/28/2008 09:43 AM, Leichter, Jerry wrote:
+
+> | We start with a group comprising N members (machines or 
+> | persons).  Each of them, on demand, puts out a 160 bit 
+> | word, called a "member" word.  We wish to combine these 
+> | to form a single word, the "group" word, also 160 bits 
+> | in length.
+> This isn't enough.  Somehow, you have to state that the values emitted
+> on demand in any given round i (where a round consists of exactly one
+> demand on all N member and produces a single output result) cannot
+> receive any input from any other members.  Otherwise, if N=2 and member
+> 0 produces true random values that member 1 can see before it responds
+> to the demand it received, then member 1 can cause the final result to
+> be anything it likes.
+
+
+Perhaps an example will make it clear where I am coming
+from.  Suppose I start with a deck of cards that has been 
+randomly shuffled.  It can provide log2(52!) bits of 
+entropy.  That's a little more than 225 bits.  Now suppose 
+I have ten decks of cards all arranged alike.  You could 
+set this up by shuffling one of them and then stacking 
+the others to match ... or by some more symmetric process. 
+In any case the result is symmetric w.r.t interchange of 
+decks.  In this situation, I can choose any one of the 
+decks and obtain 225 bits of entropy.  The funny thing 
+is that if I choose N of the decks, I still get only 225 
+bits of entropy, not N*225.
+
+This can be summarized by saying that entropy is not an
+extensive quantity in this situation.  The graph of
+entropy versus N goes like this:
+
+     225        *   *   *   *   *
+
+       0    *
+            0   1   2   3   4   5  (# of decks)
+
+The spooky aspect of this situation is the whack-a-mole 
+aspect:  You cannot decide in advance which one of the 
+decks has entropy and which N-1 of them do not.  That's 
+the wrong question.  The first deck we choose to look 
+at has 225 bits of entropy, and only then can we say 
+that the other N-1 decks have zero additional entropy.
+
+The original question spoke of "trusted" sources of
+entropy, and I answered accordingly.  To the extent
+that the sources are correlated, they were never eligible 
+to be considered trusted sources of entropy.  To say 
+the same thing the other way around, to the extent
+that each source can be trusted to provide a certain
+amount of entropy, it must be to that extent independent 
+of the others.
+
+It is possible for a source to be partially dependent
+and partially independent.  For example, if you take
+each of the ten aforementioned decks and "cut the deck"
+randomly and independently, that means the first deck
+we look at will provide 225 bits of entropy, and each
+one thereafter will provide 5.7 bits of additional
+entropy, since log2(52)=5.7.  So in this situation,
+each deck can be /trusted/ to provide 5.7 bits of
+entropy.
+
+In this situation, requiring each deck to have "no
+input" from the other decks would be an overly strict
+requirement.  We do not need full independence;  we
+just need some independence, as quantified by the
+provable lower bound on the entropy.
+
+If you wanted, you could do a deeper analysis of this 
+example, taking into account the fact that 5.7 is not 
+the whole story.  It is easy to use 5.7 bits as a valid 
+and trustworthy lower bound, but under some conditions 
+more entropy is available, and can be quantified by
+considering the _joint_ probability distribution and
+computing the entropy of that distribution.  Meanwhile
+the fact remains that under a wide range of practical 
+conditions, it makes sense to engineer a randomness 
+generator based on provable lower bounds, since that 
+is good enough to get the job done, and a deeper
+analysis would not be worth the trouble.
+  http://www.av8n.com/turbid/paper/turbid.htm
+
+
+> If the issue is how to make sure you get out at least all the randomness
+> that was there,
+
+I'm going to ignore the "At least".  It is very hard to 
+get out more than you put in.
+
+On a less trivial note:  The original question did not
+require getting out every last bit of available randomness.
+In situations where the sources might be partially
+independent and partially dependent, that would be a 
+very hard challenge, and I do not wish to accept that 
+challenge.
+
+Dealing with provable lower bounds on the entropy is
+more tractable, and sufficient for a wide range of
+practical purposes.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From leichter_jerrold at emc.com  Tue Oct 28 15:55:50 2008
+From: leichter_jerrold at emc.com (Leichter, Jerry)
+Date: Tue, 28 Oct 2008 15:55:50 -0400 (EDT)
+Subject: combining entropy
+In-Reply-To: <49076350.8020506@av8n.com>
+References: <48E0C673.6040005@systemics.com> <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+ <490305A0.8050104@systemics.com> <4903845A.2010106@av8n.com>
+ <Pine.SOL.4.61.0810281232210.25171@mental> <49076350.8020506@av8n.com>
+Message-ID: <Pine.SOL.4.61.0810281529040.25171@mental>
+
+On Tue, 28 Oct 2008, John Denker wrote:
+
+| Date: Tue, 28 Oct 2008 12:09:04 -0700
+| From: John Denker <jsd at av8n.com>
+| To: "Leichter, Jerry" <leichter_jerrold at emc.com>,
+|     Cryptography <cryptography at metzdowd.com>
+| Cc: IanG <iang at systemics.com>
+| Subject: Re: combining entropy
+| 
+| On 10/28/2008 09:43 AM, Leichter, Jerry wrote:
+| 
+| > | We start with a group comprising N members (machines or 
+| > | persons).  Each of them, on demand, puts out a 160 bit 
+| > | word, called a "member" word.  We wish to combine these 
+| > | to form a single word, the "group" word, also 160 bits 
+| > | in length.
+| > This isn't enough.  Somehow, you have to state that the values emitted
+| > on demand in any given round i (where a round consists of exactly one
+| > demand on all N member and produces a single output result) cannot
+| > receive any input from any other members.  Otherwise, if N=2 and member
+| > 0 produces true random values that member 1 can see before it responds
+| > to the demand it received, then member 1 can cause the final result to
+| > be anything it likes.
+| 
+| 
+| Perhaps an example will make it clear where I am coming
+| from.  Suppose I start with a deck of cards that has been 
+| randomly shuffled.  It can provide log2(52!) bits of 
+| entropy.  That's a little more than 225 bits.  Now suppose 
+| I have ten decks of cards all arranged alike.  You could 
+| set this up by shuffling one of them and then stacking 
+| the others to match ... or by some more symmetric process. 
+| In any case the result is symmetric w.r.t interchange of 
+| decks.  In this situation, I can choose any one of the 
+| decks and obtain 225 bits of entropy.  The funny thing 
+| is that if I choose N of the decks, I still get only 225 
+| bits of entropy, not N*225....
+| The original question spoke of "trusted" sources of
+| entropy, and I answered accordingly.  To the extent
+| that the sources are correlated, they were never eligible 
+| to be considered trusted sources of entropy.  To say 
+| the same thing the other way around, to the extent
+| that each source can be trusted to provide a certain
+| amount of entropy, it must be to that extent independent 
+| of the others.
+Rest of example omitted.  I'm not sure of the point.  Yes, there are
+plenty of ways for correlation to sneak in.
+
+As far as I can see, only the second piece I quoted is relevant, and it
+essentially gets to the point:  The original problem isn't well posed.
+It makes no sense *both* to say the sources and trusted *and* to say
+that they may not deliver the expected entropy.  If I know the entropy of
+all the sources, that inherently includes some notion of trust - call
+it source trust:  I can trust them to have at least that much entropy.
+I have to have that trust, because there is no way to measure the
+(cryptographic) entropy.  (And don't say I can analyze how the source
+is constructed, because then I'm left with the need to trust that what
+I analyzed is actually still physically there - maybe an attacker has
+replaced it!)
+
+Given such sources it's easy to *state* what it would mean for them to
+be independent:  Just that if I consider the source produced by
+concatenating all the individual sources, its entropy is the sum of the
+entropies of the constituents.  Of course, that's an entropy I can again
+measure - at least in the limit - in the information theoretical sense,
+but not in the cryptographic sense; another aspect of trust - call it
+independence trust - has to enter here.
+
+All that's fine, but how then are we supposed to construe a question
+about what happens if some of the sources fail to deliver their rated
+entropy?  That means that source trust must be discarded.  (Worse, as
+the original problem is posed, I must discard source trust for *some
+unknown subset of the sources*.)  But given that, why should I assume
+that independence trust remains?
+
+Sure, I can make additional assumptions.  If I'm concerned only about,
+say, physical failures of sources implemented as well-isolated modules,
+it might well be a reasonable thing to do.  In fact, this is essentially
+the independent- failure model we use all the time in building reliable
+physical systems.  Of course, as we know well, that model is completely
+untenable when the concern is hostile attack, not random failure.  What
+do you replace it with?
+
+Consider the analogy with reliable distributed systems.  People have
+basically only dealt with two models:
+
+	1.  The fail-stop model.  A failed module stops interacting.
+	2.  The Byzantine model.  Failed modules can do anything
+		including cooperating by exchanging arbitrary
+		information and doing infinite computation.
+
+The Byzantine model is bizarre sounding, but it's just a way of expressing
+a worst-case situation:  Maybe the failed modules act randomly but just by
+bad luck they do the worst possible thing.
+
+We're trying to define something different here.  Twenty-odd years ago,
+Mike Fischer at Yale proposed some ideas in this direction (where
+modules have access to true random numbers and the only thing a failed
+module *cannot* do is determine what random values another module drew
+unless that module chooses to make them available), but I don't recall
+much that came out of this work (not that I specifically tried to keep
+track).  That seems related to the underlying problem here.  (If we want
+to ignore intelligent attacks, we get something close to the fail-stop
+model, where a failed module can deliver anything that depends only on
+its internal state and its private random number source.)
+
+| > If the issue is how to make sure you get out at least all the randomness
+| > that was there,
+| 
+| I'm going to ignore the "At least".  It is very hard to 
+| get out more than you put in.
+Yes.  I'm not sure what the sentence was originally supposed to mean,
+but what I ended up saying didn't make a whole load of sense....
+
+							-- Jerry
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From benl at google.com  Tue Oct 28 17:37:48 2008
+From: benl at google.com (Ben Laurie)
+Date: Tue, 28 Oct 2008 21:37:48 +0000
+Subject: combining entropy
+In-Reply-To: <Pine.SOL.4.61.0810281529040.25171@mental>
+References: <48E0C673.6040005@systemics.com>
+	 <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+	 <490305A0.8050104@systemics.com> <4903845A.2010106@av8n.com>
+	 <Pine.SOL.4.61.0810281232210.25171@mental> <49076350.8020506@av8n.com>
+	 <Pine.SOL.4.61.0810281529040.25171@mental>
+Message-ID: <1b587cab0810281437s70928981u67cef418ae9a50bc@mail.gmail.com>
+
+On Tue, Oct 28, 2008 at 7:55 PM, Leichter, Jerry
+<leichter_jerrold at emc.com> wrote:
+>        2.  The Byzantine model.  Failed modules can do anything
+>                including cooperating by exchanging arbitrary
+>                information and doing infinite computation.
+
+So in the Byzantine model I can crack RSA?
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From bill.stewart at pobox.com  Tue Oct 28 18:27:05 2008
+From: bill.stewart at pobox.com (Bill Stewart)
+Date: Tue, 28 Oct 2008 15:27:05 -0700
+Subject: combining entropy
+In-Reply-To: <Pine.SOL.4.61.0810281232210.25171@mental>
+References: <48E0C673.6040005@systemics.com>
+ <Pine.GSO.4.64.0810240848320.17520@ringding.cs.umd.edu>
+ <490305A0.8050104@systemics.com> <4903845A.2010106@av8n.com>
+ <Pine.SOL.4.61.0810281232210.25171@mental>
+Message-ID: <6.2.1.2.1.20081028151748.044030d0@pop.sonic.net>
+
+
+>This isn't enough.  Somehow, you have to state that the values emitted
+>on demand in any given round i (where a round consists of exactly one
+>demand on all N member and produces a single output result) cannot
+>receive any input from any other members.  Otherwise, if N=2 and member
+>0 produces true random values that member 1 can see before it responds
+>to the demand it received, then member 1 can cause the final result to
+>be anything it likes.
+
+In the case of malicious members who can snoop the inputs,
+Mal can get any result he wants if the combining function is XOR
+(or, with slightly more work, if it's a non-cryptographic checksum.)
+But if your combining function is a cryptographic hash,
+it's computationally difficult to do.
+
+However, even a hash isn't always enough - consider the case
+where the application of the random numbers only uses k of the N bits,
+and the attacker has enough time to try out 2**k (waving hands roughly here)
+different cases.  So you may still need to design your protocols carefully.
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From cryptography at lt.gross.net  Wed Oct 29 11:23:26 2008
+From: cryptography at lt.gross.net (Stephan Somogyi)
+Date: Wed, 29 Oct 2008 08:23:26 -0700
+Subject: Skein announced
+Message-ID: <p06240840c52e304d4dbd@[192.168.11.123]>
+
+The Skein team has announced its submission to the NIST hash competition:
+
+<http://www.schneier.com/skein.html>
+
+s.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From eugen at leitl.org  Wed Oct 29 13:24:13 2008
+From: eugen at leitl.org (Eugen Leitl)
+Date: Wed, 29 Oct 2008 18:24:13 +0100
+Subject: the skein hash function
+Message-ID: <20081029172413.GJ11968@leitl.org>
+
+
+http://www.schneier.com/blog/archives/2008/10/the_skein_hash.html?1
+
+October 29, 2008
+
+The Skein Hash Function
+
+NIST is holding a competition to replace the SHA family of hash functions,
+which have been increasingly under attack. (I wrote about an early NIST hash
+workshop here.)
+
+Skein is our submission (myself and seven others: Niels Ferguson, Stefan
+Lucks, Doug Whiting, Mihir Bellare, Tadayoshi Kohno, Jon Callas, and Jesse
+Walker). Here's the paper:
+
+    Executive Summary
+
+    Skein is a new family of cryptographic hash functions. Its design
+combines speed, security, simplicity, and a great deal of flexibility in a
+modular package that is easy to analyze.
+
+    Skein is fast. Skein-512 -- our primary proposal -- hashes data at 6.1
+clock cycles per byte on a 64-bit CPU. This means that on a 3.1 GHz x64 Core
+2 Duo CPU, Skein hashes data at 500 MBytes/second per core -- almost twice as
+fast as SHA-512 and three times faster than SHA-256. An optional hash-tree
+mode speeds up parallelizable implementations even more. Skein is fast for
+short messages, too; Skein-512 hashes short messages in about 1000 clock
+cycles.
+
+    Skein is secure. Its conservative design is based on the Threefish block
+cipher. Our current best attack on Threefish-512 is on 25 of 72 rounds, for a
+safety factor of 2.9. For comparison, at a similar stage in the
+standardization process, the AES encryption algorithm had an attack on 6 of
+10 rounds, for a safety factor of only 1.7. Additionally, Skein has a number
+of provably secure properties, greatly increasing confidence in the
+algorithm.
+
+    Skein is simple. Using only three primitive operations, the Skein
+compression function can be easily understood and remembered. The rest of the
+algorithm is a straightforward iteration of this function.
+
+    Skein is flexible. Skein is defined for three different internal state
+sizes -- 256 bits, 512 bits, and 1024 bits -- and any output size. This
+allows Skein to be a drop-in replacement for the entire SHA family of hash
+functions. A completely optional and extendable argument system makes Skein
+an efficient tool to use for a very large number of functions: a PRNG, a
+stream cipher, a key derivation function, authentication without the overhead
+of HMAC, and a personalization capability. All these features can be
+implemented with very low overhead. Together with the Threefish large-block
+cipher at Skein core, this design provides a full set of symmetric
+cryptographic primitives suitable for most modern applications.
+
+    Skein is efficient on a variety of platforms, both hardware and software.
+Skein-512 can be implemented in about 200 bytes of state. Small devices, such
+as 8-bit smart cards, can implement Skein-256 using about 100 bytes of
+memory. Larger devices can implement the larger versions of Skein to achieve
+faster speeds.
+
+    Skein was designed by a team of highly experienced cryptographic experts
+from academia and industry, with expertise in cryptography, security
+analysis, software, chip design, and implementation of real-world
+cryptographic systems. This breadth of knowledge allowed them to create a
+balanced design that works well in all environments.
+
+Here's source code, text vectors, and the like for Skein. Watch the Skein
+website for any updates -- new code, new results, new implementations, the
+proofs.
+
+NIST's deadline is Friday. It seems as if everyone -- including many amateurs
+-- is working on a hash function, and I predict that NIST will receive at
+least 80 submissions. (Compare this to the 21 submissions NIST received --
+five were rejected as not being complete -- for the AES competition in 1998.)
+I expect people to start posting their submissions over the weekend. (Ron
+Rivest already presented MD6 at Crypto in August.) Probably the best place to
+watch for new hash functions is here; I'll try to keep a listing of the
+submissions myself.
+
+The selection process will take around four years. I've previously called
+this sort of thing a cryptographic demolition derby -- last one left standing
+wins -- but that's only half true. Certainly all the groups will spend the
+next couple of years trying to cryptanalyze each other, but in the end there
+will be a bunch of unbroken algorithms; NIST will select one based on
+performance and features.
+
+NIST has stated that the goal of this process is not to choose the best
+standard but to choose a good standard. I think that's smart of them; in this
+process, "best" is the enemy of "good." My advice is this: immediately sort
+them based on performance and features. Ask the cryptographic community to
+focus its attention on the top dozen, rather than spread its attention across
+all 80 -- although I also expect that most of the amateur submissions will be
+rejected by NIST for not being "complete and proper." Otherwise, people will
+break the easy ones and the better ones will go unanalyzed.
+
+Posted on October 29, 2008 at 4:35 AM ? 22 Comments ? View Blog Reactions
+
+To receive these entries once a month by e-mail, sign up for the Crypto-Gram
+Newsletter. 
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From pgut001 at cs.auckland.ac.nz  Wed Oct 29 23:32:23 2008
+From: pgut001 at cs.auckland.ac.nz (Peter Gutmann)
+Date: Thu, 30 Oct 2008 16:32:23 +1300
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <4904E890.8040505@links.org>
+Message-ID: <E1KvOGl-00078F-1r@wintermute01.cs.auckland.ac.nz>
+
+Ben Laurie <ben at links.org> writes:
+>Peter Gutmann wrote:
+>> Given the string of
+>> attacks on crypto in embedded devices (XBox, iPhone, iOpener, Wii, some
+>> not-yet-published ones on HDCP devices :-), etc) this is by far the most
+>> at-risk category because there's a huge incentive to attack them, the result
+>> affects tens/hundreds of millions of devices, and the attacks are immediately
+>> and widely actively exploited (modchips/device unlocking/etc, an important
+>> difference between this and academic proof-of-concept attacks), so this is the
+>> one where I'd expect the vendors to care most.
+>
+>But they've all been unlocked using easier attacks, surely?
+
+The published ones seem to be the (relatively) easy ones, but the ones that
+have been tried (and either not published or just had the easy outcome
+published) have been pretty amazing.  This is another one of these things
+where real figures are going to be near-impossible to come by, even harder
+than my hypothetical public vendor survey of who uses SCA protection.  You'd
+have to read about 20 blogs and a hundred mailing lists, many private, just to
+keep up, but from various informal contacts with people working in this area
+it seems you're not looking at anything like the conventional "identify the
+weakest point, then attack there" approach.  Instead what's being done is more
+like the Iraqi weapons program prior to 1991 where they were using every
+imaginable type of approach, including ones like calutrons that had been
+abandoned decades earlier by everyone else, for a first-past-the-post finish,
+they'd try anything and everything and whatever got them there first would be
+declared the winner.  It's the same with these attacks, whenever I've asked
+"have you tried X" the answer is invariably "yes, we have".
+
+This style of attack is quite different from the usual academic model, it
+neatly illustrates Bruce Schneier's comment that a defender has to defend
+every single point along the line while an attacker only has to find a single
+weakness.  In this case it seems to be literally true, and the weakness won't
+necessarily be the actual weakest point but merely the point where an attacker
+with sufficient skill and access to the right tools got in.  Look at the XBox
+attacks for example, there's everything from security 101 lack of
+checking/validation and 1980s MSDOS-era A20# issues through to Bunnie Huang's
+FPGA-based homebrew logic analyser and use of timing attacks to recover device
+keys (oh, and there's an example of a real-world side-channel attack for you),
+there's no rhyme or reason to them, it's just "hammer away at everything with
+anything you've got and exploit the first bit that fails".
+
+Peter.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From thierry.moreau at connotech.com  Thu Oct 30 00:41:40 2008
+From: thierry.moreau at connotech.com (Thierry Moreau)
+Date: Wed, 29 Oct 2008 23:41:40 -0500
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <E1KvOGl-00078F-1r@wintermute01.cs.auckland.ac.nz>
+References: <E1KvOGl-00078F-1r@wintermute01.cs.auckland.ac.nz>
+Message-ID: <49093B04.2080808@connotech.com>
+
+
+
+Peter Gutmann wrote:
+
+> Ben Laurie <ben at links.org> writes:
+> 
+>>Peter Gutmann wrote:
+>>
+>>>Given the string of
+>>>attacks on crypto in embedded devices (XBox, iPhone, iOpener, Wii, some
+>>>not-yet-published ones on HDCP devices :-), etc) this is by far the most
+>>>at-risk category because there's a huge incentive to attack them, the result
+>>>affects tens/hundreds of millions of devices, and the attacks are immediately
+>>>and widely actively exploited (modchips/device unlocking/etc, an important
+>>>difference between this and academic proof-of-concept attacks), so this is the
+>>>one where I'd expect the vendors to care most.
+>>
+>>But they've all been unlocked using easier attacks, surely?
+> 
+> 
+> The published ones seem to be the (relatively) easy ones, but the ones that
+> have been tried (and either not published or just had the easy outcome
+> published) have been pretty amazing.  This is another one of these things
+> where real figures are going to be near-impossible to come by, even harder
+> than my hypothetical public vendor survey of who uses SCA protection.  You'd
+> have to read about 20 blogs and a hundred mailing lists, many private, just to
+> keep up, but from various informal contacts with people working in this area
+> it seems you're not looking at anything like the conventional "identify the
+> weakest point, then attack there" approach.  Instead what's being done is more
+> like the Iraqi weapons program prior to 1991 where they were using every
+> imaginable type of approach, including ones like calutrons that had been
+> abandoned decades earlier by everyone else, for a first-past-the-post finish,
+> they'd try anything and everything and whatever got them there first would be
+> declared the winner.  It's the same with these attacks, whenever I've asked
+> "have you tried X" the answer is invariably "yes, we have".
+> 
+> This style of attack is quite different from the usual academic model, it
+> neatly illustrates Bruce Schneier's comment that a defender has to defend
+> every single point along the line while an attacker only has to find a single
+> weakness.  In this case it seems to be literally true, and the weakness won't
+> necessarily be the actual weakest point but merely the point where an attacker
+> with sufficient skill and access to the right tools got in.  Look at the XBox
+> attacks for example, there's everything from security 101 lack of
+> checking/validation and 1980s MSDOS-era A20# issues through to Bunnie Huang's
+> FPGA-based homebrew logic analyser and use of timing attacks to recover device
+> keys (oh, and there's an example of a real-world side-channel attack for you),
+> there's no rhyme or reason to them, it's just "hammer away at everything with
+> anything you've got and exploit the first bit that fails".
+> 
+
+Now you seem to answer the question yourself: SCA protections apply to a 
+single class of attacks, while there are many.
+
+Going back to "who cares", having done certification consulting 
+assignments for some devices with crypto, when there was no 
+checklist-based standard to apply, "good practice" security criteria (to 
+be briefly documented in the report) would include the following questions:
+
+(A) Is the secret key inside a device unit applicable to this single 
+unit, or is it a system-wide, or domain-wide key?
+
+That's a key management scheme question.
+
+(B) Is the attack destructive? Which device unit features (especially 
+"be in working order", but also "be absent of actual tampering evidence" 
+or even "remain under the control of the legitimate user without 
+interruptions longer than X" ) need to be impaired for a given class of 
+attack to succeed? This question pertains to the secret key as in (A) 
+and also to any public-key-to-be-integrity-protected which would prevent 
+malicious code download.
+
+That's a product design question.
+
+(C) What are the incentives, if any, for the legitimate user to remain 
+well-behaved in the human aspects of device protection? (E.g. a merchant 
+has some incentive to maintain a payment authorization device in good 
+working order.) This leads to the question of insider threats, so 
+satisfactory answers in this area are seldom present.
+
+This is an application design question.
+
+This gives an idea of analyses that drives security-related spendings 
+(in my limited experience). Clients (intend to) pay for protections that 
+will prevent financial losses and major public relations impacts (and 
+then cut operating budgets soon after the project gets its 
+authorization!). The consultant study must clearly link attackers' 
+motivations to impacts and to countermeasures.
+
+Refinements to the above analysis methodology call for the same creative 
+mind that you assume from the part of the attackers. E.g. the usefulness 
+of a device unit clone for the attacker should be considered for 
+questions (B) and (C).
+
+Does SCA protection enter the picture? Marginally at best.
+
+Regards,
+
+
+-- 
+
+- Thierry Moreau
+
+CONNOTECH Experts-conseils inc.
+9130 Place de Montgolfier
+Montreal, Qc
+Canada   H2M 2A1
+
+Tel.: (514)385-5691
+Fax:  (514)385-5900
+
+web site: http://www.connotech.com
+e-mail: thierry.moreau at connotech.com
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From bill.stewart at pobox.com  Thu Oct 30 02:30:27 2008
+From: bill.stewart at pobox.com (Bill Stewart)
+Date: Wed, 29 Oct 2008 23:30:27 -0700
+Subject: the skein hash function
+In-Reply-To: <20081029172413.GJ11968@leitl.org>
+References: <20081029172413.GJ11968@leitl.org>
+Message-ID: <6.2.1.2.1.20081029230844.046e4910@pop.sonic.net>
+
+Eugen Leitl and Stephan Somogyi <cryptography at lt.gross.net> wrote
+about the Skein hash function announcement.
+>http://www.schneier.com/blog/archives/2008/10/the_skein_hash.html?1
+ > http://www.schneier.com/skein.html
+
+One thing I noticed on a first read-through was
+a discussion of speed for ASICs vs. general CPUs.
+Their implementation on CPUs was about 4 Gbps/core,
+and their estimate of ASIC speed was about 5 Gbps
+using about 80K gates worth of ASIC,
+and their hash-tree mode makes parallelization efficient.
+Their conclusion was that ASICs don't give you
+much of a speedup, but may save power or cost.
+
+A quick google-look at ASICs showed a number
+in the range of 300K-20M gates,
+so hash-trees could probably get speedups of up to 20-100x
+if you can keep from becoming input-speed-bound.
+The 300K chips were about $6, 5M at $50 and 350MHz,
+which is somewhat faster than the Skein team estimate,
+and some of the denser chips didn't mention price
+but were starting to use 45nm technology.
+So if Skein becomes popular, ASIC accelerator hardware
+may be practical for higher-speed applications.
+
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From matt.ball at ieee.org  Thu Oct 30 08:50:19 2008
+From: matt.ball at ieee.org (Matt Ball)
+Date: Thu, 30 Oct 2008 06:50:19 -0600
+Subject: Parallel Skein Hash Construction based on the Subset Sum Problem?
+Message-ID: <ed843b100810300550v342a9e86w1d0e86057a5e0947@mail.gmail.com>
+
+On Wed, Oct 29, 2008 at 9:23 AM, Stephan Somogyi wrote:
+>
+> The Skein team has announced its submission to the NIST hash competition:
+>
+> <http://www.schneier.com/skein.html>
+>
+
+Now that we've all had a chance to read the Skein algorithm, I've got
+a question for the list:
+
+Would it be possible to construct an efficient parallel version of
+Skein with output size N by creating intermediate results of size >2N,
+adding them as integers, and then hashing this sum of intermediate
+results as the final result?  (That is, would such a construction be
+faster than the Skein tree hashing?)  I suspect that this construction
+would be secure according to the computational difficulty of solving
+the Subset Sum problem (known to be NP-complete), but haven't
+rigorously confirmed this.  Skein is able to efficiently create larger
+outputs, so such a construction like this would be easier with Skein
+than with, say SHA-512.
+
+For example, with Skein-256, you could hash each 256-bit (or larger,
+depending on leaf size choice) message chunk into a 512-bit, or
+768-bit intermediate value.  This value would then be added to all
+other similar hash results (mod 2^512 or 2^768), and this result would
+be hashed one more time for the final result.
+
+It's necessary to make the intermediate results at least 2x the final
+hash size because the best known solution to the subset sum problem is
+solvable in 2^(N/2) operations.  There's also the issue of tying the
+complexity of an addition operation to the complexity of computing a
+single hash result (e.g., 1 N-bit Hash might equal 100 N-bit modular
+adds).  For this reason, using 3x the final hash size for
+intermediates would be more conservative.
+
+General Comments on Skein:
+
+Overall, I'm very happy with the results of Skein, and the three-fish
+project.  When Ron Rivest described his "Halloween" hashing function
+during Crypto 2008, I liked its simplicity (only simple operators),
+but disliked that it was slower than SHA-256 and SHA-512.  Skein has
+both delivered on security (so we think) and is faster and simpler
+than existing NIST hashing functions and block ciphers.  In my
+opinion, SHA-2 and AES have already pegged the meter on practical
+security (of course, this may one day be false...), but there hasn't
+been enough emphasis on efficiency, cost, and parallelism.
+
+By using 64-bit addition as one of Skein's basic operations, the
+resistance against Shamir's "Cube attack" increases, although the
+hardware complexity increases quite a bit over Ron Rivest group's
+choice of operators that have no carry.
+
+I suspect that (as with the AES competition), that all of the
+contestants of the final round with be secure, and the winner will be
+the one that is most efficient, and to some extend, most flexible
+(although too much flexibility causes implementation issues when
+non-cryptographers have to write code to support all the options, and
+the designers have to be smart enough to pick the correct
+configuration).
+
+With more submissions like this, I expect we will be poised for an
+exciting NIST hash competition!
+
+Cheers,
+-Matt
+
+Matt Ball, IEEE P1619.x SISWG Chair
+Cell: 303-717-2717
+http://www.linkedin.com/in/matthewvball
+http://www.mavaball.net/
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Thu Oct 30 14:08:35 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Thu, 30 Oct 2008 14:08:35 -0400
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <49093B04.2080808@connotech.com>
+References: <E1KvOGl-00078F-1r@wintermute01.cs.auckland.ac.nz>
+	<49093B04.2080808@connotech.com>
+Message-ID: <20081030140835.001df406@cs.columbia.edu>
+
+On Wed, 29 Oct 2008 23:41:40 -0500
+Thierry Moreau <thierry.moreau at connotech.com> wrote:
+ 
+> Does SCA protection enter the picture? Marginally at best.
+> 
+You're forgetting the first questions you need to ask: who are your
+enemies, what are you trying to protect, and what can you enemy spend?
+And regardless of the answer to the last part, it's safe to assume that
+your enemy would prefer to spend as little as possible.  Note that
+"spend" includes not just dollars, euros, zorkmids, or linden dollars,
+but also reputation if discovered, attack techniques you may or may not
+want to reveal, etc.  
+
+So -- why do a side-channel attack involving, say, a million SSL
+messages (see http://www.cert.org/advisories/CA-1998-07.html), when
+that's the sort of thing that will show up in a log file, when you can
+send a simple RPC query
+(http://www.microsoft.com/technet/security/Bulletin/ms08-067.mspx) to
+learn a private key?
+
+But -- if you're a transit getting ready to deploy fare cards that
+depend on a chip being secure, you'd better be very careful about side
+channels, because those attacks can be tried offline.
+
+		--Steve Bellovin, http://www.cs.columbia.edu/~smb
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From perry at piermont.com  Thu Oct 30 16:30:20 2008
+From: perry at piermont.com (Perry E. Metzger)
+Date: Thu, 30 Oct 2008 16:30:20 -0400
+Subject: Donald Knuth stops paying for errata
+Message-ID: <87od11zuzn.fsf@snark.cb.piermont.com>
+
+
+It seems that Donald Knuth had his bank accounts attacked not once but
+three times using his checking account number off of checks he sent
+out for bounties for flaws in his books and software, and is thus
+ending a practice of nearly 40 years. Rather sad.
+
+I mark this as another milestone in the slow destruction of the idea
+that it is okay for an account number to be the secret used to effect
+payment in a transaction system.
+
+http://www-cs-faculty.stanford.edu/~knuth/news08.html
+
+Perry
+-- 
+Perry E. Metzger		perry at piermont.com
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Thu Oct 30 17:40:56 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Thu, 30 Oct 2008 17:40:56 -0400
+Subject: Fw: SHA-3 lounge
+Message-ID: <20081030174056.5bff652b@cs.columbia.edu>
+
+
+
+Begin forwarded message:
+
+Date: Thu, 30 Oct 2008 16:38:29 -0400
+From: "Jean-Philippe Aumasson" <jeanphilippe.aumasson at gmail.com>
+To: Multiple recipients of list <hash-forum at nist.gov>
+Subject: SHA-3 lounge
+
+
+
+Hi,
+
+This is to announce the creation of a "SHA-3 lounge", at
+http://131002.net/sha3lounge/
+
+
+Best,
+JP
+
+
+
+
+
+		--Steve Bellovin, http://www.cs.columbia.edu/~smb
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From pgut001 at cs.auckland.ac.nz  Fri Oct 31 04:25:37 2008
+From: pgut001 at cs.auckland.ac.nz (Peter Gutmann)
+Date: Fri, 31 Oct 2008 21:25:37 +1300
+Subject: the skein hash function
+In-Reply-To: <6.2.1.2.1.20081029230844.046e4910@pop.sonic.net>
+Message-ID: <E1KvpK5-0003qg-OW@wintermute01.cs.auckland.ac.nz>
+
+Bill Stewart <bill.stewart at pobox.com> writes:
+
+>A quick google-look at ASICs showed a number in the range of 300K-20M gates,
+>so hash-trees could probably get speedups of up to 20-100x if you can keep
+>from becoming input-speed-bound. The 300K chips were about $6, 5M at $50 and
+>350MHz, which is somewhat faster than the Skein team estimate, and some of
+>the denser chips didn't mention price but were starting to use 45nm
+>technology.
+
+I don't know about ASICs but for FPGAs you can pay in the thousands of dollars
+for a single high-end device (forget Xeons, that's the market to be in), so
+you don't want to set your sights too high.  My guess is they were designing
+down to a price rather than up to a performance figure.
+
+Peter.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Fri Oct 31 14:10:00 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Sat, 01 Nov 2008 02:10:00 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-dd013ecc-8c7f-fc14-b1c5-cc9fd0181098@server123>
+
+I've been working on a new electronic cash system that's fully
+peer-to-peer, with no trusted third party.
+
+The paper is available at:
+http://www.bitcoin.org/bitcoin.pdf
+
+The main properties:
+ Double-spending is prevented with a peer-to-peer network.
+ No mint or other trusted parties.
+ Participants can be anonymous.
+ New coins are made from Hashcash style proof-of-work.
+ The proof-of-work for new coin generation also powers the
+    network to prevent double-spending.
+
+Bitcoin: A Peer-to-Peer Electronic Cash System
+
+Abstract.  A purely peer-to-peer version of electronic cash would
+allow online payments to be sent directly from one party to another
+without the burdens of going through a financial institution.
+Digital signatures provide part of the solution, but the main
+benefits are lost if a trusted party is still required to prevent
+double-spending.  We propose a solution to the double-spending
+problem using a peer-to-peer network.  The network timestamps
+transactions by hashing them into an ongoing chain of hash-based
+proof-of-work, forming a record that cannot be changed without
+redoing the proof-of-work.  The longest chain not only serves as
+proof of the sequence of events witnessed, but proof that it came
+from the largest pool of CPU power.  As long as honest nodes control
+the most CPU power on the network, they can generate the longest
+chain and outpace any attackers.  The network itself requires
+minimal structure.  Messages are broadcasted on a best effort basis,
+and nodes can leave and rejoin the network at will, accepting the
+longest proof-of-work chain as proof of what happened while they
+were gone.
+
+Full paper at:
+http://www.bitcoin.org/bitcoin.pdf
+
+Satoshi Nakamoto
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From bear at sonic.net  Fri Oct 31 17:33:09 2008
+From: bear at sonic.net (Ray Dillinger)
+Date: Fri, 31 Oct 2008 14:33:09 -0700
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <E1KvOGl-00078F-1r@wintermute01.cs.auckland.ac.nz>
+References: <E1KvOGl-00078F-1r@wintermute01.cs.auckland.ac.nz>
+Message-ID: <1225488789.20087.13.camel@localhost>
+
+On Thu, 2008-10-30 at 16:32 +1300, Peter Gutmann wrote:
+> Look at the XBox
+> attacks for example, there's everything from security 101 lack of
+> checking/validation and 1980s MSDOS-era A20# issues through to Bunnie Huang's
+> FPGA-based homebrew logic analyser and use of timing attacks to recover device
+> keys (oh, and there's an example of a real-world side-channel attack for you),
+> there's no rhyme or reason to them, it's just "hammer away at everything with
+> anything you've got and exploit the first bit that fails".
+
+
+But isn't that the attacker's job?  We will never arrive at anything
+secure - or even *learn* anything about how to build real security - 
+if attackers leave any part of it untested or consistently fail to 
+try particular approaches.  As far as I can see the "acid tests" of 
+the real world, hammering away with anything they've got, are exactly
+the kind of environment that security pros have to design for in the 
+long run.  
+
+We should be trying to identify products and implementations that 
+hold up under this kind of assault, and then publishing books about 
+the design processes and best practices that produced them.  Knowing 
+full well that Kerchoff's Principle is alive and well, and that 
+the people doing the attacks will be first in line to buy the 
+books.  The point is that if the material in the books is any 
+good, then having the books shouldn't help them. 
+
+Cipher suites and protocols and proofs and advanced mathematics 
+are well and good, but we have to recognize that they are only a 
+small part of actually building a secure implementation.  Holding up 
+under diverse assault *is* the desired property that we are all 
+supposed to be working toward, and this kind of diverse assault 
+is exactly the sort of test we need to validate security design 
+processes. 
+
+				Bear
+
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+

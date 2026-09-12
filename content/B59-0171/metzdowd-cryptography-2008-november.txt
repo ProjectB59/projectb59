@@ -1,0 +1,3897 @@
+From wouter at yourcreativesolutions.nl  Sun Nov  2 07:36:19 2008
+From: wouter at yourcreativesolutions.nl (Wouter Slegers)
+Date: Sun, 2 Nov 2008 13:36:19 +0100
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <49093B04.2080808@connotech.com>
+References: <E1KvOGl-00078F-1r@wintermute01.cs.auckland.ac.nz> <49093B04.2080808@connotech.com>
+Message-ID: <20081102123619.GA30806@gossamer.internal.yourcreativesolutions.nl>
+
+L.S.,
+
+Peter convinced my to publicly comment on this.
+
+Thierry Moreau <thierry.moreau at connotech.com> wrote:
+> >>But they've all been unlocked using easier attacks, surely?
+That was also my first response. In evaluation labs specialized in
+checking devices (mostly smartcards and other financial devices) the
+whole spread of attacks are tested against. Side-channel analysis is
+arguably the most sexy of them all, but I have yet to see any hint let
+alone proof that it is used in the field.
+Perturbation attacks (messing with the execution of the code) by means
+of glitches in the supply voltage is still the undisputed number 1 in
+field attacks on individual smartcards.
+Protocol/API-level attacks are the biggest one on system level in my
+opinion. Card sharing is currently a good example.
+
+Timing analysis is quite possible to pull of in straightforward
+implementations as demonstrated over the Internet on OpenSSL prior to
+their implementation of blinding
+(http://crypto.stanford.edu/~dabo/papers/ssl-timing.pdf). But frankly, I
+have never heard of such an attack actually being used in the field.
+Real side channel analysis (DPA, EMA etc) seems mostly limited to
+academics and labs, not the field.
+
+>From that regard, side channel analysis is currently the more expensive
+attack (the academic papers are good, but do not underestimate the
+difficulty in implementing it in non-ideal noisy environments), which
+suggest that protecting for it is not such a high priority at the moment
+(it is not the weakest link).
+
+> >The published ones seem to be the (relatively) easy ones, but the
+> >ones that have been tried (and either not published or just had the
+> >easy outcome published) have been pretty amazing.
+Which suggests that keeping side channel analysis as part of the
+possible attacks is a good idea. The broad scope of attacks seems to be
+done in the field, which means that it is interesting for the defenders
+to invest effort in that also.
+In a way, the enthousiast attackers on the internet form a sort of
+loosly parallel attack, not so much obviously focussing on one weak
+spot but using a broad spectrum approach.
+
+> >This is another one of these things where real figures are going to
+> >be near-impossible to come by, even harder than my hypothetical
+> >public vendor survey of who uses SCA protection.  
+I'm afraid that the best at this moment is mostly rumors. There is some
+knowledge about attacks in the field but it is spread out a lot and the
+ones that aggregate this information are not sharing this (it also gives
+the attackers a view on what works and what not).
+
+I've seen quite a few publicly available examples of voltage
+manipulation on old style smartcards, (not so-)secure embedded CPUs. Old
+style physical reverse engineering is getting within the range of
+students now (recent reverse engineering of crypto-1 is a good example).
+
+Examples of side channel analysis on real systems I however have never
+seen in the field. Any rumors would be highly appreciated.
+
+> >attacks for example, there's everything from security 101 lack of
+> >checking/validation and 1980s MSDOS-era A20# issues through to Bunnie
+> >Huang's FPGA-based homebrew logic analyser and use of timing attacks
+> >to recover device keys (oh, and there's an example of a real-world
+> >side-channel attack for you),
+?? As I read his story, he eavesdropped the bus between the bridge chip
+and the CPU to recover the real bootloader code with the real RC4 key,
+not the incorrect one in the ROM (very nasty trick, kudo's for the
+Microsoft development team there ;-) ). 
+Ref http://www.xenatera.com/bunnie/proj/anatak/AIM-2002-008.pdf
+
+Nevertheless, this is a good example of economically unreasonable
+attacks: Bunnie spent something like 4 months of his master thesis' time
+on hacking the Xbox and then gave that knowledge away for free on the
+internet. 4 months of "honest work" would have bought him that Xbox and
+all consoles he could have wanted for quite some time...
+
+[snip good list of things to consider]
+> This gives an idea of analyses that drives security-related spendings 
+> (in my limited experience). Clients (intend to) pay for protections that 
+> will prevent financial losses and major public relations impacts (and 
+> then cut operating budgets soon after the project gets its 
+> authorization!). The consultant study must clearly link attackers' 
+> motivations to impacts and to countermeasures.
+I agree. From commercial point of view, the developer's point of view of
+side channel analysis protection (and most other protections I think)
+is I think:
+Costs: 
+- Additional resources in the device (memory, CPU time). Unless the
+  device is severely resource bound (like a very tight power budget,
+  really limited memory sizes like in a smartcard), this is not really a
+  cost.
+- Significant and specialized additional development resources to
+  implement the countermeasures well. To do the whole protection, not
+  just the blinding, well is a real engineering effort. It also requires
+  a specific type of expertise that is not so easy to get or develop
+  (although it is great fun to do for the developer as a person), i.e.
+  it is expensive in your development personel costs.
+- Testing and production might suffer from the security measures. This
+  can be surprisingly expensive in terms of production speed.
+- Reliability in the field of the product is potentially going to
+  suffer, because of the risk of the countermeasures tripping in the
+  field. Out there the power is bad (looking just like a voltage glitch
+  attack), the sun is on the device (looking just like a temperature
+  attack), the device falls of the counter (causing a short disconnect
+  in the tamper sensors connectors, looking just like a tamper event).
+  Because it is hard to get good information on these events in the
+  field (attacks and accidents alike), the reliability takes an unknown
+  but potentially high hit. This is the big cost in the eyes of
+  management (and in mine).
+
+Benefits:
+- No compromittation of the resources. But in many cases, it is not the
+  product's resources that are compromised...
+- Warm fuzzy feeling.
+
+If you look at it this way, it makes no sense to implement
+countermeasures. Unless the costs are reduced by doing exactly what
+Peter had already excluded: using a ready made crypto library /
+smartcard /... that is already tested and shown to work.
+
+Or, which is my experience, because regulations in the product domain
+force the developer to have these countermeasures and show them to be
+effective to third parties (evaluation labs). This is the domain of
+financial organisations with their accreditations, and government(-like)
+organisations requiring Common Criteria evaluations.
+(Which also is excluded by Peter: the group that does this because they
+have no choice).
+
+> Does SCA protection enter the picture? Marginally at best.
+For real threats out there, I agree that it is not as high a priority
+as perturbation or API attacks are.
+It is however relatively easy to implement only the blinding of the SCA
+protection (just take a crypto library that does this). Implementing the
+real anti-perturbation and side channel analysis protection, that is
+where it becomes a serious amount of work.
+
+So in short, I would see the group that Peter was looking for, as an
+economic anomaly ;-) Although I would be fascinated to hear why it is
+interesting for them to do anyway.
+
+With kind regards,
+Wouter Slegers
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From pgut001 at cs.auckland.ac.nz  Sun Nov  2 09:11:10 2008
+From: pgut001 at cs.auckland.ac.nz (Peter Gutmann)
+Date: Mon, 03 Nov 2008 03:11:10 +1300
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <20081102123619.GA30806@gossamer.internal.yourcreativesolutions.nl>
+Message-ID: <E1Kwdfa-0003mY-G4@wintermute01.cs.auckland.ac.nz>
+
+Wouter Slegers <wouter at yourcreativesolutions.nl> writes:
+
+>Timing analysis is quite possible to pull of in straightforward
+>implementations as demonstrated over the Internet on OpenSSL prior to their
+>implementation of blinding (
+>http://crypto.stanford.edu/~dabo/papers/ssl-timing.pdf). But frankly, I have
+>never heard of such an attack actually being used in the field. Real side
+>channel analysis (DPA, EMA etc) seems mostly limited to academics and labs,
+>not the field.
+
+One of the XBox attacks, allowing rollback to a vulnerable kernel, was a
+timing attack.  I'd heard it was also tried in some form (unsuccessfully)
+against the Wii as part of the breadth-first attack approach.
+
+>I'm afraid that the best at this moment is mostly rumors. There is some
+>knowledge about attacks in the field but it is spread out a lot and the ones
+>that aggregate this information are not sharing this (it also gives the
+>attackers a view on what works and what not).
+
+You can see this with the games-console hacking, the attackers try and release
+the least amount of information possible so they've got something in reserve
+when the countermeasures appear.  In some cases they use attack method A to
+find a weakness and then exploit it using unrelated method B, allowing reuse
+of method A once B is patched by the vendor.
+
+>As I read his story, he eavesdropped the bus between the bridge chip and the
+>CPU to recover the real bootloader code with the real RC4 key,
+
+Sorry, I was referring to two different attacks in the same sentence, and on
+re-reading managed to make the result quite unclear :-).  The timing attack
+didn't directly recover the authentication key directly but avoided the need
+to know it, thus allowing unauthorised vulnerable kernels to be loaded.
+
+>not the incorrect one in the ROM (very nasty trick, kudo's for the Microsoft
+>development team there ;-) ).
+
+Often the simplest tricks are the most effective, e.g. stick a PGP header on
+the data to be protected and the attackers spend forever trying to decrypt it
+when in fact the processing function is (in pseudocode):
+
+  seek( file, 16 );    // Skip red-herring junk at start
+  processData( file );
+
+(the problem with this one was that they memcpy()'d the fixed header on and
+the lengths were wrong, but apart from that it would probably have distracted
+attackers for some time).
+
+Peter.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sun Nov  2 18:46:23 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Mon, 03 Nov 2008 09:46:23 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-dd013ecc-8c7f-fc14-b1c5-cc9fd0181098@server123>
+References: <CHILKAT-MID-dd013ecc-8c7f-fc14-b1c5-cc9fd0181098@server123>
+Message-ID: <490E3BCF.2020109@echeque.com>
+
+Satoshi Nakamoto wrote:
+> I've been working on a new electronic cash system that's fully
+> peer-to-peer, with no trusted third party.
+> 
+> The paper is available at:
+> http://www.bitcoin.org/bitcoin.pdf
+
+We very, very much need such a system, but the way I understand your 
+proposal, it does not seem to scale to the required size.
+
+For transferable proof of work tokens to have value, they must have 
+monetary value.  To have monetary value, they must be transferred within 
+a very large network - for example a file trading network akin to 
+bittorrent.
+
+To detect and reject a double spending event in a timely manner, one 
+must have most past transactions of the coins in the transaction, which, 
+  naively implemented, requires each peer to have most past 
+transactions, or most past transactions that occurred recently. If 
+hundreds of millions of people are doing transactions, that is a lot of 
+bandwidth - each must know all, or a substantial part thereof.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Sun Nov  2 20:37:43 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Mon, 03 Nov 2008 09:37:43 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-23799d7c-5a6d-a530-cab8-e3cadeb300e7@server123>
+
+>Satoshi Nakamoto wrote:
+>> I've been working on a new electronic cash system that's fully
+>> peer-to-peer, with no trusted third party.
+>> 
+>> The paper is available at:
+>> http://www.bitcoin.org/bitcoin.pdf
+>
+>We very, very much need such a system, but the way I understand your 
+>proposal, it does not seem to scale to the required size.
+>
+>For transferable proof of work tokens to have value, they must have 
+>monetary value.  To have monetary value, they must be transferred within 
+>a very large network - for example a file trading network akin to 
+>bittorrent.
+>
+>To detect and reject a double spending event in a timely manner, one 
+>must have most past transactions of the coins in the transaction, which, 
+>  naively implemented, requires each peer to have most past 
+>transactions, or most past transactions that occurred recently. If 
+>hundreds of millions of people are doing transactions, that is a lot of 
+>bandwidth - each must know all, or a substantial part thereof.
+>
+
+
+Long before the network gets anywhere near as large as that, it would be safe for users to use Simplified Payment Verification (section 8) to check for double spending, which only requires having the chain of block headers, or about 12KB per day.  Only people trying to create new coins would need to run network nodes.  At first, most users would run network nodes, but as the network grows beyond a certain point, it would be left more and more to specialists with server farms of specialized hardware.  A server farm would only need to have one node on the network and the rest of the LAN connects with that one node.
+
+The bandwidth might not be as prohibitive as you think.  A typical transaction would be about 400 bytes (ECC is nicely compact).  Each transaction has to be broadcast twice, so lets say 1KB per transaction.  Visa processed 37 billion transactions in FY2008, or an average of 100 million transactions per day.  That many transactions would take 100GB of bandwidth, or the size of 12 DVD or 2 HD quality movies, or about $18 worth of bandwidth at current prices.
+
+If the network were to get that big, it would take several years, and by then, sending 2 HD movies over the Internet would probably not seem like a big deal. 
+
+Satoshi Nakamoto
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From tanja at hyperelliptic.org  Sun Nov  2 21:29:03 2008
+From: tanja at hyperelliptic.org (Tanja Lange)
+Date: Mon, 3 Nov 2008 03:29:03 +0100
+Subject: Who cares about side-channel attacks?
+In-Reply-To: <20081102123619.GA30806@gossamer.internal.yourcreativesolutions.nl>
+References: <E1KvOGl-00078F-1r@wintermute01.cs.auckland.ac.nz> <49093B04.2080808@connotech.com> <20081102123619.GA30806@gossamer.internal.yourcreativesolutions.nl>
+Message-ID: <20081103022903.GF11788@cph.win.tue.nl>
+
+> Examples of side channel analysis on real systems I however have never
+> seen in the field. Any rumors would be highly appreciated.
+>
+At Crypto'08 a team from Bochum demonstrated their side-channel attack on 
+KeeLoq. There were some theoretical attacks before but the SCA really
+broke it. 
+
+KeeLoq is being used by some car manufacturers and by most garage door
+manufacturers.
+
+Regards
+	Tanja
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From johnl at iecc.com  Mon Nov  3 08:32:39 2008
+From: johnl at iecc.com (John Levine)
+Date: 3 Nov 2008 13:32:39 -0000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-dd013ecc-8c7f-fc14-b1c5-cc9fd0181098@server123>
+Message-ID: <20081103133239.61643.qmail@simone.iecc.com>
+
+> As long as honest nodes control the most CPU power on the network,
+> they can generate the longest chain and outpace any attackers.
+
+But they don't.  Bad guys routinely control zombie farms of 100,000
+machines or more.  People I know who run a blacklist of spam sending
+zombies tell me they often see a million new zombies a day.
+
+This is the same reason that hashcash can't work on today's Internet
+-- the good guys have vastly less computational firepower than the bad
+guys.
+
+I also have my doubts about other issues, but this one is the killer.
+
+R's,
+John
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Mon Nov  3 11:23:49 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Tue, 04 Nov 2008 00:23:49 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-aa3af037-eacf-dd6e-1db5-e692685eb166@server123>
+
+>> As long as honest nodes control the most CPU power on the network,
+>> they can generate the longest chain and outpace any attackers.
+>
+>But they don't.  Bad guys routinely control zombie farms of 100,000
+>machines or more.  People I know who run a blacklist of spam sending
+>zombies tell me they often see a million new zombies a day.
+>
+>This is the same reason that hashcash can't work on today's Internet
+>-- the good guys have vastly less computational firepower than the bad
+>guys.
+
+Thanks for bringing up that point.
+
+I didn't really make that statement as strong as I could have.  The requirement is that the good guys collectively have more CPU power than any single attacker. 
+
+There would be many smaller zombie farms that are not big enough to overpower the network, and they could still make money by generating bitcoins.  The smaller farms are then the "honest nodes".  (I need a better term than "honest")  The more smaller farms resort to generating bitcoins, the higher the bar gets to overpower the network, making larger farms also too small to overpower it so that they may as well generate bitcoins too.  According to the "long tail" theory, the small, medium and merely large farms put together should add up to a lot more than the biggest zombie farm.
+
+Even if a bad guy does overpower the network, it's not like he's instantly rich.  All he can accomplish is to take back money he himself spent, like bouncing a check.  To exploit it, he would have to buy something from a merchant, wait till it ships, then overpower the network and try to take his money back.  I don't think he could make as much money trying to pull a carding scheme like that as he could by generating bitcoins.  With a zombie farm that big, he could generate more bitcoins than everyone else combined.
+
+The Bitcoin network might actually reduce spam by diverting zombie farms to generating bitcoins instead.
+
+Satoshi Nakamoto
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Mon Nov  3 15:20:13 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Tue, 04 Nov 2008 06:20:13 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-23799d7c-5a6d-a530-cab8-e3cadeb300e7@server123>
+References: <CHILKAT-MID-23799d7c-5a6d-a530-cab8-e3cadeb300e7@server123>
+Message-ID: <490F5CFD.5040409@echeque.com>
+
+James A. Donald:
+ > > To detect and reject a double spending event in a
+ > > timely manner, one must have most past transactions
+ > > of the coins in the transaction, which, naively
+ > > implemented, requires each peer to have most past
+ > > transactions, or most past transactions that
+ > > occurred recently. If hundreds of millions of people
+ > > are doing transactions, that is a lot of bandwidth -
+ > > each must know all, or a substantial part thereof.
+
+Satoshi Nakamoto wrote:
+ > Long before the network gets anywhere near as large as
+ > that, it would be Safe for users to use Simplified
+ > Payment Verification (section 8) to check for double
+ > spending, which only requires having the chain of
+ > block headers,
+
+If I understand Simplified Payment Verification
+correctly:
+
+New coin issuers need to store all coins and all recent
+coin transfers.
+
+There are many new coin issuers, as many as want to be
+issuers, but far more coin users.
+
+Ordinary entities merely transfer coins.  To see if a
+coin transfer is OK, they report it to one or more new
+coin issuers and see if the new coin issuer accepts it.
+New coin issuers check transfers of old coins so that
+their new coins have valid form, and they report the
+outcome of this check so that people will report their
+transfers to the new coin issuer.
+
+If someone double spends a coin, and one expenditure is
+reported to one new coin issuer, and the other
+simultaneously reported to another new coin issuer, then
+both issuers to swifly agree on a unique sequence order
+of payments.  This, however, is a non trivial problem of
+a massively distributed massive database, a notoriously
+tricky problem, for which there are at present no peer
+to peer solutions.  Obiously it is a solvable problem,
+people solve it all the time, but not an easy problem.
+People fail to solve it rather more frequently.
+
+  But let us suppose that the coin issue network is
+dominated by a small number of issuers as seems likely.
+
+If a small number of entities are issuing new coins,
+this is more resistant to state attack that with a
+single issuer, but the government regularly attacks
+financial networks, with the financial collapse ensuing
+from the most recent attack still under way as I write
+this.
+
+Government sponsored enterprises enter the business, in
+due course bad behavior is made mandatory, and the evil
+financial network is bigger than the honest financial
+network, with the result that even though everyone knows
+what is happening, people continue to use the paper
+issued by the evil financial network, because of network
+effects - the big, main issuers, are the issuers you use
+if you want to do business.
+
+Then knowledgeable people complain that the evil
+financial network is heading for disaster, that the
+government sponsored enterprises are about to cause a
+"collapse of the total financial system", as Wallison
+and Alan Greenspan complained in 2005, the government
+debates shrinking the evil government sponsored
+enterprises, as with "S. 190 [109th]: Federal Housing
+Enterprise Regulatory Reform Act of 2005" but they find
+easy money too seductive, and S. 190 goes down in flames
+before a horde of political activists chanting that easy
+money is sound, and opposing it is racist, nazi,
+ignorant, and generally hateful, the recent S. 190
+debate on limiting portfolios (bond issue supporting dud
+mortgages) by government sponsored enterprises being a
+perfect reprise of the debates on limiting the issue of
+new assignats in the 1790s.
+
+The big and easy government attacks on money target a
+single central money issuer, as with the first of the
+modern political attacks, the French Assignat of 1792,
+but in the late nineteenth century political attacks on
+financial networks began, as for example the Federal
+reserve act of 1913, the goal always being to wind up
+the network into a single too big to fail entity, and
+they have been getting progressively bigger, more
+serious, and more disastrous, as with the most recent
+one.  Each attack is hugely successful, and after the
+cataclysm that the attack causes the attackers are
+hailed as saviors of the poor, the oppressed, and the
+nation generally, and the blame for the the bad
+consequences is dumped elsewhere, usually on Jews,
+greedy bankers, speculators, etc, because such attacks
+are difficult for ordinary people understand.  I have
+trouble understanding your proposal - ordinary users
+will be easily bamboozled by a government sponsored
+security update.  Further, when the crisis hits, to
+disagree with the line, to doubt that the regulators are
+right, and the problem is the evil speculators, becomes
+political suicide, as it did in America in 2007,
+sometimes physical suicide, as in Weimar Germany.
+
+Still, it is better, and more resistant to attack by
+government sponsored enterprises, than anything I have
+seen so far.
+
+ > Visa processed 37 billion transactions in FY2008, or
+ > an average of 100 million transactions per day.  That
+ > many transactions would take 100GB of bandwidth, or
+ > the size of 12 DVD or 2 HD quality movies, or about
+ > $18 worth of bandwidth at current prices.
+
+ > If the network were to get that big, it would take
+ > several years, and by then, sending 2 HD movies over
+ > the Internet would probably not seem like a big deal.
+
+If there were a hundred or a thousand money issuers by
+the time the government attacks, the kind of government
+attacks on financial networks that we have recently seen
+might well be more difficult.
+
+But I think we need to concern ourselves with minimizing
+the data and bandwidth required by money issuers - for
+small coins, the protocol seems wasteful.  It would be
+nice to have the full protocol for big coins, and some
+shortcut for small coins wherein people trust account
+based money for small amounts till they get wrapped up
+into big coins.
+
+The smaller the data storage and bandwidth required for
+money issuers, the more resistant the system is the kind
+of government attacks on financial networks that we have
+recently seen.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Tue Nov  4 00:23:14 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Tue, 04 Nov 2008 15:23:14 +1000
+Subject: Secrets and cell phones.
+In-Reply-To: <490E3BCF.2020109@echeque.com>
+References: <CHILKAT-MID-dd013ecc-8c7f-fc14-b1c5-cc9fd0181098@server123> <490E3BCF.2020109@echeque.com>
+Message-ID: <490FDC42.2090105@echeque.com>
+
+A sim card contains a shared symmetric secret that is known to the 
+network operator and to rather too many people on the operator's staff, 
+and which could be easily discovered by the phone holder - but which is 
+very secure against everyone else.
+
+This means that cell phones provide authentication that is secure 
+against everyone except the network operator, which close to what we 
+need for financial transactions.  The network operator maps this 
+narrowly shared secret to a phone number. The phone number, which once 
+upon a time directly controlled equipment that makes connections, is now 
+a database key to the secret.
+
+There are now send-money-to-and-from-phone-number systems in Canada 
+<http://digitaldebateblogs.typepad.com/digital_identity/2008/10/sos-sms.html>, 
+in South Africa, and in various third world countries with collapsed 
+banking systems.
+
+At present, each of these systems sits in its own narrow little silo - 
+you cannot send money from a Canadian phone number directly to a South 
+Africa phone number, and, despite being considerably more secure than 
+computer sign on to your bank, are limited to small amounts of money, 
+probably to appease the banking cartel and the "money laundering" controls.
+
+Skype originally planned to introduce such a system, which would have 
+been a world wide system, skype id to skype id, but backed off, perhaps 
+because of possible regulatory reprisals, perhaps because computers are 
+insufficiently secure.  If you click on the spot in the UI that would 
+have connected you to Skype's offering, you instead get an ad for paypal.
+
+Of course, the old cypherpunk dream is a system with end to end 
+encryption, with individuals having the choice of holding their own 
+secrets, rather than these secrets being managed by some not very 
+trusted authority, and with these secrets enabling transfer of money, in 
+the form of a yurls representing a sum of money, from one yurl 
+representing an id, to another yurl reprsenting an id.
+
+We discovered, however, that most people do not want to manage their own 
+secrets, and that today's operating systems are not a safe place on 
+which to store valuable secrets.
+
+We know in principle how to make operating systems safe enough 
+<http://jim.com/security/safe_operating_system.html>, but for the moment 
+readily transferable money is coming in through systems with centralized 
+access to keys, and there is no other way to do it.
+
+If the mapping of phone numbers to true names is sufficiently weak, (few 
+of my phone numbers are mapped to my true name) centralized access to 
+symmetric keys is not too bad.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From david_koontz at xtra.co.nz  Wed Nov  5 15:08:25 2008
+From: david_koontz at xtra.co.nz (David G. Koontz)
+Date: Thu, 06 Nov 2008 09:08:25 +1300
+Subject: IBM Zurich Research Laboratory  Internet Transaction Security on
+ Your Key Chain
+Message-ID: <4911FD39.1000107@xtra.co.nz>
+
+http://www.zurich.ibm.com/ztic/
+
+ IBM Zone Trusted Information Channel (ZTIC)
+
+A banking server's display on your key chain
+
+More and more attacks to online banking applications target the user's home
+PC, changing what is displayed to the user, while logging and altering key
+strokes. Therefore, third parties such as MELANI  conclude that "Two-factor
+authentication systems [...] do not afford protection against such attacks
+and must be viewed as insecure once the computer of the customer has been
+infected with malware".
+
+---
+
+Perhaps worth a read.  Uses a USB device as a browser proxy serving as a man
+in the middle monitor for SSL/TLS transactions to banks.    Allows the user
+to explicitly authorize release of information in a transaction to prevent
+browser based attacks.  See the demo video (another link below).
+
+You'd think it would cure a lot of the issues with performing transactions
+on browsers.  Now you get to worry about where your ZTIC is, and whether or
+not it's been tinkered with.
+
+There's a YouTube video which can be found here:
+http://www.ibm.com/developerworks/blogs/page/woolf?entry=zone_trusted_information_channel_ztic
+
+A couple of articles:
+
+http://www.toysgadget.com/gadgets-and-toys/zone-trusted-information-channel
+http://arstechnica.com/news.ars/post/20081105-ibm-looks-to-beat-identity-thieves-with-a-usb-ztic.html
+http://www.eweek.com/c/a/Security/IBM-Researchers-Show-Off-New-Weapon-in-Fight-Against-Online-Fraud/
+
+and IBM's own press release:
+
+http://www-03.ibm.com/press/us/en/pressrelease/25828.wss
+
+You need a Springer Verlag account to download a paper presented on ZTIC at
+Trust 2008.  I found the proceedings on scribd by googling for the authors
+names from the paper title.
+
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From bear at sonic.net  Thu Nov  6 00:14:37 2008
+From: bear at sonic.net (Ray Dillinger)
+Date: Wed, 05 Nov 2008 21:14:37 -0800
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <490F5CFD.5040409@echeque.com>
+References: <CHILKAT-MID-23799d7c-5a6d-a530-cab8-e3cadeb300e7@server123>
+	 <490F5CFD.5040409@echeque.com>
+Message-ID: <1225948477.19060.46.camel@localhost>
+
+On Tue, 2008-11-04 at 06:20 +1000, James A. Donald wrote:
+
+> If I understand Simplified Payment Verification
+> correctly:
+> 
+> New coin issuers need to store all coins and all recent
+> coin transfers.
+> 
+> There are many new coin issuers, as many as want to be
+> issuers, but far more coin users.
+> 
+> Ordinary entities merely transfer coins.  To see if a
+> coin transfer is OK, they report it to one or more new
+> coin issuers and see if the new coin issuer accepts it.
+> New coin issuers check transfers of old coins so that
+> their new coins have valid form, and they report the
+> outcome of this check so that people will report their
+> transfers to the new coin issuer.
+
+
+I think the real issue with this system is the market 
+for bitcoins.  
+
+Computing proofs-of-work have no intrinsic value.  We 
+can have a limited supply curve (although the "currency" 
+is inflationary at about 35% as that's how much faster 
+computers get annually) but there is no demand curve 
+that intersects it at a positive price point.
+
+I know the same (lack of intrinsic value) can be said of 
+fiat currencies, but an artificial demand for fiat 
+currencies is created by (among other things) taxation 
+and legal-tender laws.  Also, even a fiat currency can 
+be an inflation hedge against another fiat currency's 
+higher rate of inflation.   But in the case of bitcoins 
+the inflation rate of 35% is almost guaranteed by the 
+technology, there are no supporting mechanisms for 
+taxation, and no legal-tender laws.  People will not 
+hold assets in this highly-inflationary currency if 
+they can help it.  
+
+			Bear
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Thu Nov  6 15:15:40 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Fri, 07 Nov 2008 04:15:40 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-8342fe26-f3e0-089a-237e-6fa56bec088c@server123>
+
+>[Lengthy exposition of vulnerability of a systm to use-of-force
+>monopolies ellided.]
+>
+>You will not find a solution to political problems in cryptography.
+
+Yes, but we can win a major battle in the arms race and gain a new territory of freedom for several years.
+
+Governments are good at cutting off the heads of a centrally controlled networks like Napster, but pure P2P networks like Gnutella and Tor seem to be holding their own.  
+
+Satoshi
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From perry at piermont.com  Fri Nov  7 12:32:23 2008
+From: perry at piermont.com (Perry E. Metzger)
+Date: Fri, 07 Nov 2008 12:32:23 -0500
+Subject: ADMIN: no money politics, please
+Message-ID: <87zlkbe920.fsf@snark.cb.piermont.com>
+
+
+List Moderator's Edict of the Day:
+
+A bunch of people seem anxious to branch the discussion of
+cryptographic cash protocols off into a discussion of the politics of
+money. I'm a rabid libertarian myself, but this isn't the rabid
+libertarian mailing list. Please stick to discussing either the
+protocols themselves or their direct practicality, and not the perils
+of fiat money, taxation, your aunt Mildred's gold coin collection,
+etc.
+
+Perry
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Fri Nov  7 13:21:56 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Fri, 7 Nov 2008 13:21:56 -0500
+Subject: NIST Special Publication 800-108 Recommendation for Key  Derivation
+ Using Pseudorandom Functions
+Message-ID: <20081107132156.2a00b176@cs.columbia.edu>
+
+From: Sara Caswell <sara at nist.gov>
+To: undisclosed-recipients:;
+Subject: NIST Special Publication 800-108 Recommendation for Key
+   Derivation Using Pseudorandom Functions
+Date: Fri, 07 Nov 2008 08:57:40-0500
+
+ Dear Colleagues:
+NIST Special Publication 800-108 Recommendation for Key Derivation
+ Using Pseudorandom Functions is published at
+ http://csrc.nist.gov/publications/nistpubs/800-108/sp800-108.pdf
+
+Thank you very much for your valuable comments during public comments
+period.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From zooko at zooko.com  Fri Nov  7 16:10:31 2008
+From: zooko at zooko.com (zooko)
+Date: Fri, 7 Nov 2008 14:10:31 -0700
+Subject: ADMIN: no money politics, please
+In-Reply-To: <87zlkbe920.fsf@snark.cb.piermont.com>
+References: <87zlkbe920.fsf@snark.cb.piermont.com>
+Message-ID: <E436522F-E858-4295-A2FF-A80FC69944F6@zooko.com>
+
+Hey folks: you are welcome to discuss money politics over at the p2p- 
+hackers mailing list:
+
+http://lists.zooko.com/mailman/listinfo/p2p-hackers
+
+I'm extremely interested in the subject myself, having taken part in  
+two notable failed attempts to deploy Chaumian digital cash and  
+currently being involved in a project that might lead to a third  
+attempt.
+
+Regards,
+
+Zooko
+---
+http://allmydata.org -- Tahoe, the Least-Authority Filesystem
+http://allmydata.com -- back up all your files for $10/month
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From hal at finney.org  Fri Nov  7 18:40:12 2008
+From: hal at finney.org (Hal Finney)
+Date: Fri,  7 Nov 2008 15:40:12 -0800 (PST)
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <20081107234012.6F46F14F6E3@finney.org>
+
+Bitcoin seems to be a very promising idea. I like the idea of basing
+security on the assumption that the CPU power of honest participants
+outweighs that of the attacker. It is a very modern notion that exploits
+the power of the long tail. When Wikipedia started I never thought it
+would work, but it has proven to be a great success for some of the
+same reasons.
+
+I also do think that there is potential value in a form of unforgeable
+token whose production rate is predictable and can't be influenced
+by corrupt parties. This would be more analogous to gold than to fiat
+currencies. Nick Szabo wrote many years ago about what he called "bit
+gold"[1] and this could be an implementation of that concept. There have
+also been proposals for building light-weight anonymous payment schemes on
+top of heavy-weight non-anonymous systems, so Bitcoin could be leveraged
+to allow for anonymity even beyond the mechanisms discussed in the paper.
+
+Unfortunately I am having trouble fully understanding the system. The
+paper describes key concepts and some data structures, but does not
+clearly specify the various rules and verifications that the participants
+in the system would have to follow.
+
+In particular I don't understand exactly what verifications P2P nodes
+perform when they receive new blocks from other nodes, and how they
+handle transactions that have been broadcast to them. For example, it
+is mentioned that if a broadcast transaction does not reach all nodes,
+it is OK, as it will get into the block chain before long. How does this
+happen - what if the node that creates the "next" block (the first node
+to find the hashcash collision) did not hear about the transaction,
+and then a few more blocks get added also by nodes that did not hear
+about that transaction? Do all the nodes that did hear it keep that
+transaction around, hoping to incorporate it into a block once they get
+lucky enough to be the one which finds the next collision?
+
+Or for example, what if a node is keeping two or more chains around as
+it waits to see which grows fastest, and a block comes in for chain A
+which would include a double-spend of a coin that is in chain B? Is that
+checked for or not? (This might happen if someone double-spent and two
+different sets of nodes heard about the two different transactions with
+the same coin.)
+
+This kind of data management, and the rules for handling all the packets
+that are flowing around is largely missing from the paper.
+
+I also don't understand exactly how double-spending, or cancelling
+transactions, is accomplished by a superior attacker who is able to muster
+more computing power than all the honest participants. I see that he can
+create new blocks and add them to create the longest chain, but how can
+he erase or add old transactions in the chain? As the attacker sends out
+his new blocks, aren't there consistency checks which honest nodes can
+perform, to make sure that nothing got erased? More explanation of this
+attack would be helpful, in order to judge the gains to an attacker from
+this, versus simply using his computing power to mint new coins honestly.
+
+As far as the spending transactions, what checks does the recipient of a
+coin have to perform? Does she need to go back through the coin's entire
+history of transfers, and make sure that every transaction on the list is
+indeed linked into the "timestamp" block chain? Or can she just do the
+latest one? Do the timestamp nodes check transactions, making sure that
+the previous transaction on a coin is in the chain, thereby enforcing
+the rule that all transactions in the chain represent valid coins?
+
+Sorry about all the questions, but as I said this does seem to be a
+very promising and original idea, and I am looking forward to seeing
+how the concept is further developed. It would be helpful to see a more
+process oriented description of the idea, with concrete details of the
+data structures for the various objects (coins, blocks, transactions),
+the data which is included in messages, and algorithmic descriptions
+of the procedures for handling the various events which would occur in
+this system. You mentioned that you are working on an implementation,
+but I think a more formal, text description of the system would be a
+helpful next step.
+
+Hal Finney
+
+[1] http://unenumerated.blogspot.com/2005/12/bit-gold.html
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From pgut001 at cs.auckland.ac.nz  Sat Nov  8 03:38:05 2008
+From: pgut001 at cs.auckland.ac.nz (Peter Gutmann)
+Date: Sat, 08 Nov 2008 21:38:05 +1300
+Subject: This is a test. This is only a test...
+Message-ID: <E1KyjKX-00053n-Ip@wintermute01.cs.auckland.ac.nz>
+
+>From the DailyWTF:
+
+  In my previous alert, I included the text of a phishing email as an example
+  [of phishing emails that people shouldn't reply to]. Some students
+  misunderstood that I was asking for user name and password, and replied with
+  that information. Please be aware that you shouldn.t provide this
+  information to anyone.
+
+Rest at http://thedailywtf.com/Articles/SlowMotion-Automation.aspx.
+
+Peter.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From blp at cs.stanford.edu  Sat Nov  8 14:18:38 2008
+From: blp at cs.stanford.edu (Ben Pfaff)
+Date: Sat, 08 Nov 2008 11:18:38 -0800
+Subject: This is a test. This is only a test...
+References: <E1KyjKX-00053n-Ip@wintermute01.cs.auckland.ac.nz>
+Message-ID: <87skq2qb5d.fsf@blp.benpfaff.org>
+
+pgut001 at cs.auckland.ac.nz (Peter Gutmann) writes:
+
+>From the DailyWTF:
+>
+>   In my previous alert, I included the text of a phishing email as an example
+>   [of phishing emails that people shouldn't reply to]. Some students
+>   misunderstood that I was asking for user name and password, and replied with
+>   that information. Please be aware that you shouldn.t provide this
+>   information to anyone.
+>
+> Rest at http://thedailywtf.com/Articles/SlowMotion-Automation.aspx.
+
+I believe that the correct URL is:
+        http://thedailywtf.com/Articles/Go-Phish.aspx
+-- 
+Ben Pfaff 
+http://benpfaff.org
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sat Nov  8 16:16:35 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Sun, 09 Nov 2008 07:16:35 +1000
+Subject: WPA broken even further
+In-Reply-To: <1225948477.19060.46.camel@localhost>
+References: <CHILKAT-MID-23799d7c-5a6d-a530-cab8-e3cadeb300e7@server123>	 <490F5CFD.5040409@echeque.com> <1225948477.19060.46.camel@localhost>
+Message-ID: <491601B3.3050609@echeque.com>
+
+WPA was known from the beginning to be vulnerable to offline dictionary 
+attack, for which the workaround was to use a key that is not human 
+memorable.
+
+Now WPA is cracked even with a strong key:
+<http://www.pcworld.com/article/153396/.html>
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Sat Nov  8 13:54:38 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Sun, 09 Nov 2008 02:54:38 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-5d46339d-6ba0-f7f4-8383-78016ca7ca16@server123>
+
+Ray Dillinger:
+> the "currency" is inflationary at about 35% 
+> as that's how much faster computers get annually
+> ... the inflation rate of 35% is almost guaranteed 
+> by the technology
+
+Increasing hardware speed is handled: "To compensate for increasing hardware speed and varying interest in running nodes over time, the proof-of-work difficulty is determined by a moving average targeting an average number of blocks per hour. If they're generated too fast, the difficulty increases."
+
+As computers get faster and the total computing power applied to creating bitcoins increases, the difficulty increases proportionally to keep the total new production constant.  Thus, it is known in advance how many new bitcoins will be created every year in the future.
+
+The fact that new coins are produced means the money supply increases by a planned amount, but this does not necessarily result in inflation.  If the supply of money increases at the same rate that the number of people using it increases, prices remain stable.  If it does not increase as fast as demand, there will be deflation and early holders of money will see its value increase.
+
+Coins have to get initially distributed somehow, and a constant rate seems like the best formula.
+
+Satoshi Nakamoto
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Sat Nov  8 20:58:48 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Sun, 09 Nov 2008 09:58:48 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-366da88a-b109-735d-95f9-c968f76ea6ed@server123>
+
+Hal Finney wrote:
+> it is mentioned that if a broadcast transaction does not reach all nodes,
+> it is OK, as it will get into the block chain before long. How does this
+> happen - what if the node that creates the "next" block (the first node
+> to find the hashcash collision) did not hear about the transaction,
+> and then a few more blocks get added also by nodes that did not hear
+> about that transaction? Do all the nodes that did hear it keep that
+> transaction around, hoping to incorporate it into a block once they get
+> lucky enough to be the one which finds the next collision?
+
+Right, nodes keep transactions in their working set until they get into a block.  If a transaction reaches 90% of nodes, then each time a new block is found, it has a 90% chance of being in it.
+
+
+> Or for example, what if a node is keeping two or more chains around as
+> it waits to see which grows fastest, and a block comes in for chain A
+> which would include a double-spend of a coin that is in chain B? Is that
+> checked for or not? (This might happen if someone double-spent and two
+> different sets of nodes heard about the two different transactions with
+> the same coin.)
+
+That does not need to be checked for.  The transaction in whichever branch ends up getting ahead becomes the valid one, the other is invalid.  If someone tries to double spend like that, one and only one spend will always become valid, the others invalid.
+
+Receivers of transactions will normally need to hold transactions for perhaps an hour or more to allow time for this kind of possibility to be resolved.  They can still re-spend the coins immediately, but they should wait before taking an action such as shipping goods.  
+
+
+> I also don't understand exactly how double-spending, or cancelling
+> transactions, is accomplished by a superior attacker who is able to muster
+> more computing power than all the honest participants. I see that he can
+> create new blocks and add them to create the longest chain, but how can
+> he erase or add old transactions in the chain? As the attacker sends out
+> his new blocks, aren't there consistency checks which honest nodes can
+> perform, to make sure that nothing got erased? More explanation of this
+> attack would be helpful, in order to judge the gains to an attacker from
+> this, versus simply using his computing power to mint new coins honestly.
+
+The attacker isn't adding blocks to the end.  He has to go back and redo the block his transaction is in and all the blocks after it, as well as any new blocks the network keeps adding to the end while he's doing that.  He's rewriting history.  Once his branch is longer, it becomes the new valid one.
+
+This touches on a key point.  Even though everyone present may see the shenanigans going on, there's no way to take advantage of that fact. 
+
+It is strictly necessary that the longest chain is always considered the valid one.  Nodes that were present may remember that one branch was there first and got replaced by another, but there would be no way for them to convince those who were not present of this.  We can't have subfactions of nodes that cling to one branch that they think was first, others that saw another branch first, and others that joined later and never saw what happened.  The CPU power proof-of-work vote must have the final say.  The only way for everyone to stay on the same page is to believe that the longest chain is always the valid one, no matter what.
+
+
+> As far as the spending transactions, what checks does the recipient of a
+> coin have to perform? Does she need to go back through the coin's entire
+> history of transfers, and make sure that every transaction on the list is
+> indeed linked into the "timestamp" block chain? Or can she just do the
+> latest one? 
+
+The recipient just needs to verify it back to a depth that is sufficiently far back in the block chain, which will often only require a depth of 2 transactions.  All transactions before that can be discarded.
+
+
+> Do the timestamp nodes check transactions, making sure that
+> the previous transaction on a coin is in the chain, thereby enforcing
+> the rule that all transactions in the chain represent valid coins?
+
+Right, exactly.  When a node receives a block, it checks the signatures of every transaction in it against previous transactions in blocks.  Blocks can only contain transactions that depend on valid transactions in previous blocks or the same block.  Transaction C could depend on transaction B in the same block and B depends on transaction A in an earlier block.
+
+
+> Sorry about all the questions, but as I said this does seem to be a
+> very promising and original idea, and I am looking forward to seeing
+> how the concept is further developed. It would be helpful to see a more
+> process oriented description of the idea, with concrete details of the
+> data structures for the various objects (coins, blocks, transactions),
+> the data which is included in messages, and algorithmic descriptions
+> of the procedures for handling the various events which would occur in
+> this system. You mentioned that you are working on an implementation,
+> but I think a more formal, text description of the system would be a
+> helpful next step.
+
+I appreciate your questions.  I actually did this kind of backwards.  I had to write all the code before I could convince myself that I could solve every problem, then I wrote the paper.  I think I will be able to release the code sooner than I could write a detailed spec.  You're already right about most of your assumptions where you filled in the blanks.
+
+Satoshi Nakamoto
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Sat Nov  8 22:09:49 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Sun, 09 Nov 2008 11:09:49 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-5f8f9f20-db9d-36ee-c584-302e967cc244@server123>
+
+James A. Donald wrote:
+> The core concept is that lots of entities keep complete and consistent
+> information as to who owns which bitcoins.
+>
+> But maintaining consistency is tricky. It is not clear to me what
+> happens when someone reports one transaction to one maintainer, and
+> someone else transports another transaction to another maintainer. The
+> transaction cannot be known to be valid until it has been incorporated
+> into a globally shared view of all past transactions, and no one can
+> know that a globally shared view of all past transactions is globally
+> shared until after some time has passed, and after many new
+> transactions have arrived.
+>
+> Did you explain how to do this, and it just passed over my head, or
+> were you confident it could be done, and a bit vague as to the details?
+
+The proof-of-work chain is the solution to the synchronisation problem, and to knowing what the globally shared view is without having to trust anyone.
+
+A transaction will quickly propagate throughout the network, so if two versions of the same transaction were reported at close to the same time, the one with the head start would have a big advantage in reaching many more nodes first.  Nodes will only accept the first one they see, refusing the second one to arrive, so the earlier transaction would have many more nodes working on incorporating it into the next proof-of-work.  In effect, each node votes for its viewpoint of which transaction it saw first by including it in its proof-of-work effort.
+
+If the transactions did come at exactly the same time and there was an even split, it's a toss up based on which gets into a proof-of-work first, and that decides which is valid.
+
+When a node finds a proof-of-work, the new block is propagated throughout the network and everyone adds it to the chain and starts working on the next block after it.  Any nodes that had the other transaction will stop trying to include it in a block, since it's now invalid according to the accepted chain.
+
+The proof-of-work chain is itself self-evident proof that it came from the globally shared view.  Only the majority of the network together has enough CPU power to generate such a difficult chain of proof-of-work.  Any user, upon receiving the proof-of-work chain, can see what the majority of the network has approved.  Once a transaction is hashed into a link that's a few links back in the chain, it is firmly etched into the global history.
+
+Satoshi Nakamoto
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sat Nov  8 23:55:23 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Sun, 09 Nov 2008 14:55:23 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-23799d7c-5a6d-a530-cab8-e3cadeb300e7@server123>
+References: <CHILKAT-MID-23799d7c-5a6d-a530-cab8-e3cadeb300e7@server123>
+Message-ID: <49166D3B.5060006@echeque.com>
+
+Satoshi Nakamoto wrote:
+ > The bandwidth might not be as prohibitive as you
+ > think.  A typical transaction would be about 400 bytes
+ > (ECC is nicely compact).  Each transaction has to be
+ > broadcast twice, so lets say 1KB per transaction.
+ > Visa processed 37 billion transactions in FY2008, or
+ > an average of 100 million transactions per day.  That
+ > many transactions would take 100GB of bandwidth, or
+ > the size of 12 DVD or 2 HD quality movies, or about
+ > $18 worth of bandwidth at current prices.
+
+The trouble is, you are comparing with the Bankcard
+network.
+
+But a new currency cannot compete directly with an old,
+because network effects favor the old.
+
+You have to go where Bankcard does not go.
+
+At present, file sharing works by barter for bits. This,
+however requires the double coincidence of wants. People
+only upload files they are downloading, and once the
+download is complete, stop seeding. So only active
+files, files that quite a lot of people want at the same
+time, are available.
+
+File sharing requires extremely cheap transactions,
+several transactions per second per client, day in and
+day out, with monthly transaction costs being very small
+per client, so to support file sharing on bitcoins, we
+will need a layer of account money on top of the
+bitcoins, supporting transactions of a hundred
+thousandth the size of the smallest coin, and to support
+anonymity, chaumian money on top of the account money.
+
+Let us call a bitcoin bank a bink.  The bitcoins stand
+in the same relation to account money as gold stood in
+the days of the gold standard.  The binks, not trusting
+each other to be liquid when liquidity is most needed,
+settle out any net discrepancies with each other by
+moving bit coins around once every hundred thousand
+seconds or so, so bitcoins do not change owners that
+often,   Most transactions cancel out at the account
+level.  The binks demand bitcoins of each other only
+because they don't want to hold account money for too
+long. So a relatively small amount of bitcoins
+infrequently transacted can support a somewhat larger
+amount of account money frequently transacted.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sun Nov  9 03:56:53 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Sun, 09 Nov 2008 18:56:53 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-5f8f9f20-db9d-36ee-c584-302e967cc244@server123>
+References: <CHILKAT-MID-5f8f9f20-db9d-36ee-c584-302e967cc244@server123>
+Message-ID: <4916A5D5.9050301@echeque.com>
+
+     --
+Satoshi Nakamoto wrote:
+ > The proof-of-work chain is the solution to the
+ > synchronisation problem, and to knowing what the
+ > globally shared view is without having to trust
+ > anyone.
+ >
+ > A transaction will quickly propagate throughout the
+ > network, so if two versions of the same transaction
+ > were reported at close to the same time, the one with
+ > the head start would have a big advantage in reaching
+ > many more nodes first.  Nodes will only accept the
+ > first one they see, refusing the second one to arrive,
+ > so the earlier transaction would have many more nodes
+ > working on incorporating it into the next
+ > proof-of-work.  In effect, each node votes for its
+ > viewpoint of which transaction it saw first by
+ > including it in its proof-of-work effort.
+
+OK, suppose one node incorporates a bunch of
+transactions in its proof of work, all of them honest
+legitimate single spends and another node incorporates a
+slightly different bunch of transactions in its proof of
+work, all of them equally honest legitimate single
+spends, and both proofs are generated at about the same
+time.
+
+What happens then?
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sun Nov  9 04:19:10 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Sun, 09 Nov 2008 19:19:10 +1000
+Subject: voting by m of n digital signature?
+In-Reply-To: <E436522F-E858-4295-A2FF-A80FC69944F6@zooko.com>
+References: <87zlkbe920.fsf@snark.cb.piermont.com> <E436522F-E858-4295-A2FF-A80FC69944F6@zooko.com>
+Message-ID: <4916AB0E.4000108@echeque.com>
+
+Is there a way of constructing a digital signature so
+that the signature proves that at least m possessors of
+secret keys corresponding to n public keys signed, for n
+a dozen or less, without revealing how many more than m,
+or which ones signed?
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sun Nov  9 05:05:05 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Sun, 09 Nov 2008 20:05:05 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-5d46339d-6ba0-f7f4-8383-78016ca7ca16@server123>
+References: <CHILKAT-MID-5d46339d-6ba0-f7f4-8383-78016ca7ca16@server123>
+Message-ID: <4916B5D1.9010501@echeque.com>
+
+Satoshi Nakamoto wrote:
+ > Increasing hardware speed is handled: "To compensate
+ > for increasing hardware speed and varying interest in
+ > running nodes over time, the proof-of-work difficulty
+ > is determined by a moving average targeting an average
+ > number of blocks per hour. If they're generated too
+ > fast, the difficulty increases."
+
+This does not work - your proposal involves
+complications I do not think you have thought through.
+
+Furthermore, it cannot be made to work, as in the
+proposed system the work of tracking who owns what coins
+is paid for by seigniorage, which requires inflation.
+
+This is not an intolerable flaw - predictable inflation
+is less objectionable than inflation that gets jiggered
+around from time to time to transfer wealth from one
+voting block to another.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Sun Nov  9 11:31:26 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Mon, 10 Nov 2008 00:31:26 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-de81b8e4-4d72-7438-d1fc-d3d2c02148ea@server123>
+
+James A. Donald wrote:
+>OK, suppose one node incorporates a bunch of
+>transactions in its proof of work, all of them honest
+>legitimate single spends and another node incorporates a
+>different bunch of transactions in its proof of
+>work, all of them equally honest legitimate single
+>spends, and both proofs are generated at about the same
+>time.
+>
+>What happens then?
+
+They both broadcast their blocks.  All nodes receive them and keep both, but only work on the one they received first.  We'll suppose exactly half received one first, half the other.  
+
+In a short time, all the transactions will finish propagating so that everyone has the full set.  The nodes working on each side will be trying to add the transactions that are missing from their side.  When the next proof-of-work is found, whichever previous block that node was working on, that branch becomes longer and the tie is broken.  Whichever side it is, the new block will contain the other half of the transactions, so in either case, the branch will contain all transactions.  Even in the unlikely event that a split happened twice in a row, both sides of the second split would contain the full set of transactions anyway.
+
+It's not a problem if transactions have to wait one or a few extra cycles to get into a block. 
+
+Satoshi Nakamoto
+
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From rsalz at us.ibm.com  Sun Nov  9 14:50:47 2008
+From: rsalz at us.ibm.com (Richard Salz)
+Date: Sun, 9 Nov 2008 14:50:47 -0500
+Subject: voting by m of n digital signature?
+In-Reply-To: <4916AB0E.4000108@echeque.com>
+Message-ID: <OF4DEA16A5.D1A22395-ON852574FC.006C6BC9-852574FC.006D0498@us.ibm.com>
+
+> Is there a way of constructing a digital signature so
+> that the signature proves that at least m possessors of
+> secret keys corresponding to n public keys signed, for n
+> a dozen or less, without revealing how many more than m,
+> or which ones signed?
+
+Yes there are a number of ways.  Usually they involve splitting the 
+private key so that when a quorum of fragment signatures are done, they 
+can be combined and the result verified by the public key.   Look for 
+multi-step signing or threshold signatures, for example.
+
+Disclaimer: I worked at CertCo who had the "best" technology in this area. 
+It was created for SET.
+        /r$
+
+
+--
+STSM, DataPower Chief Programmer
+WebSphere DataPower SOA Appliances
+http://www.ibm.com/software/integration/datapower/
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From dan at geer.org  Sun Nov  9 14:56:27 2008
+From: dan at geer.org (dan at geer.org)
+Date: Sun, 09 Nov 2008 14:56:27 -0500
+Subject: voting by m of n digital signature? 
+In-Reply-To: Your message of "Sun, 09 Nov 2008 19:19:10 +1000."
+             <4916AB0E.4000108@echeque.com> 
+Message-ID: <20081109195627.8591C3416F@absinthe.tinho.net>
+
+
+"James A. Donald" writes:
+-+-----------------------
+ | Is there a way of constructing a digital signature so
+ | that the signature proves that at least m possessors of
+ | secret keys corresponding to n public keys signed, for n
+ | a dozen or less, without revealing how many more than m,
+ | or which ones signed?
+ | 
+
+quorum threshhold crypto; if Avishai Wool or Moti Yung
+or Yvo Desmedt or Yair Frankel or...  are here on this
+list, they should answer
+
+a *tiny* contribution on my part
+
+  http://geer.tinho.net/geer.yung.pdf
+
+humbly,
+
+--dan
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sun Nov  9 14:57:54 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Mon, 10 Nov 2008 05:57:54 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-de81b8e4-4d72-7438-d1fc-d3d2c02148ea@server123>
+References: <CHILKAT-MID-de81b8e4-4d72-7438-d1fc-d3d2c02148ea@server123>
+Message-ID: <491740C2.1020108@echeque.com>
+
+     --
+ > James A. Donald wrote:
+ >> OK, suppose one node incorporates a bunch of
+ >> transactions in its proof of work, all of them honest
+ >> legitimate single spends and another node
+ >> incorporates a different bunch of transactions in its
+ >> proof of work, all of them equally honest legitimate
+ >> single spends, and both proofs are generated at about
+ >> the same time.
+ >>
+ >> What happens then?
+
+Satoshi Nakamoto wrote:
+ > They both broadcast their blocks.  All nodes receive
+ > them and keep both, but only work on the one they
+ > received first.  We'll suppose exactly half received
+ > one first, half the other.
+ >
+ > In a short time, all the transactions will finish
+ > propagating so that everyone has the full set.  The
+ > nodes working on each side will be trying to add the
+ > transactions that are missing from their side.  When
+ > the next proof-of-work is found, whichever previous
+ > block that node was working on, that branch becomes
+ > longer and the tie is broken.  Whichever side it is,
+ > the new block will contain the other half of the
+ > transactions, so in either case, the branch will
+ > contain all transactions.  Even in the unlikely event
+ > that a split happened twice in a row, both sides of
+ > the second split would contain the full set of
+ > transactions anyway.
+ >
+ > It's not a problem if transactions have to wait one or
+ > a few extra cycles to get into a block.
+
+So what happened to the coin that lost the race?
+
+On the one hand, we want people who make coins to be
+motivated to keep and record all transactions, and
+obtain an up to date record of all transactions in a
+timely manner.  On the other hand, it is a bit harsh if
+the guy who came second is likely to lose his coin.
+
+Further, your description of events implies restrictions
+on timing and coin generation - that the entire network
+generates coins slowly compared to the time required for
+news of a new coin to flood the network, otherwise the
+chains diverge more and more, and no one ever knows
+which chain is the winner.
+
+You need to make these restrictions explicit, for
+network flood time may well be quite slow.
+
+Which implies that the new coin rate is slower.
+
+We want spenders to have certainty that their
+transaction is valid at the time it takes a spend to
+flood the network, not at the time it takes for branch
+races to be resolved.
+
+At any given time, for example at 1 040 689 138 seconds
+we can look back at the past and say:
+
+	At 1 040 688 737 seconds, node 5 was *it*, and
+	he incorporated all the coins he had discovered
+	into the chain, and all the new transactions he
+	knew about on top of the previous link
+
+	At 1 040 688 792 seconds, node 2 was *it*, and
+	he incorporated all the coins he had discovered
+	into the chain, and all the new transactions he
+	knew about into the chain on top of node 5's
+	link.
+
+	At 1 040 688 745 seconds, node 7 was *it*, and
+	he incorporated all the coins he had discovered
+	into the chain, and all the new transactions he
+	knew about into the chain on top of node 2's
+	link.
+
+But no one can know who is *it* right now
+
+So how does one know when to reveal one's coins?  One
+solution is that one does not.  One incorporates a hash
+of the coin secret whenever one thinks one might be
+*it*, and after that hash is securely in the chain,
+after one knows that one was *it* at the time, one can
+then safely spend the coin that one has found, revealing
+the secret.
+
+This solution takes care of the coin revelation problem,
+but does not solve the spend recording problem.  If one
+node is ignoring all spends that it does not care about,
+it suffers no adverse consequences.  We need a protocol
+in which your prospects of becoming *it* also depend on
+being seen by other nodes as having a reasonably up to
+date and complete list of spends - which this protocol
+is not, and your protocol is not either.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Sun Nov  9 21:14:30 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Mon, 10 Nov 2008 10:14:30 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-41c54a12-e2ac-4042-255f-1fcda7a4a00b@server123>
+
+James A. Donald wrote:
+> Furthermore, it cannot be made to work, as in the
+> proposed system the work of tracking who owns what coins
+> is paid for by seigniorage, which requires inflation.
+
+If you're having trouble with the inflation issue, it's easy to tweak it for transaction fees instead.  It's as simple as this: let the output value from any transaction be 1 cent less than the input value.  Either the client software automatically writes transactions for 1 cent more than the intended payment value, or it could come out of the payee's side.  The incentive value when a node finds a proof-of-work for a block could be the total of the fees in the block.
+
+Satoshi Nakamoto
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Mon Nov 10 17:18:20 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Tue, 11 Nov 2008 06:18:20 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-e7d495e7-8668-2fc6-0dc3-489b2b580e8d@server123>
+
+James A. Donald wrote:
+> So what happened to the coin that lost the race?
+>
+> ... it is a bit harsh if the guy who came second 
+> is likely to lose his coin.
+
+When there are multiple double-spent versions of the same transaction, one and only one will become valid.
+
+The receiver of a payment must wait an hour or so before believing that it's valid.  The network will resolve any possible double-spend races by then.
+
+The guy who received the double-spend that became invalid never thought he had it in the first place.  His software would have shown the transaction go from "unconfirmed" to "invalid".  If necessary, the UI can be made to hide transactions until they're sufficiently deep in the block chain.
+
+
+> Further, your description of events implies restrictions
+> on timing and coin generation - that the entire network
+> generates coins slowly compared to the time required for
+> news of a new coin to flood the network
+
+Sorry if I didn't make that clear.  The target time between blocks will probably be 10 minutes.
+
+Every block includes its creation time.  If the time is off by more than 36 hours, other nodes won't work on it.  If the timespan over the last 6*24*30 blocks is less than 15 days, blocks are being generated too fast and the proof-of-work difficulty doubles.  Everyone does the same calculation with the same chain data, so they all get the same result at the same link in the chain.
+
+
+> We want spenders to have certainty that their
+> transaction is valid at the time it takes a spend to
+> flood the network, not at the time it takes for branch
+> races to be resolved.
+
+Instantant non-repudiability is not a feature, but it's still much faster than existing systems.  Paper cheques can bounce up to a week or two later.  Credit card transactions can be contested up to 60 to 180 days later.  Bitcoin transactions can be sufficiently irreversible in an hour or two.
+
+
+> If one node is ignoring all spends that it does not 
+> care about, it suffers no adverse consequences.
+
+With the transaction fee based incentive system I recently posted, nodes would have an incentive to include all the paying transactions they receive.
+
+Satoshi Nakamoto
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From rah at shipwright.com  Wed Nov 12 05:28:48 2008
+From: rah at shipwright.com (R.A. Hettinga)
+Date: Wed, 12 Nov 2008 06:28:48 -0400
+Subject: =?WINDOWS-1252?Q?Fwd:_[Announce]_Introducing_Tor_VM_=96_Tor_in_a?=
+ =?WINDOWS-1252?Q?_virtual_machine.?=
+References: <20081112101052.GK11544@leitl.org>
+Message-ID: <B7E407DD-D90A-4E0D-8EFC-4F65C058755A@shipwright.com>
+
+
+
+Begin forwarded message:
+
+From: Eugen Leitl <eugen at leitl.org>
+Date: November 12, 2008 6:10:52 AM GMT-04:00
+To: cypherpunks at al-qaeda.net
+Subject: [Announce] Introducing Tor VM ? Tor in a virtual machine.
+
+----- Forwarded message from Kyle Williams <kyle.kwilliams at gmail.com>  
+-----
+
+From: Kyle Williams <kyle.kwilliams at gmail.com>
+Date: Wed, 12 Nov 2008 01:27:07 -0800
+To: or-talk at freehaven.net, or-dev at freehaven.net
+Subject: [Announce] Introducing Tor VM b Tor in a virtual machine.
+Reply-To: or-talk at freehaven.net
+
+
+   [1]http://www.janusvm.com/tor_vm/
+
+   Tor VM is a small virtual machine that acts as a router and redirects
+   your TCP traffic and DNS request through Tor while filtering out
+   protocols that could jeopardize your anonymity. Tor VM is built using
+   all open source software and is free.
+
+   There are many advantages to running Tor in a virtual machine. Any
+   application on any operating system that uses TCP for communication  
+is
+   routed over Tor. By using a small virtual machine that acts as a
+   router, protocols such as UDP and ICMP are filtered, preventing a
+   compromise of your anonymity. Placing Tor in a virtual machine
+   separates Tor from potentially insecure applications that could
+   compromises Tor's integrity and your security.
+
+   The Tor VM ISO is designed to be run in a virtual machine, not on
+   physical hardware. The ISO requires two virtual NICs to be used; one
+   bridged interface, one OpenVPN Tun/Tap adapter. The Windows build of
+   Tor VM is portable and includes QEMU to run the virtual machine, but
+   requires Administrator privileges to install the Tap32 adapter.
+   Traffic is routed through the Tap interface, into the VM, TCP and DNS
+   are directed to Tor's Transport while other protocols are discarded,
+   then Tor does it's magic with your traffic. More details can be found
+   in the design documentation.
+
+   Lots of people are going to ask "What's the difference between  
+JanusVM
+   and Tor VM?", so I'll address this now. JanusVM was designed to be
+   used by multiple users, runs HTTP traffic through Squid and Privoxy,
+   and was build on top of Debian packages. Tor VM is built from  
+entirely
+   100% open source software, is pre-configured to support only a single
+   user, is much smaller in size, uses less memory than JanusVM, and
+   works with QEMU. Is Tor VM going to replace JanusVM?? It's too soon  
+to
+   tell.
+
+   This software is in the late alpha stages of development; work is
+   still in progress. For the time being, Tor VM is being hosted on the
+   JanusVM server. Martin and I would appreciate it if a few of you  
+would
+   give Tor VM a go and provide us with your feedback. Feel free to
+   review the We look forward to hearing from the community.
+
+   One last thing. Mad props to coderman! Martin did an amazing job
+   hacking QEMU and the WinPCAP drivers in order to create an interface
+   that is a raw bridge into the existing network card. This is just as
+   good as VMware bridge service, if not better! It's Amazing work; make
+   sure to take a close look at what is under the hood. Tor VM wouldn't
+   have been possible if it wasn't for his insane amount of knowledge  
+and
+   skill. Let me be the first to say it; Thank You. :)
+
+   Best Regards,
+
+   Kyle Williams
+
+References
+
+   1. http://www.janusvm.com/tor_vm/
+
+----- End forwarded message -----
+-- 
+Eugen* Leitl <a href="http://leitl.org">leitl</a> http://leitl.org
+______________________________________________________________
+ICBM: 48.07100, 11.36820 http://www.ativel.com http://postbiota.org
+8B29F6BE: 099D 78BA 2FD3 B014 B08A  7779 75B0 2443 8B29 F6BE
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From perry at piermont.com  Wed Nov 12 15:04:04 2008
+From: perry at piermont.com (Perry E. Metzger)
+Date: Wed, 12 Nov 2008 15:04:04 -0500
+Subject: WPA crack
+Message-ID: <87ej1gsocr.fsf@snark.cb.piermont.com>
+
+
+A reasonable article on the WPA attack that has been making the rounds
+on the blogs...
+
+http://arstechnica.com/articles/paedia/wpa-cracked.ars/1
+
+and the actual paper:
+
+http://dl.aircrack-ng.org/breakingwepandwpa.pdf
+
+The attack is not very general, but it is interesting.
+
+[Hat tip for the Ars Technica article to Bruce Schneier.]
+
+Perry
+-- 
+Perry E. Metzger		perry at piermont.com
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Wed Nov 12 16:41:13 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Wed, 12 Nov 2008 16:41:13 -0500
+Subject: Comment Period for FIPS 186-3: Digital Signature Standard
+Message-ID: <20081112164113.6adecad5@cs.columbia.edu>
+
+From: Sara Caswell <sara at nist.gov>
+To: undisclosed-recipients:;
+Subject: Comment Period for FIPS 186-3: Digital Signature Standard
+Date: Wed, 12 Nov 2008 14:52:17 -0500
+User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+
+As stated in the Federal Register of November 12, 2008, NIST requests
+final comments on FIPS 186-3, the proposed revision of FIPS 186-2, the
+Digital Signature Standard. The draft defines methods for digital
+signature generation that can be used for the protection of messages,
+and for the verification and validation of those digital signatures
+using DSA, RSA and ECDSA.
+
+Please submit comments to ebarker at nist.gov with "Comments on Draft
+186-3" in the subject line. The comment period closes on December 12,
+2008.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Thu Nov 13 01:16:31 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Thu, 13 Nov 2008 16:16:31 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-e7d495e7-8668-2fc6-0dc3-489b2b580e8d@server123>
+References: <CHILKAT-MID-e7d495e7-8668-2fc6-0dc3-489b2b580e8d@server123>
+Message-ID: <491BC63F.9050008@echeque.com>
+
+Satoshi Nakamoto wrote:
+ > When there are multiple double-spent versions of the
+ > same transaction, one and only one will become valid.
+
+That is not the question I am asking.
+
+It is not trust that worries me, it is how it is
+possible to have a  a globally shared view even if
+everyone is well behaved.
+
+The process for arriving at a globally shared view of
+who owns what bitgold coins is insufficiently specified.
+Once specified, then we can start considering whether
+everyone has incentives to behave correctly.
+
+It is not sufficient that everyone knows X.  We also
+need everyone to know that everyone knows X, and that
+everyone knows that everyone knows that everyone knows X
+- which, as in the Byzantine Generals problem, is the
+classic hard problem of distributed data processing.
+
+This problem becomes harder when X is quite possibly a
+very large amount of data - agreement on who was the
+owner of every bitgold coin at such and such a time.
+
+And then on top of that we need everyone to have a
+motive to behave in such a fashion that agreement
+arises.  I cannot see that they have motive when I do
+not know the behavior to be motivated.
+
+You keep repeating your analysis of the system under
+attack.  We cannot say how the system will behave under
+attack until we know how the system is supposed to
+behave when not under attack.
+
+If there are a lot of transactions, it is hard to
+efficiently discover the discrepancies between one
+node's view and another node's view, and because new
+transactions are always arriving, no two nodes will ever
+have the same view, even if all nodes are honest, and
+all reported transactions are correct and true single
+spends.
+
+We should be able to accomplish a system where two nodes
+are likely to come to agreement as to who owned what
+bitgold coins at some very recent past time, but it is
+not simple to do so.
+
+If one node constructs a hash that represents its
+knowledge of who owned what bitgold coins at a
+particular time, and another node wants to check that
+hash, it is not simple to do it in such a way that
+agreement is likely, and disagreement between honest
+well behaved nodes is efficiently detected and
+efficiently resolved.
+
+And if we had a specification of how agreement is
+generated, it is not obvious why the second node has
+incentive to check that hash.
+
+The system has to work in such a way that nodes can
+easily and cheaply change their opinion about recent
+transactions, so as to reach consensus, but in order to
+provide finality and irreversibility, once consensus has
+been reached, and then new stuff has be piled on top of
+old consensus, in particular new bitgold has been piled
+on top of old consensus, it then becomes extremely
+difficult to go back and change what was decided.
+
+Saying that is how it works, does not give us a method
+to make it work that way.
+
+ > The receiver of a payment must wait an hour or so
+ > before believing that it's valid.  The network will
+ > resolve any possible double-spend races by then.
+
+You keep discussing attacks.  I find it hard to think
+about response to attack when it is not clear to me what
+normal behavior is in the case of good conduct by each
+and every party.
+
+Distributed databases are *hard* even when all the
+databases perfectly follow the will of a single owner.
+Messages get lost, links drop, syncrhonization delays
+become abnormal, and entire machines go up in flames,
+and the network as a whole has to take all this in its
+stride.
+
+Figuring out how to do this is hard, even in the
+complete absence of attacks.  Then when we have figured
+out how to handle all this, then come attacks.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From hal at finney.org  Thu Nov 13 11:24:18 2008
+From: hal at finney.org (Hal Finney)
+Date: Thu, 13 Nov 2008 08:24:18 -0800 (PST)
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <20081113162418.7726B14F6E3@finney.org>
+
+James A. Donald writes:
+> Satoshi Nakamoto wrote:
+>  > When there are multiple double-spent versions of the
+>  > same transaction, one and only one will become valid.
+>
+> That is not the question I am asking.
+>
+> It is not trust that worries me, it is how it is
+> possible to have a  a globally shared view even if
+> everyone is well behaved.
+>
+> The process for arriving at a globally shared view of
+> who owns what bitgold coins is insufficiently specified.
+
+I agree that the description is not completely clear on how these matters
+are handled. Satoshi has suggested that releasing source code may be the
+best way to clarify the design. As I have tried to work through details on
+my own, it does appear that the rules become rather complicated and indeed
+one needs at least a pseudo-code algorithm to specify the behavior. So
+perhaps writing real code is not a bad way to go. I found that there is
+a sourceforge project set up for bitgold, although it does not have any
+code yet.
+
+In answer to James' specific question, about what happens when different
+nodes see different sets of transactions, due to imperfect broadcast, here
+is how I understand it. Each node must be prepared to maintain potentially
+several "candidate" block chains, each of which may eventually turn out
+to become the longest one, the one which wins. Once a given block chain
+becomes sufficiently longer than a competitor, the shorter one can be
+deleted. This length differential is a parameter which depends on the
+node's threat model for how much compute power an attacker can marshall,
+in terms of the fraction of the "honst" P2P network's work capacity,
+and is estimated in the paper. The idea is that once a chain gets far
+enough behind the longest one, there is essentially no chance that it
+can ever catch up.
+
+In order to resolve the issue James raised, I think it is necessary
+that nodes keep a separate pending-transaction list associated with
+each candidate chain. This list would include all transactions the node
+has received (via broadcast by the transactees) but which have not yet
+been incorporated into that block chain. At any given time, the node is
+working to extend the longest block chain, and the block it is working
+to find a hash collision for will include all of the pending transactions
+associated with that chain.
+
+I think that this way, when a candidate chain is deleted because it
+got too much shorter than the longest one, transactions in it are
+not lost, but have continued to be present in the pending-transaction
+list associated with the longest chain, in those nodes which heard the
+original transaction broadcast. (I have also considered whether nodes
+should add transactions to their pending-transaction list that they
+learn about through blocks from other nodes, even if those blocks do
+not end up making their way into the longest block chain; but I'm not
+sure if that is necessary or helpful.)
+
+Once these rules are clarified, more formal modeling will be helpful in
+understanding the behavior of the network given imperfect reliability. For
+example, if on average a fraction f of P2P nodes receive a given
+transaction broadcast, then I think one would expect 1/f block-creation
+times to elapse before the transaction appears in what is destined to
+become the longest chain. One might also ask, given that the P2P network
+broadcast is itself imperfectly reliable, how many candidate chains
+must a given node keep track of at one time, on average? Or as James
+raised earlier, if the network broadcast is reliable but depends on a
+potentially slow flooding algorithm, how does that impact performance?
+
+> And then on top of that we need everyone to have a
+> motive to behave in such a fashion that agreement
+> arises.  I cannot see that they have motive when I do
+> not know the behavior to be motivated.
+
+I am somewhat less worried about motivation. I'd be satisfied if the
+system can meet the following criteria:
+
+1. No single node operator, or small collection of node operators
+which controls only a small fraction of overall network resources,
+can effectively cheat, if other players are honest.
+
+2. The long tail of node operators is sufficiently large that no small
+collection of nodes can control more than a small fraction of overall
+resources. (Here, the "tail" refers to a ranking based on amount of
+resources controlled by each operator.)
+
+3. The bitcoin system turns out to be socially useful and valuable, so
+that node operators feel that they are making a beneficial contribution
+to the world by their efforts (similar to the various "@Home" compute
+projects where people volunteer their compute resources for good causes).
+
+In this case it seems to me that simple altruism can suffice to keep the
+network running properly.
+
+> Distributed databases are *hard* even when all the
+> databases perfectly follow the will of a single owner.
+> Messages get lost, links drop, syncrhonization delays
+> become abnormal, and entire machines go up in flames,
+> and the network as a whole has to take all this in its
+> stride.
+
+A very good point, and a more complete specification is necessary in order
+to understand how the network will respond to imperfections like this. I
+am looking forward to seeing more detail emerge.
+
+One thing I might mention is that in many ways bitcoin is two independent
+ideas: a way of solving the kinds of problems James lists here, of
+creating a globally consistent but decentralized database; and then using
+it for a system similar to Wei Dai's b-money (which is referenced in the
+paper) but transaction/coin based rather than account based. Solving the
+global, massively decentralized database problem is arguably the harder
+part, as James emphasizes. The use of proof-of-work as a tool for this
+purpose is a novel idea well worth further review IMO.
+
+Hal Finney
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Thu Nov 13 17:56:55 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Fri, 14 Nov 2008 06:56:55 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-4e1eec0c-baa7-6633-78e9-91fd9b7353c4@server123>
+
+James A. Donald wrote:
+> It is not sufficient that everyone knows X. We also
+> need everyone to know that everyone knows X, and that
+> everyone knows that everyone knows that everyone knows X
+> - which, as in the Byzantine Generals problem, is the
+> classic hard problem of distributed data processing.
+
+The proof-of-work chain is a solution to the Byzantine Generals' Problem.  I'll try to rephrase it in that context.
+
+A number of Byzantine Generals each have a computer and want to attack the King's wi-fi by brute forcing the password, which they've learned is a certain number of characters in length.  Once they stimulate the network to generate a packet, they must crack the password within a limited time to break in and erase the logs, otherwise they will be discovered and get in trouble.  They only have enough CPU power to crack it fast enough if a majority of them attack at the same time.
+
+They don't particularly care when the attack will be, just that they all agree.  It has been decided that anyone who feels like it will announce a time, and whatever time is heard first will be the official attack time.  The problem is that the network is not instantaneous, and if two generals announce different attack times at close to the same time, some may hear one first and others hear the other first.
+
+They use a proof-of-work chain to solve the problem.  Once each general receives whatever attack time he hears first, he sets his computer to solve an extremely difficult proof-of-work problem that includes the attack time in its hash.  The proof-of-work is so difficult, it's expected to take 10 minutes of them all working at once before one of them finds a solution.  Once one of the generals finds a proof-of-work, he broadcasts it to the network, and everyone changes their current proof-of-work computation to include that proof-of-work in the hash they're working on.  If anyone was working on a different attack time, they switch to this one, because its proof-of-work chain is now longer.
+
+After two hours, one attack time should be hashed by a chain of 12 proofs-of-work.  Every general, just by verifying the difficulty of the proof-of-work chain, can estimate how much parallel CPU power per hour was expended on it and see that it must have required the majority of the computers to produce that much proof-of-work in the allotted time.  They had to all have seen it because the proof-of-work is proof that they worked on it.  If the CPU power exhibited by the proof-of-work chain is sufficient to crack the password, they can safely attack at the agreed time.
+
+The proof-of-work chain is how all the synchronisation, distributed database and global view problems you've asked about are solved.
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From clj at jacksons.net  Fri Nov 14 09:04:24 2008
+From: clj at jacksons.net (Charles Jackson)
+Date: Fri, 14 Nov 2008 09:04:24 -0500
+Subject: NSA history
+In-Reply-To: <CHILKAT-MID-4e1eec0c-baa7-6633-78e9-91fd9b7353c4@server123>
+Message-ID: <20081114090426.GA53146@mail19k.g19.rapidsite.net>
+
+Here's a pointer to the new release
+
+http://www.gwu.edu/~nsarchiv/NSAEBB/NSAEBB260/index.htm  
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From bmanning at vacation.karoshi.com  Fri Nov 14 08:26:29 2008
+From: bmanning at vacation.karoshi.com (bmanning at vacation.karoshi.com)
+Date: Fri, 14 Nov 2008 13:26:29 +0000
+Subject: unintended?
+Message-ID: <20081114132629.GA15415@vacation.karoshi.com.>
+
+(snicker)  from the local firefox
+....
+
+en-us.add-ons.mozilla.com:443 uses an invalid security certificate.
+
+The certificate is not trusted because the issuer certificate is not trusted.
+
+(Error code: sec_error_untrusted_issuer)
+
+....
+
+
+--bill
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From clj at jacksons.net  Fri Nov 14 08:43:39 2008
+From: clj at jacksons.net (Charles Jackson)
+Date: Fri, 14 Nov 2008 08:43:39 -0500
+Subject: WSJ Story on NSA history
+In-Reply-To: <CHILKAT-MID-4e1eec0c-baa7-6633-78e9-91fd9b7353c4@server123>
+Message-ID: <20081114084342.GA19840@mail19c.g19.rapidsite.net>
+
+http://online.wsj.com/article/SB122660908325125509.html 
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Fri Nov 14 13:55:35 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Sat, 15 Nov 2008 02:55:35 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-41a4bab8-9538-d1ea-d079-b843b2667bec@server123>
+
+Hal Finney wrote:
+> I think it is necessary that nodes keep a separate 
+> pending-transaction list associated with each candidate chain. 
+> ... One might also ask ... how many candidate chains must 
+> a given node keep track of at one time, on average?
+
+Fortunately, it's only necessary to keep a pending-transaction pool for the current best branch.  When a new block arrives for the best branch, ConnectBlock removes the block's transactions from the pending-tx pool.  If a different branch becomes longer, it calls DisconnectBlock on the main branch down to the fork, returning the block transactions to the pending-tx pool, and calls ConnectBlock on the new branch, sopping back up any transactions that were in both branches.  It's expected that reorgs like this would be rare and shallow.
+
+With this optimisation, candidate branches are not really any burden.  They just sit on the disk and don't require attention unless they ever become the main chain.
+
+
+> Or as James raised earlier, if the network broadcast 
+> is reliable but depends on a potentially slow flooding 
+> algorithm, how does that impact performance?
+
+Broadcasts will probably be almost completely reliable.  TCP transmissions are rarely ever dropped these days, and the broadcast protocol has a retry mechanism to get the data from other nodes after a while.  If broadcasts turn out to be slower in practice than expected, the target time between blocks may have to be increased to avoid wasting resources.  We want blocks to usually propagate in much less time than it takes to generate them, otherwise nodes would spend too much time working on obsolete blocks.
+
+I'm planning to run an automated test with computers randomly sending payments to each other and randomly dropping packets.
+
+
+> 3. The bitcoin system turns out to be socially useful and valuable, so
+> that node operators feel that they are making a beneficial contribution
+> to the world by their efforts (similar to the various "@Home" compute
+> projects where people volunteer their compute resources for good causes).
+> 
+> In this case it seems to me that simple altruism can suffice to keep the
+> network running properly.
+
+It's very attractive to the libertarian viewpoint if we can explain it properly.  I'm better with code than with words though.
+
+Satoshi Nakamoto
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From perrin at apotheon.com  Fri Nov 14 16:29:24 2008
+From: perrin at apotheon.com (Chad Perrin)
+Date: Fri, 14 Nov 2008 14:29:24 -0700
+Subject: unintended?
+In-Reply-To: <20081114132629.GA15415@vacation.karoshi.com.>
+References: <20081114132629.GA15415@vacation.karoshi.com.>
+Message-ID: <20081114212924.GE9882@kokopelli.hydra>
+
+On Fri, Nov 14, 2008 at 01:26:29PM +0000, bmanning at vacation.karoshi.com wrote:
+> (snicker)  from the local firefox
+> ....
+> 
+> en-us.add-ons.mozilla.com:443 uses an invalid security certificate.
+> 
+> The certificate is not trusted because the issuer certificate is not trusted.
+> 
+> (Error code: sec_error_untrusted_issuer)
+
+What does Perspectives have to say?
+
+What installation of Firefox did you use?
+
+I don't have that problem when I visit:
+  https://addons.mozilla.org/en-US/firefox/
+
+Do you perhaps have some kind of malicious redirection going on there?
+
+-- 
+Chad Perrin [ content licensed PDL: http://pdl.apotheon.org ]
+John Kenneth Galbraith: "If all else fails, immortality can always be
+assured through spectacular error."
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 195 bytes
+Desc: not available
+URL: <http://www.metzdowd.com/pipermail/cryptography/attachments/20081114/36c4c072/attachment.pgp>
+
+From fw at deneb.enyo.de  Fri Nov 14 17:16:14 2008
+From: fw at deneb.enyo.de (Florian Weimer)
+Date: Fri, 14 Nov 2008 23:16:14 +0100
+Subject: voting by m of n digital signature?
+In-Reply-To: <4916AB0E.4000108@echeque.com> (James A. Donald's message of
+	"Sun, 09 Nov 2008 19:19:10 +1000")
+References: <87zlkbe920.fsf@snark.cb.piermont.com>
+	<E436522F-E858-4295-A2FF-A80FC69944F6@zooko.com>
+	<4916AB0E.4000108@echeque.com>
+Message-ID: <87k5b69cnl.fsf@mid.deneb.enyo.de>
+
+* James A. Donald:
+
+> Is there a way of constructing a digital signature so
+> that the signature proves that at least m possessors of
+> secret keys corresponding to n public keys signed, for n
+> a dozen or less, without revealing how many more than m,
+> or which ones signed?
+
+What about this?
+
+  Christian Cachin, Asad Samar
+  Secure Distributed DNS
+  <http://www.zurich.ibm.com/security/dti/#dnsrepl>
+
+Or do you require that potential signers must not be able to prove
+that they signed?
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From bmanning at vacation.karoshi.com  Fri Nov 14 19:20:24 2008
+From: bmanning at vacation.karoshi.com (bmanning at vacation.karoshi.com)
+Date: Sat, 15 Nov 2008 00:20:24 +0000
+Subject: unintended?
+In-Reply-To: <20081114212924.GE9882@kokopelli.hydra>
+References: <20081114132629.GA15415@vacation.karoshi.com.> <20081114212924.GE9882@kokopelli.hydra>
+Message-ID: <20081115002024.GA19794@vacation.karoshi.com.>
+
+On Fri, Nov 14, 2008 at 02:29:24PM -0700, Chad Perrin wrote:
+> On Fri, Nov 14, 2008 at 01:26:29PM +0000, bmanning at vacation.karoshi.com wrote:
+> > (snicker)  from the local firefox
+> > ....
+> > 
+> > en-us.add-ons.mozilla.com:443 uses an invalid security certificate.
+> > 
+> > The certificate is not trusted because the issuer certificate is not trusted.
+> > 
+> > (Error code: sec_error_untrusted_issuer)
+> 
+> What does Perspectives have to say?
+> 
+> What installation of Firefox did you use?
+> 
+> I don't have that problem when I visit:
+>   https://addons.mozilla.org/en-US/firefox/
+> 
+> Do you perhaps have some kind of malicious redirection going on there?
+> 
+> -- 
+> Chad Perrin [ content licensed PDL: http://pdl.apotheon.org ]
+
+
+	perspectives is not installed.  I've never taken the default and
+	added a cert that was not in the firefox trusted list... (at least on
+	a permanent basis)
+
+
+Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10.4; en-US; rv:1.9.0.2) Gecko/2008091618 Firefox/3.0.2
+
+	and yes, a redirect might be in play - except this happens w/ multiple, different caches
+	(fm the house, work, panera, starbucks and even "the cows end")
+
+--bill
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From bear at sonic.net  Fri Nov 14 21:20:23 2008
+From: bear at sonic.net (Ray Dillinger)
+Date: Fri, 14 Nov 2008 18:20:23 -0800
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-4e1eec0c-baa7-6633-78e9-91fd9b7353c4@server123>
+References: <CHILKAT-MID-4e1eec0c-baa7-6633-78e9-91fd9b7353c4@server123>
+Message-ID: <1226715623.3694.156.camel@localhost>
+
+Okay.... I'm going to summarize this protocol as I understand it. 
+
+I'm filling in some operational details that aren't in the paper 
+by supplementing what you wrote with what my own "design sense" 
+tells me are critical missing bits or "obvious" methodologies for 
+use.
+
+First, people spend computer power creating a pool of coins to use 
+as money.  Each coin is a proof-of-work meeting whatever criteria 
+were in effect for money at the time it was created.  The time of 
+creation (and therefore the criteria) is checkable later because 
+people can see the emergence of this particular coin in the 
+transaction chain and track it through all its "consensus view" 
+spends.  (more later on coin creation tied to adding a link). 
+
+When a coin is spent, the buyer and seller digitally sign a (blinded) 
+transaction record, and broadcast it to a bunch of nodes whose purpose 
+is keeping track of consensus regarding coin ownership.  If someone 
+double spends, then the transaction record can be unblinded revealing 
+the identity of the cheater.  This is done via a fairly standard cut-
+and-choose algorithm where the buyer responds to several challenges 
+with secret shares, and the seller then asks him to "unblind" and 
+checks all but one, verifying that they do contain secret shares any 
+two of which are sufficient to identify the buyer.  In this case the 
+seller accepts the unblinded spend record as "probably" containing 
+a valid secret share. 
+
+The nodes keeping track of consensus regarding coin ownership are in 
+a loop where they are all trying to "add a link" to the longest chain 
+they've so far recieved.  They have a pool of reported transactions 
+which they've not yet seen in a "consensus" signed chain.  I'm going 
+to call this pool "A".  They attempt to add a link to the chain by
+moving everything from pool A into a pool "L" and using a CPU-
+intensive digital signature algorithm to sign the chain including 
+the new block L.  This results in a chain extended by a block 
+containing all the transaction records they had in pool L, plus 
+the node's digital signature.  While they do this, new 
+transaction records continue to arrive and go into pool A again 
+for the next cycle of work. 
+
+They may also recieve chains as long as the one they're trying to 
+extend while they work, in which the last few "links" are links 
+that are *not* in common with the chain on which they're working.
+These they ignore.  (?  Do they ignore them?  Under what 
+circumstances would these become necessary to ever look at again, 
+bearing in mind that any longer chain based on them will include 
+them?) 
+
+But if they recieve a _longer_ chain while working, they 
+immediately check all the transactions in the new links to make 
+sure it contains no double spends and that the "work factors" of 
+all new links are appropriate.  If it contains a double spend, 
+then they create a "transaction" which is a proof of double 
+spending, add it to their pool A, broadcast it, and continue work.  
+If one of the "new" links has an inappropriate work factor (ie, 
+someone didn't put enough CPU into it for it to be "licit" 
+according to the rules) a new "transaction" which is a proof 
+of the protocol violation by the link-creating node is created, 
+broadcast, and added to pool A, and the chain is rejected.  In 
+the case of no double spends and appropriate work factors for 
+all links not yet seen, they accept the new chain as consensus. 
+
+If the new chain is accepted, then they give up on adding their
+current link, dump all the transactions from pool L back into pool 
+A (along with transactions they've recieved or created since 
+starting work), eliminate from pool A those transaction records 
+which are already part of a link in the new chain, and start work 
+again trying to extend the new chain. 
+
+If they complete work on a chain extended with their new link, they 
+broadcast it and immediately start work on another new link with 
+all the transactions that have accumulated in pool A since they 
+began work.  
+
+Do I understand it correctly?
+
+
+
+
+Biggest Technical Problem: 
+
+Is there a mechanism to make sure that the "chain" does not consist 
+solely of links added by just the 3 or 4 fastest nodes?  'Cause a 
+broadcast transaction record could easily miss those 3 or 4 nodes 
+and if it does, and those nodes continue to dominate the chain, the 
+transaction might never get added.  
+
+To remedy this, you need to either ensure provable propagation of
+transactions, or vary the work factor for a node depending on how 
+many links have been added since that node's most recent link.   
+
+Unfortunately, both measures can be defeated by sock puppets.  
+This is probably the worst problem with your protocol as it 
+stands right now; you need some central point to control the 
+identities (keys) of the nodes and prevent people from making 
+new sock puppets. 
+
+Provable propagation would mean that When Bob accepts a new chain 
+from Alice, he needs to make sure that Alice has (or gets) all
+transactions in his "A" and "L" pools.  He sends them, and 
+Alice sends back a signed hash to prove she got them. Once 
+Alice has recieved this block of transactions, if any subsequent 
+chains including a link added by Alice do not include those 
+transactions at or before that link, then Bob should be able to 
+publish the block he sent Alice, along with her signature, in a
+transaction as proof that Alice violated protocol.  Sock puppets 
+defeat this because Alice just signs subsequent chains using a 
+new key, pretending to be a different node. 
+
+If we go with varying the work factor depending on how many new 
+links there are,  then we're right back to domination by the 3 
+or 4 fastest nodes, except now they're joined by 600 or so 
+sock puppets which they use to avoid the work factor penalty. 
+
+If we solve the sock-puppet issue, or accept that there's a central 
+point controlling the generation of new keys, then generation of 
+coins should be tied to the act of successfully adding a block to 
+the "consensus" chain.  This is simple to do; creation of a coin 
+is a transaction, it gets added along with all the other transactions 
+in the block.  But you can only create one coin per link, and of 
+course if your version of the chain isn't the one that gets accepted,
+then in the "accepted" view you don't have the coin and can't spend 
+it.  This gives the people maintaining the consensus database a 
+reason to spend CPU cycles, especially since the variance in work 
+factor by number of links added since their own last link (outlined
+above) guarantees that everyone, not just the 3 or 4 fastest nodes,
+occasionally gets the opportunity to create a coin.
+
+Also, the work requirement for adding a link to the chain should 
+vary (again exponentially) with the number of links added to that 
+chain in the previous week, causing the rate of coin generation 
+(and therefore inflation) to be strictly controlled.  
+
+You need coin aggregation for this to scale.  There needs to be 
+a "provable" transaction where someone retires ten single coins 
+and creates a new coin with denomination ten, etc.  This is not 
+too hard, using the same infrastructure you've already got; it 
+simply becomes part of the chain, and when the chain is accepted
+consensus, then everybody can see that it happened. 
+
+
+
+				Bear
+
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Fri Nov 14 23:43:00 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Sat, 15 Nov 2008 12:43:00 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-fea97d6d-f5d2-df31-8894-e83751167c7a@server123>
+
+I'll try and hurry up and release the sourcecode as soon as possible to serve as a reference to help clear up all these implementation questions.
+
+
+Ray Dillinger (Bear) wrote:
+> When a coin is spent, the buyer and seller digitally sign a (blinded)
+> transaction record.
+
+Only the buyer signs, and there's no blinding. 
+
+
+> If someone double spends, then the transaction record 
+> can be unblinded revealing the identity of the cheater. 
+
+Identities are not used, and there's no reliance on recourse.  It's all prevention.
+
+
+> This is done via a fairly standard cut-and-choose 
+> algorithm where the buyer responds to several challenges
+> with secret shares
+
+No challenges or secret shares.  A basic transaction is just what you see in the figure in section 2.  A signature (of the buyer) satisfying the public key of the previous transaction, and a new public key (of the seller) that must be satisfied to spend it the next time.
+
+
+> They may also receive chains as long as the one they're trying to
+> extend while they work, in which the last few "links" are links
+> that are *not* in common with the chain on which they're working.
+> These they ignore. 
+
+Right, if it's equal in length, ties are broken by keeping the earliest one received.
+
+
+> If it contains a double spend, then they create a "transaction" 
+> which is a proof of double spending, add it to their pool A, 
+> broadcast it, and continue work.
+
+There's no need for reporting of "proof of double spending" like that.  If the same chain contains both spends, then the block is invalid and rejected.  
+
+Same if a block didn't have enough proof-of-work.  That block is invalid and rejected.  There's no need to circulate a report about it.  Every node could see that and reject it before relaying it.
+
+If there are two competing chains, each containing a different version of the same transaction, with one trying to give money to one person and the other trying to give the same money to someone else, resolving which of the spends is valid is what the whole proof-of-work chain is about.
+
+We're not "on the lookout" for double spends to sound the alarm and catch the cheater.  We merely adjudicate which one of the spends is valid.  Receivers of transactions must wait a few blocks to make sure that resolution has had time to complete.  Would be cheaters can try and simultaneously double-spend all they want, and all they accomplish is that within a few blocks, one of the spends becomes valid and the others become invalid.  Any later double-spends are immediately rejected once there's already a spend in the main chain.  
+
+Even if an earlier spend wasn't in the chain yet, if it was already in all the nodes' pools, then the second spend would be turned away by all those nodes that already have the first spend.
+
+
+> If the new chain is accepted, then they give up on adding their
+> current link, dump all the transactions from pool L back into pool
+> A (along with transactions they've received or created since
+> starting work), eliminate from pool A those transaction records
+> which are already part of a link in the new chain, and start work
+> again trying to extend the new chain.
+
+Right.  They also refresh whenever a new transaction comes in, so L pretty much contains everything in A all the time.
+
+
+> CPU-intensive digital signature algorithm to 
+> sign the chain including the new block L. 
+
+It's a Hashcash style SHA-256 proof-of-work (partial pre-image of zero), not a signature.  
+
+
+> Is there a mechanism to make sure that the "chain" does not consist
+> solely of links added by just the 3 or 4 fastest nodes? 'Cause a
+> broadcast transaction record could easily miss those 3 or 4 nodes
+> and if it does, and those nodes continue to dominate the chain, the
+> transaction might never get added.
+
+If you're thinking of it as a CPU-intensive digital signing, then you may be thinking of a race to finish a long operation first and the fastest always winning.
+
+The proof-of-work is a Hashcash style SHA-256 collision finding.  It's a memoryless process where you do millions of hashes a second, with a small chance of finding one each time.  The 3 or 4 fastest nodes' dominance would only be proportional to their share of the total CPU power.  Anyone's chance of finding a solution at any time is proportional to their CPU power.
+
+There will be transaction fees, so nodes will have an incentive to receive and include all the transactions they can.  Nodes will eventually be compensated by transaction fees alone when the total coins created hits the pre-determined ceiling.
+
+
+> Also, the work requirement for adding a link to the chain should
+> vary (again exponentially) with the number of links added to that
+> chain in the previous week, causing the rate of coin generation
+> (and therefore inflation) to be strictly controlled.
+
+Right.
+
+
+> You need coin aggregation for this to scale. There needs to be
+> a "provable" transaction where someone retires ten single coins
+> and creates a new coin with denomination ten, etc. 
+
+Every transaction is one of these.  Section 9, Combining and Splitting Value.  
+
+
+Satoshi Nakamoto
+
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From bear at sonic.net  Sat Nov 15 02:04:21 2008
+From: bear at sonic.net (Ray Dillinger)
+Date: Fri, 14 Nov 2008 23:04:21 -0800
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-fea97d6d-f5d2-df31-8894-e83751167c7a@server123>
+References: <CHILKAT-MID-fea97d6d-f5d2-df31-8894-e83751167c7a@server123>
+Message-ID: <1226732661.4127.85.camel@localhost>
+
+On Sat, 2008-11-15 at 12:43 +0800, Satoshi Nakamoto wrote:
+
+> I'll try and hurry up and release the sourcecode as soon as possible 
+> to serve as a reference to help clear up all these implementation 
+> questions.
+
+> Ray Dillinger (Bear) wrote:
+> > When a coin is spent, the buyer and seller digitally sign a (blinded)
+> > transaction record.
+> 
+> Only the buyer signs, and there's no blinding. 
+> 
+> 
+> > If someone double spends, then the transaction record 
+> > can be unblinded revealing the identity of the cheater. 
+> 
+> Identities are not used, and there's no reliance on recourse.  It's all prevention.
+
+Okay, that's surprising.  If you're not using buyer/seller 
+identities, then you are not checking that a spend is being made 
+by someone who actually is the owner of (on record as having 
+recieved) the coin being spent.  
+
+There are three categories of identity that are useful to 
+think about.  Category one: public.  Real-world identities 
+are a matter of record and attached to every transaction.  
+Category two: Pseudonymous.  There are persistent "identities" 
+within the system and people can see if something was done by 
+the same nym that did something else, but there's not necessarily 
+any way of linking the nyms with real-world identities.  Category 
+three: unlinkably anonymous.  There is no concept of identity,
+persistent or otherwise.  No one can say or prove whether the 
+agents involved in any transaction are the same agents as involved 
+in any other transaction. 
+
+Are you claiming category 3 as you seem to be, or category 2?
+Lots of people don't distinguish between anonymous and 
+pseudonymous protocols, so it's worth asking exactly what 
+you mean here.  
+
+Anyway:  I'll proceed on the assumption that you meant very 
+nearly (as nearly as I can imagine, anyway) what you said, 
+unlinkably anonymous.  That means that instead of an "identity", 
+a spender has to demonstrate knowledge of a secret known only 
+to the real owner of the coin.  One way to do this would be 
+to have the person recieving the coin generate an asymmetric 
+key pair, and then have half of it published with the 
+transaction.  In order to spend the coin later, s/he must 
+demonstrate posession of the other half of the asymmetric 
+key pair, probably by using it to sign the key provided by 
+the new seller.  So we cannot prove anything about "identity", 
+but we can prove that the spender of the coin is someone who 
+knows a secret that the person who recieved the coin knows. 
+
+And what you say next seems to confirm this: 
+
+> No challenges or secret shares.  A basic transaction is just 
+> what you see in the figure in section 2.  A signature (of the 
+> buyer) satisfying the public key of the previous transaction, 
+> and a new public key (of the seller) that must be satisfied to 
+> spend it the next time.
+
+
+Note, even though this doesn't involve identity per se, it still 
+makes the agent doing the spend linkable to the agent who 
+earlier recieved the coin, so these transactions are linkable.  
+In order to counteract this, the owner of the coin needs to 
+make a transaction, indistinguishable to others from any 
+normal transaction, in which he creates a new key pair and 
+transfers the coin to its posessor (ie, has one sock puppet 
+"spend" it to another). No change in real-world identity of 
+the owner, but the transaction "linkable" to the agent who spent 
+the coin is unlinked.  For category-three unlinkability, this 
+has to be done a random number of times - maybe one to six 
+times?  
+
+
+BTW, could you please learn to use carriage returns??  Your 
+lines are scrolling stupidly off to the right and I have to 
+scroll to see what the heck you're saying, then edit to add 
+carriage returns before I respond. 
+
+
+> > If it contains a double spend, then they create a "transaction" 
+> > which is a proof of double spending, add it to their pool A, 
+> > broadcast it, and continue work.
+
+> There's no need for reporting of "proof of double spending" like 
+> that.  If the same chain contains both spends, then the block is 
+> invalid and rejected.  
+
+> Same if a block didn't have enough proof-of-work.  That block is 
+> invalid and rejected.  There's no need to circulate a report 
+> about it.  Every node could see that and reject it before relaying it.
+
+Mmmm.  I don't know if I'm comfortable with that.  You're saying 
+there's no effort to identify and exclude nodes that don't 
+cooperate?  I suspect this will lead to trouble and possible DOS 
+attacks. 
+
+> If there are two competing chains, each containing a different 
+> version of the same transaction, with one trying to give money 
+> to one person and the other trying to give the same money to 
+> someone else, resolving which of the spends is valid is what 
+> the whole proof-of-work chain is about.
+
+Okay, when you say "same" transaction, and you're talking about 
+transactions that are obviously different, you mean a double 
+spend, right?  Two transactions signed with the same key?
+
+> We're not "on the lookout" for double spends to sound the alarm 
+> and catch the cheater.  We merely adjudicate which one of the 
+> spends is valid.  Receivers of transactions must wait a few 
+> blocks to make sure that resolution has had time to complete. 
+
+Until.... until what?  How does anybody know when a transaction 
+has become irrevocable?   Is "a few" blocks three?  Thirty?  A 
+hundred?  Does it depend on the number of nodes?  Is it logarithmic 
+or linear in number of nodes?  
+
+ 
+> Would be cheaters can try and simultaneously double-spend all 
+> they want, and all they accomplish is that within a few blocks, 
+> one of the spends becomes valid and the others become invalid.
+
+But in the absence of identity, there's no downside to them 
+if spends become invalid, if they've already recieved the 
+goods they double-spent for (access to website, download, 
+whatever).  The merchants are left holding the bag with 
+"invalid" coins, unless they wait that magical "few blocks" 
+(and how can they know how many?) before treating the spender 
+as having paid.  
+
+The consumers won't do this if they spend their coin and it takes 
+an hour to clear before they can do what they spent their coin on. 
+The merchants won't do it if there's no way to charge back a 
+customer when they find the that their coin is invalid because 
+the customer has doublespent.
+
+> Even if an earlier spend wasn't in the chain yet, if it was 
+> already in all the nodes' pools, then the second spend would 
+> be turned away by all those nodes that already have the first 
+> spend.
+
+So there's a possibility of an early catch when the broadcasts of 
+the initial simultaneous spends interfere with each other.  I assume 
+here that the broadcasts are done by the sellers, since the buyer 
+has a possible disincentive to broadly disseminate spends. 
+
+> > If the new chain is accepted, then they give up on adding their
+> > current link ... and start work again trying to extend the new 
+> > chain.
+> 
+> Right.  They also refresh whenever a new transaction comes in, 
+> so L pretty much contains everything in A all the time.
+
+Okay, that's a big difference between a proof of work that takes 
+a huge set number of CPU cycles and a proof of work that takes a 
+tiny number of CPU cycles but has a tiny chance of success.  You 
+can change the data set while working, and it doesn't mean you 
+need to start over. This is good in this case, as it means nobody 
+has to hold recently recieved transactions out of the link they're
+working on.
+
+> > Is there a mechanism to make sure that the "chain" does not consist
+> > solely of links added by just the 3 or 4 fastest nodes? 
+
+> If you're thinking of it as a CPU-intensive digital signing, then 
+> you may be thinking of a race to finish a long operation first and 
+> the fastest always winning.
+
+Right.  That was the misconception I was working with.  Again, the 
+difference between a proof taking a huge set number of CPU cycles 
+and a proof that takes a tiny number of CPU cycles but has a tiny 
+chance of success.
+
+> Anyone's chance of finding a solution at any 
+> time is proportional to their CPU power.
+
+It's like a random variation in the work factor; in this way it works 
+in your favor. 
+
+> There will be transaction fees, so nodes will have an incentive 
+> to receive and include all the transactions they can.  Nodes 
+> will eventually be compensated by transaction fees alone when 
+> the total coins created hits the pre-determined ceiling.
+
+I don't understand how "transaction fees" would work, and how the money 
+would find its way from the agents doing transactions to those running 
+the network.  But the economic effect is the same (albeit somewhat 
+randomized) if adding a link to the chain allows the node to create 
+a coin, so I would stick with that.
+
+Also, be aware that the compute power of different nodes can be 
+expected to vary by two orders of magnitude at any given moment in 
+history. 
+
+				Bear
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Sat Nov 15 13:02:00 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Sun, 16 Nov 2008 02:02:00 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-4736d93c-c2b5-d001-f4a9-2dc24f0f983f@server123>
+
+Ray Dillinger wrote:
+> One way to do this would be
+> to have the person recieving the coin generate an asymmetric
+> key pair, and then have half of it published with the
+> transaction. In order to spend the coin later, s/he must
+> demonstrate posession of the other half of the asymmetric
+> key pair, probably by using it to sign the key provided by
+> the new seller.
+
+Right, it's ECC digital signatures.  A new key pair is used for every
+transaction.
+
+It's not pseudonymous in the sense of nyms identifying people, but it
+is at least a little pseudonymous in that the next action on a coin
+can be identified as being from the owner of that coin.
+
+
+> Mmmm. I don't know if I'm comfortable with that. You're saying
+> there's no effort to identify and exclude nodes that don't
+> cooperate? I suspect this will lead to trouble and possible DOS
+> attacks.
+
+There is no reliance on identifying anyone.  As you've said, it's
+futile and can be trivially defeated with sock puppets.
+
+The credential that establishes someone as real is the ability to
+supply CPU power. 
+
+
+> Until.... until what? How does anybody know when a transaction
+> has become irrevocable? Is "a few" blocks three? Thirty? A
+> hundred? Does it depend on the number of nodes? Is it logarithmic
+> or linear in number of nodes?
+
+Section 11 calculates the worst case under attack.  Typically, 5 or
+10 blocks is enough for that.  If you're selling something that
+doesn't merit a network-scale attack to steal it, in practice you
+could cut it closer.
+
+
+> But in the absence of identity, there's no downside to them
+> if spends become invalid, if they've already received the
+> goods they double-spent for (access to website, download,
+> whatever). The merchants are left holding the bag with
+> "invalid" coins, unless they wait that magical "few blocks"
+> (and how can they know how many?) before treating the spender
+> as having paid.
+>
+> The consumers won't do this if they spend their coin and it takes
+> an hour to clear before they can do what they spent their coin on.
+> The merchants won't do it if there's no way to charge back a
+> customer when they find the that their coin is invalid because
+> the customer has doublespent.
+
+This is a version 2 problem that I believe can be solved fairly
+satisfactorily for most applications.
+
+The race is to spread your transaction on the network first.  Think 6
+degrees of freedom -- it spreads exponentially.  It would only take
+something like 2 minutes for a transaction to spread widely enough
+that a competitor starting late would have little chance of grabbing
+very many nodes before the first one is overtaking the whole network.
+ During those 2 minutes, the merchant's nodes can be watching for a
+double-spent transaction.  The double-spender would not be able to
+blast his alternate transaction out to the world without the merchant
+getting it, so he has to wait before starting.
+
+If the real transaction reaches 90% and the double-spent tx reaches
+10%, the double-spender only gets a 10% chance of not paying, and 90%
+chance his money gets spent.  For almost any type of goods, that's
+not going to be worth it for the scammer.
+
+Information based goods like access to website or downloads are
+non-fencible.  Nobody is going to be able to make a living off
+stealing access to websites or downloads.  They can go to the file
+sharing networks to steal that.  Most instant-access products aren't
+going to have a huge incentive to steal. 
+
+If a merchant actually has a problem with theft, they can make the
+customer wait 2 minutes, or wait for something in e-mail, which many
+already do.  If they really want to optimize, and it's a large
+download, they could cancel the download in the middle if the
+transaction comes back double-spent.  If it's website access,
+typically it wouldn't be a big deal to let the customer have access
+for 5 minutes and then cut off access if it's rejected.  Many such
+sites have a free trial anyway.
+
+Satoshi Nakamoto
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sat Nov 15 19:00:04 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Sun, 16 Nov 2008 10:00:04 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-41a4bab8-9538-d1ea-d079-b843b2667bec@server123>
+References: <CHILKAT-MID-41a4bab8-9538-d1ea-d079-b843b2667bec@server123>
+Message-ID: <491F6284.5050809@echeque.com>
+
+Satoshi Nakamoto wrote:
+ > Fortunately, it's only necessary to keep a
+ > pending-transaction pool for the current best branch.
+
+This requires that we know, that is to say an honest
+well behaved peer whose communications and data storage
+is working well knows, what the current best branch is -
+but of course, the problem is that we are trying to
+discover, trying to converge upon, a best branch, which
+is not easy at the best of times, and becomes harder
+when another peer is lying about its connectivity and
+capabilities, and yet another peer has just had a major
+disk drive failure obfuscated by a software crash, and
+the international fibers connecting yet a third peer
+have been attacked by terrorists.
+
+ >  When a new block arrives for the best branch,
+ >  ConnectBlock removes the block's transactions from
+ >  the pending-tx pool.  If a different branch becomes
+ >  longer
+
+Which presupposes the branches exist, that they are
+fully specified and complete.  If they exist as complete
+works, rather than works in progress, then the problem
+is already solved, for the problem is making progress.
+
+ > Broadcasts will probably be almost completely
+ > reliable.
+
+There is a trade off between timeliness and reliability.
+One can make a broadcast arbitrarily reliable if time is
+of no consequence.  However, when one is talking of
+distributed data, time is always of consequence, because
+it is all about synchronization (that peers need to have
+corresponding views at corresponding times) so when one
+does distributed data processing, broadcasts are always
+highly unreliable Attempts to ensure that each
+message arrives at least once result in increased timing
+variation. Thus one has to make a protocol that is
+either UDP or somewhat UDP like, in that messages are
+small, failure of messages to arrive is common, messages
+can arrive in different order to the order in which they
+were sent, and the same message may arrive multiple
+times.  Either we have UDP, or we need to accommodate
+the same problems as UDP has on top of TCP connections.
+
+Rather than assuming that each message arrives at least
+once, we have to make a mechanism such that the
+information arrives even though conveyed by messages
+that frequently fail to arrive.
+
+ > TCP transmissions are rarely ever dropped these days
+
+People always load connections near maximum.  When a
+connection is near maximum, TCP connections suffer
+frequent unreasonably long delays, and connections
+simply fail a lot - your favorite web cartoon somehow
+shows it is loading forever, and you try again, or it
+comes up with a little x in place of a picture, and you
+try again
+
+Further very long connections - for example ftp
+downloads of huge files,  seldom complete. If you try to
+ftp a movie, you are unlikely to get anywhere unless
+both client and server have a resume mechanism so that
+they can talk about partially downloaded files.
+
+UDP connections, for example Skype video calls, also
+suffer frequent picture freezes, loss of quality, and so
+forth, and have to have mechanisms to keep going
+regardless.
+
+ > It's very attractive to the libertarian viewpoint if
+ > we can explain it properly.  I'm better with code than
+ > with words though.
+
+No, it is very attractive to the libertarian if we can
+design a mechanism that will scale to the point of
+providing the benefits of rapidly irreversible payment,
+immune to political interference, over the internet,
+to very large numbers of people. You have an outline
+and proposal for such a design, which is a big step
+forward, but the devil is in the little details.
+
+I really should provide a fleshed out version of your
+proposal, rather than nagging you to fill out the blind
+spots.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From ian.farquhar at rsa.com  Sun Nov 16 18:25:18 2008
+From: ian.farquhar at rsa.com (ian.farquhar at rsa.com)
+Date: Sun, 16 Nov 2008 18:25:18 -0500
+Subject: unintended?
+In-Reply-To: <20081114212924.GE9882@kokopelli.hydra>
+References: <20081114132629.GA15415@vacation.karoshi.com.> <20081114212924.GE9882@kokopelli.hydra>
+Message-ID: <21F6076E016FB149944A4D450EFFDCE50214B59F@CORPUSMX50B.corp.emc.com>
+
+[Moderator's note: Top posting is considered untasteful. --Perry]
+
+It doesn't need to be malicious.  It depends on the situation.
+
+For example, lots of corporations do SSL session inspection using
+products like Bluecoat.  The Bluecoat does a MiTM attack to expose the
+plaintext for analysis, and expects that corporate users trust the
+certificate it provides (and have pushed it out to all corporate
+browsers).  If you've just loaded Firefox, it won't have that "trusted"
+cert loaded by default, and you'll see exactly the below.
+
+Ian. 
+
+-----Original Message-----
+From: owner-cryptography at metzdowd.com
+[mailto:owner-cryptography at metzdowd.com] On Behalf Of Chad Perrin
+Sent: Saturday, November 15, 2008 8:29 AM
+To: cryptography at metzdowd.com
+Subject: Re: unintended?
+
+On Fri, Nov 14, 2008 at 01:26:29PM +0000, bmanning at vacation.karoshi.com
+wrote:
+> (snicker)  from the local firefox
+> ....
+> 
+> en-us.add-ons.mozilla.com:443 uses an invalid security certificate.
+> 
+> The certificate is not trusted because the issuer certificate is not
+trusted.
+> 
+> (Error code: sec_error_untrusted_issuer)
+
+What does Perspectives have to say?
+
+What installation of Firefox did you use?
+
+I don't have that problem when I visit:
+  https://addons.mozilla.org/en-US/firefox/
+
+Do you perhaps have some kind of malicious redirection going on there?
+
+-- 
+Chad Perrin [ content licensed PDL: http://pdl.apotheon.org ]
+John Kenneth Galbraith: "If all else fails, immortality can always be
+assured through spectacular error."
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From satoshi at vistomail.com  Mon Nov 17 12:24:43 2008
+From: satoshi at vistomail.com (Satoshi Nakamoto)
+Date: Tue, 18 Nov 2008 01:24:43 +0800
+Subject: Bitcoin P2P e-cash paper
+Message-ID: <CHILKAT-MID-9478bb9b-47dd-9fa5-6f7c-500ac95fd377@server123>
+
+James A. Donald wrote:
+> > Fortunately, it's only necessary to keep a
+> > pending-transaction pool for the current best branch.
+> 
+> This requires that we know, that is to say an honest
+> well behaved peer whose communications and data storage
+> is working well knows, what the current best branch is -
+
+I mean a node only needs the pending-tx pool for the best branch it
+has.  The branch that it currently thinks is the best branch.
+That's the branch it'll be trying to make a block out of, which is
+all it needs the pool for.
+
+
+> > Broadcasts will probably be almost completely
+> > reliable.
+> 
+> Rather than assuming that each message arrives at least
+> once, we have to make a mechanism such that the
+> information arrives even though conveyed by messages
+> that frequently fail to arrive.
+
+I think I've got the peer networking broadcast mechanism covered.  
+
+Each node sends its neighbours an inventory list of hashes of the
+new blocks and transactions it has.  The neighbours request the
+items they don't have yet.  If the item never comes through after a
+timeout, they request it from another neighbour that had it.  Since
+all or most of the neighbours should eventually have each item,
+even if the coms get fumbled up with one, they can get it from any
+of the others, trying one at a time.
+
+The inventory-request-data scheme introduces a little latency, but
+it ultimately helps speed more by keeping extra data blocks off the
+transmit queues and conserving bandwidth.
+
+
+> You have an outline
+> and proposal for such a design, which is a big step
+> forward, but the devil is in the little details.
+
+I believe I've worked through all those little details over the
+last year and a half while coding it, and there were a lot of them.
+The functional details are not covered in the paper, but the
+sourcecode is coming soon.  I sent you the main files.
+(available by request at the moment, full release soon)
+
+Satoshi Nakamoto
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From Nicolas.Williams at sun.com  Mon Nov 17 16:54:28 2008
+From: Nicolas.Williams at sun.com (Nicolas Williams)
+Date: Mon, 17 Nov 2008 15:54:28 -0600
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <1226732661.4127.85.camel@localhost>
+References: <CHILKAT-MID-fea97d6d-f5d2-df31-8894-e83751167c7a@server123> <1226732661.4127.85.camel@localhost>
+Message-ID: <20081117215427.GM111792@Sun.COM>
+
+On Fri, Nov 14, 2008 at 11:04:21PM -0800, Ray Dillinger wrote:
+> On Sat, 2008-11-15 at 12:43 +0800, Satoshi Nakamoto wrote:
+> > > If someone double spends, then the transaction record 
+> > > can be unblinded revealing the identity of the cheater. 
+> > 
+> > Identities are not used, and there's no reliance on recourse.  It's all prevention.
+> 
+> Okay, that's surprising.  If you're not using buyer/seller 
+> identities, then you are not checking that a spend is being made 
+> by someone who actually is the owner of (on record as having 
+> recieved) the coin being spent.  
+
+How do identities help?  It's supposed to be anonymous cash, right?  And
+say you identify a double spender after the fact, then what?  Perhaps
+you're looking at a disposable ID.  Or perhaps you can't chase them
+down.
+
+Double spend detection needs to be real-time or near real-time.
+
+Nico
+-- 
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Mon Nov 17 18:57:39 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Tue, 18 Nov 2008 09:57:39 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <1226715623.3694.156.camel@localhost>
+References: <CHILKAT-MID-4e1eec0c-baa7-6633-78e9-91fd9b7353c4@server123> <1226715623.3694.156.camel@localhost>
+Message-ID: <492204F3.3060702@echeque.com>
+
+Ray Dillinger wrote:
+ > Okay.... I'm going to summarize this protocol as I
+ > understand it.
+ >
+ > I'm filling in some operational details that aren't in
+ > the paper by supplementing what you wrote with what my
+ > own "design sense" tells me are critical missing bits
+ > or "obvious" methodologies for use.
+
+There are a number of significantly different ways this
+could be implemented.  I have been working on my own
+version based on Patricia hash trees, (not yet ready to
+post, will post in a week or so) with the consensus
+generation being a generalization of file sharing using
+Merkle hash trees. Patricia hash trees where the high
+order part of the Patricia key represents the high order
+part of the time can be used to share data that evolves
+in time.  The algorithm, if implemented by honest
+correctly functioning peers, regularly generates
+consensus hashes of the recent past - thereby addressing
+the problem I have been complaining about - that we have
+a mechanism to protect against consensus distortion by
+dishonest or malfunctioning peers, which is useless
+absent a definition of consensus generation by honest
+and correctly functioning peers.
+
+ > First, people spend computer power creating a pool of
+ > coins to use as money.  Each coin is a proof-of-work
+ > meeting whatever criteria were in effect for money at
+ > the time it was created.  The time of creation (and
+ > therefore the criteria) is checkable later because
+ > people can see the emergence of this particular coin
+ > in the transaction chain and track it through all its
+ > "consensus view" spends.  (more later on coin creation
+ > tied to adding a link).
+ >
+ > When a coin is spent, the buyer and seller digitally
+ > sign a (blinded) transaction record, and broadcast it
+ > to a bunch of nodes whose purpose is keeping track of
+ > consensus regarding coin ownership.
+
+I don't think your blinding works.
+
+If there is a public record of who owns what coin, we
+have to generate a  public diff on changes in that
+record, so the record will show that a coin belonged to
+X, and soon thereafter belonged to Y.  I don't think
+blinding can be made to work.  We can blind the
+transaction details easily enough, by only making hashes
+of the details public, (X paid Y for
+49vR7xmwYcKXt9zwPJ943h9bHKC2pG68m) but that X paid Y is
+going to be fairly obvious.
+
+If when Joe spends a coin to me, then I have to have the
+ability to ask "Does Joe rightfully own this coin", then
+it is difficult to see how this can be implemented in a
+distributed protocol without giving people the ability
+to trawl through data detecting that Joe paid me.
+
+To maintain a consensus on who owns what coins, who owns
+what coins has to be public.
+
+We can build a privacy layer on top of this - account
+money and chaumian money based on bitgold coins, much as
+the pre 1915 US banking system layered account money and
+bank notes on top of gold coins, and indeed we have to
+build a layer on top to bring the transaction cost down
+to the level that supports agents performing micro
+transactions, as needed for bandwidth control, file
+sharing, and charging non white listed people to send us
+communications.
+
+So the entities on the public record are entities
+functioning like pre 1915 banks - let us call them
+binks, for post 1934 banks no longer function like that.
+
+ > But if they recieve a _longer_ chain while working,
+ > they immediately check all the transactions in the new
+ > links to make sure it contains no double spends and
+ > that the "work factors" of all new links are
+ > appropriate.
+
+I am troubled that this involves frequent
+retransmissions of data that is already mostly known.
+Consensus and widely distributed beliefs about bitgold
+ownership already involves significant cost.  Further,
+each transmission of data is subject to data loss, which
+can result in thrashing, with the risk that the
+generation of consensus may slow below the rate of new
+transactions.  We already have problems getting the cost
+down to levels that support micro transactions by
+software agents, which is the big unserved market -
+bandwidth control, file sharing, and charging non white
+listed people to send us communications.
+
+To work as useful project, has to be as efficient as it
+can be - hence my plan to use a Patricia hash tree
+because it identifies and locate small discrepancies
+between peers that are mostly in agreement already,
+without them needing to transmit their complete data.
+
+We also want to avoid very long hash chains that have to
+be frequently checked in order to validate things.  Any
+time a hash chain can potentially become enormously long
+over time, we need to ensure that no one ever has to
+rewalk the full length.  Chains that need to be
+re-walked can only be permitted to grow as the log of
+the total number of transactions - if they grow as the
+log of the transactions in any one time period plus the
+total number of time periods, we have a problem.
+
+ > Biggest Technical Problem:
+ >
+ > Is there a mechanism to make sure that the "chain"
+ > does not consist solely of links added by just the 3
+ > or 4 fastest nodes?  'Cause a broadcast transaction
+ > record could easily miss those 3 or 4 nodes and if it
+ > does, and those nodes continue to dominate the chain,
+ > the transaction might never get added.
+ >
+ > To remedy this, you need to either ensure provable
+ > propagation of transactions, or vary the work factor
+ > for a node depending on how many links have been added
+ > since that node's most recent link.
+ >
+ > Unfortunately, both measures can be defeated by sock
+ > puppets. This is probably the worst problem with your
+ > protocol as it stands right now; you need some central
+ > point to control the identities (keys) of the nodes
+ > and prevent people from making new sock puppets.
+
+We need a protocol wherein to be a money tracking peer
+(an entity that validates spends) you have to be
+accepted by at least two existing peers who agree to
+synchronize data with you - presumably through human
+intervention by the owners of existing peers, and these
+two human approved synchronization paths indirectly
+connect you to the other peers in the network through
+at least one graph cycle.
+
+If peer X is only connected to the rest of the network
+by one existing peer, peer Y, perhaps because X's
+directly connecting peer has dropped out, then X is
+demoted to a client, not a peer - any transactions X
+submits are relabeled by Y as submitted to Y, not X, and
+the time of submission (which forms part of the Patricia
+key) is the time X submitted them to Y, not the time
+they were submitted to X.
+
+The algorithm must be able swiftly detect malfunctioning
+peers, and automatically exclude them from the consensus
+temporarily - which means that transactions submitted
+through malfunctioning peers do not get included in the
+consensus, therefore have to be resubmitted, and peers
+may find themselves temporarily demoted to clients,
+because one of the peers through which they were
+formerly connected to the network has been dropped by
+the consensus.
+
+If a peer gets a lot of automatic temporary exclusions,
+there may be human intervention by the owners of those
+peers to which it exchanges data directly to permanently
+drop them.
+
+Since peers get accepted by human invite, they have
+reputation to lose, therefore we can make the null
+hypothesis (the primary Bayesian prior) honest intent,
+valid data, but  unreliable data transmission - trust
+with infrequent random verification.  Designing the
+system on this basis considerably reduces processing
+costs.
+
+Recall that SET died on its ass in large part because
+every transaction involved innumerable public key
+operations.  Similarly, we have huge security flaws in
+https because it has so many redundant public key
+operations that web site designers try to minimize the
+use of https to cover only those areas that truly need
+it - and they always get the decision as to what truly
+needs it subtly wrong.
+
+Efficiency is critical, particularly as the part of the
+market not yet served is the market for very low cost
+transactions.
+
+ > If we solve the sock-puppet issue, or accept that
+ > there's a central point controlling the generation of
+ > new keys,
+
+A central point will invite attack, will be attacked.
+
+The problem with computer networked money is that the
+past can so easily be revised, so nodes come under
+pressure to adjust the past - "I did not pay that"
+swiftly becomes "I should not have paid that", which
+requires arbitration, which is costly, and introduces
+uncertainty, which is costly, and invites government
+regulation, which is apt to be utterly ruinous and
+wholly devastating.
+
+For many purposes, reversal and arbitration is highly
+desirable, but there is no way anyone can compete with
+the arbitration provided by Visa and Mastercard, for
+they have network effects on their side, and they do a
+really good job of arbitration, at which they have vast
+experience, accumulated skills, wisdom, and good repute.
+So any new networked transaction system has to target
+the demand for final and irreversible transactions.
+
+The idea of a distributed network consensus is that one
+has a lot of peers in a lot of jurisdictions, and once a
+transaction has entered into the consensus, undoing it
+is damn near impossible - one would have to pressure
+most of the peers in most of the jurisdictions to agree,
+and many of them don't even talk your language, and
+those that do, will probably pretend that they do not.
+So people will not even try.
+
+To avoid pressure, the network has to avoid any central
+point at which pressure can be applied.  Recall Nero's
+wish that Rome had a single throat that he could cut. If
+we provide them with such a throat, it will be cut.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Mon Nov 17 20:26:31 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Tue, 18 Nov 2008 11:26:31 +1000
+Subject: Bitcoin P2P e-cash paper
+In-Reply-To: <CHILKAT-MID-9478bb9b-47dd-9fa5-6f7c-500ac95fd377@server123>
+References: <CHILKAT-MID-9478bb9b-47dd-9fa5-6f7c-500ac95fd377@server123>
+Message-ID: <492219C7.8050605@echeque.com>
+
+Nicolas Williams wrote:
+ > How do identities help?  It's supposed to be anonymous
+ > cash, right?
+
+Actually no.  It is however supposed to be pseudonymous,
+so dinging someone's reputation still does not help
+much.
+
+ > And say you identify a double spender after the fact,
+ > then what?  Perhaps you're looking at a disposable ID.
+ > Or perhaps you can't chase them down.
+ >
+ > Double spend detection needs to be real-time or near
+ > real-time.
+
+Near real time means we have to use UDP or equivalent,
+rather than TCP or equivalent, and we have to establish
+an approximate consensus, not necessarily the final
+consensus, not necessarily exact agreement, but close to
+it, in a reasonably small number of round trips.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From perry at piermont.com  Mon Nov 17 16:43:33 2008
+From: perry at piermont.com (Perry E. Metzger)
+Date: Mon, 17 Nov 2008 16:43:33 -0500
+Subject: ADMIN: end of bitcoin discussion for now
+Message-ID: <87r65auiyi.fsf@snark.cb.piermont.com>
+
+
+I'd like to call an end to the bitcoin e-cash discussion for now -- a
+lot of discussion is happening that would be better accomplished by
+people writing papers at the moment rather than rehashing things back
+and forth. Maybe later on when Satoshi (or someone else) writes
+something detailed up and posts it we could have another round of this.
+
+Perry
+-- 
+Perry E. Metzger		perry at piermont.com
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From sandyinchina at gmail.com  Tue Nov 18 19:18:46 2008
+From: sandyinchina at gmail.com (Sandy Harris)
+Date: Wed, 19 Nov 2008 08:18:46 +0800
+Subject: Hybrid cipher paper
+Message-ID: <c5528eee0811181618o31a3a3adrcab4a6cf10ed67a9@mail.gmail.com>
+
+A paper of mine just went up on http://eprint.iacr.org/  It has some ideas
+that I hope are new, I think are good, and I know are unorthodox. I'm well
+aware of the usual fate of such innovations, especially from amateurs.
+
+If anyone would like a break from looking at new hashes, perhaps they
+could have a look.
+
+Number    2008/473
+Title      Exploring Cipherspace: Combining stream ciphers and block ciphers
+
+Abstract:
+
+This paper looks at the possibility of combining a block cipher and a stream
+cipher to get a strong hybrid cipher. It includes two specific proposals for
+combining AES-128 and RC4-128 to get a cipher that takes a 256-bit key
+and is significantly faster than AES-256, and arguably more secure. One is
+immune to algebraic attacks.
+
+-- 
+Sandy Harris,
+Quanzhou, Fujian, China
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From dirkx at webweaving.org  Thu Nov 20 04:14:47 2008
+From: dirkx at webweaving.org (Dirk-Willem van Gulik)
+Date: Thu, 20 Nov 2008 10:14:47 +0100
+Subject: Raw RSA binary string and public key 'detection'
+Message-ID: <FA32C3B6-08A3-4CB3-A597-786E50358268@webweaving.org>
+
+Been looking at the Telnic (dev.telnic.org) effort.
+
+In essence; NAPTR dns records which contain private details such as a  
+phone number. These are encrypted against the public keys of your  
+friends (so if you have 20 friends and 3 phone numbers visible to all  
+friends - you need 20 subdomains x 3 NAPTR entries under your 'master').
+
+Aside from the practicality of this - given a raw RSA encrypted block  
+and a list of public keys - is there any risk that someone could  
+establish which of those public keys may have been used to create that  
+block ? I.e. something which would be done in bulk for large  
+populations; so the use of large tables and what not is quite warranted.
+
+Thanks,
+
+Dw
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From fw at deneb.enyo.de  Sat Nov 22 08:29:40 2008
+From: fw at deneb.enyo.de (Florian Weimer)
+Date: Sat, 22 Nov 2008 14:29:40 +0100
+Subject: Raw RSA binary string and public key 'detection'
+In-Reply-To: <FA32C3B6-08A3-4CB3-A597-786E50358268@webweaving.org>
+	(Dirk-Willem van Gulik's message of "Thu, 20 Nov 2008 10:14:47 +0100")
+References: <FA32C3B6-08A3-4CB3-A597-786E50358268@webweaving.org>
+Message-ID: <87skpjhosb.fsf@mid.deneb.enyo.de>
+
+* Dirk-Willem van Gulik:
+
+> Been looking at the Telnic (dev.telnic.org) effort.
+>
+> In essence; NAPTR dns records which contain private details such as a
+> phone number. These are encrypted against the public keys of your
+> friends (so if you have 20 friends and 3 phone numbers visible to all
+> friends - you need 20 subdomains x 3 NAPTR entries under your
+> master').
+>
+> Aside from the practicality of this - given a raw RSA encrypted block
+> and a list of public keys - is there any risk that someone could
+> establish which of those public keys may have been used to create that
+> block ?
+
+If the padding scheme is decent, this should not be possible without
+breaking RSA.
+
+However, the proposal limits keys to about 250*6 bits, which seems
+rather restrictive for RSA keys.
+
+I'm also concerned about reflective attacks were you ask someone who's
+trusted by the data owner to decrypt the data for you, possibly in an
+automated fashion.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From pgut001 at cs.auckland.ac.nz  Mon Nov 24 23:54:11 2008
+From: pgut001 at cs.auckland.ac.nz (Peter Gutmann)
+Date: Tue, 25 Nov 2008 17:54:11 +1300
+Subject: Certificates turn 30, X.509 turns 20, no-one notices
+Message-ID: <E1L4pwB-0008Ar-Qr@wintermute01.cs.auckland.ac.nz>
+
+This doesn't seem to have garnered much attention, but this year marks two
+milestones in PKI: Loren Kohnfelder's thesis was published 30 years ago, and
+X.509v1 was published 20 years ago.
+
+As a sign of PKI's successful penetration of the marketplace, the premier get-
+together for PKI folks, the IDtrust Symposium (formerly the PKI Workshop and
+now in its eighth year) authenticates participants with... username and
+password, for lack of a working PKI.
+
+(OK, it's a bit of a cheap shot and it's been done before, but I thought it
+was especially significant this year :-).
+
+Peter.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jon at callas.org  Tue Nov 25 20:47:31 2008
+From: jon at callas.org (Jon Callas)
+Date: Tue, 25 Nov 2008 17:47:31 -0800
+Subject: Certificates turn 30, X.509 turns 20, no-one notices
+In-Reply-To: <E1L4pwB-0008Ar-Qr@wintermute01.cs.auckland.ac.nz>
+References: <E1L4pwB-0008Ar-Qr@wintermute01.cs.auckland.ac.nz>
+Message-ID: <F41E4D38-8562-4A6C-9771-D63454DE9AFE@callas.org>
+
+
+On Nov 24, 2008, at 8:54 PM, Peter Gutmann wrote:
+
+> This doesn't seem to have garnered much attention, but this year  
+> marks two
+> milestones in PKI: Loren Kohnfelder's thesis was published 30 years  
+> ago, and
+> X.509v1 was published 20 years ago.
+>
+> As a sign of PKI's successful penetration of the marketplace, the  
+> premier get-
+> together for PKI folks, the IDtrust Symposium (formerly the PKI  
+> Workshop and
+> now in its eighth year) authenticates participants with... username  
+> and
+> password, for lack of a working PKI.
+>
+> (OK, it's a bit of a cheap shot and it's been done before, but I  
+> thought it
+> was especially significant this year :-).
+
+Yeah, they should be using OpenID. :-)
+
+	Jon
+
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From smb at cs.columbia.edu  Wed Nov 26 13:34:37 2008
+From: smb at cs.columbia.edu (Steven M. Bellovin)
+Date: Wed, 26 Nov 2008 13:34:37 -0500
+Subject: HavenCo and Sealand
+Message-ID: <20081126133437.0b7e086e@cs.columbia.edu>
+
+Slightly off-topic, but a cause celebre on cypherpunks some years ago
+-- but HavenCo, which ran a datacenter on the "nation" of Sealand, is
+no longer operating there:
+http://www.theregister.co.uk/2008/11/25/havenco/ (pointer via Spaf's
+blog).
+
+
+		--Steve Bellovin, http://www.cs.columbia.edu/~smb
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From nbohm at ernest.net  Thu Nov 27 05:13:27 2008
+From: nbohm at ernest.net (Nicholas Bohm)
+Date: Thu, 27 Nov 2008 10:13:27 +0000
+Subject: Certificates turn 30, X.509 turns 20, no-one notices
+In-Reply-To: <E1L4pwB-0008Ar-Qr@wintermute01.cs.auckland.ac.nz>
+References: <E1L4pwB-0008Ar-Qr@wintermute01.cs.auckland.ac.nz>
+Message-ID: <492E72C7.6050107@ernest.net>
+
+Peter Gutmann wrote:
+> This doesn't seem to have garnered much attention, but this year marks two
+> milestones in PKI: Loren Kohnfelder's thesis was published 30 years ago, and
+> X.509v1 was published 20 years ago.
+> 
+> As a sign of PKI's successful penetration of the marketplace, the premier get-
+> together for PKI folks, the IDtrust Symposium (formerly the PKI Workshop and
+> now in its eighth year) authenticates participants with... username and
+> password, for lack of a working PKI.
+> 
+> (OK, it's a bit of a cheap shot and it's been done before, but I thought it
+> was especially significant this year :-).
+
+I've never been quite sure whether "Public" qualifies "Key" or
+"Infrastructure" - this may make a difference to what you count as a PKI.
+
+SWIFT (interbank messaging), BOLERO (bills of lading) and CREST (dealing
+in dematerialised stocks and shares) all use public key cryptography, I
+believe, and have all been reasonably successful; but they are all
+closed systems where each of the participants believes that it and the
+others can stand the risk of contractually-imposed non-repudiation rules
+(or they used to believe it, anyway).
+
+But what these examples illustrate, by the lack of "open" comparables,
+is the very limited utility of the technology.
+
+Nicholas Bohm
+-- 
+Salkyns, Great Canfield, Takeley,
+Bishop's Stortford CM22 6SX, UK
+
+Phone  01279 870285    (+44 1279 870285)
+Mobile  07715 419728    (+44 7715 419728)
+
+PGP public key ID: 0x899DD7FF.  Fingerprint:
+5248 1320 B42E 84FC 1E8B  A9E6 0912 AE66 899D D7FF
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From lynn at garlic.com  Thu Nov 27 11:18:18 2008
+From: lynn at garlic.com (Anne & Lynn Wheeler)
+Date: Thu, 27 Nov 2008 11:18:18 -0500
+Subject: Certificates turn 30, X.509 turns 20, no-one notices
+In-Reply-To: <492E72C7.6050107@ernest.net>
+References: <E1L4pwB-0008Ar-Qr@wintermute01.cs.auckland.ac.nz> <492E72C7.6050107@ernest.net>
+Message-ID: <492EC84A.4070900@garlic.com>
+
+On 11/27/08 05:13, Nicholas Bohm wrote:
+> I've never been quite sure whether "Public" qualifies "Key" or
+> "Infrastructure" - this may make a difference to what you count as a PKI.
+>
+> SWIFT (interbank messaging), BOLERO (bills of lading) and CREST (dealing
+> in dematerialised stocks and shares) all use public key cryptography, I
+> believe, and have all been reasonably successful; but they are all
+> closed systems where each of the participants believes that it and the
+> others can stand the risk of contractually-imposed non-repudiation rules
+> (or they used to believe it, anyway).
+>
+> But what these examples illustrate, by the lack of "open" comparables,
+> is the very limited utility of the technology.
+
+in the past capitalization referred to CAs making the rounds of
+wallstreet with $20B/annum business case (i.e. approx. $100/annum per
+adult in the US).
+
+The lower case "public key" met that an entity could make
+their public key available ... as countermeasure to the shortcomings
+of shared-secret (password/PIN) paradigm ... where a unique shared-secret
+was required for every unique security domain (the current scenario where
+scores or hundreds of unique shared-secrets have to be managed).
+
+going from lower-case ... where an entity could share the same
+public key with large number of different entities, to upper-case,
+was the scenario justifying the $20B/annum business case.
+
+sometimes the issue isn't whether the public key is open/closed ... the
+issue is whether the business liability is between the parties
+involved ... or should random, unrelated participants also get
+involved in the business processes.
+
+there have been some attempts at obfuscation ... attempting
+to confuse the boundaries between the authentication technology
+and the parties involved in business processes liability
+
+i was at annual acm sigmod (aka database) conference in 91 (92?)
+and during one of the sessions, somebody asked a question regarding
+what was all this X.5xx stuff going on ... and the reply was that
+a bunch of networking engineers were trying to re-invent 1960s
+database technology.
+
+-- 
+40+yrs virtualization experience (since Jan68), online at home since Mar70
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From perry at piermont.com  Fri Nov 28 11:57:36 2008
+From: perry at piermont.com (Perry E. Metzger)
+Date: Fri, 28 Nov 2008 11:57:36 -0500
+Subject: old codes in life magazine archive
+Message-ID: <87iqq77pq7.fsf@snark.cb.piermont.com>
+
+
+Photos of an old paper-and-pencil espionage cipher.
+
+http://www.slugsite.com/archives/957
+
+(Hat Tip: Bruce Schneier)
+
+-- 
+Perry E. Metzger		perry at piermont.com
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From perry at piermont.com  Fri Nov 28 12:49:27 2008
+From: perry at piermont.com (Perry E. Metzger)
+Date: Fri, 28 Nov 2008 12:49:27 -0500
+Subject: CPRNGs are still an issue.
+Message-ID: <87myfjvizc.fsf@snark.cb.piermont.com>
+
+
+As it turns out, cryptographic pseudorandom number generators continue
+to be a good place to look for security vulnerabilities -- see the
+enclosed FreeBSD security advisory.
+
+The more things change, the more they stay the same...
+
+Perry
+
+Begin forwarded message:
+
+From: FreeBSD Security Advisories <security-advisories at freebsd.org>
+To: FreeBSD Security Advisories <security-advisories at freebsd.org>
+Subject: [FreeBSD-Announce] FreeBSD Security Advisory
+	FreeBSD-SA-08:11.arc4random
+
+=============================================================================
+FreeBSD-SA-08.11.arc4random                                 Security Advisory
+                                                          The FreeBSD Project
+
+Topic:          arc4random(9) predictable sequence vulnerability
+
+Category:       core
+Module:         sys
+Announced:      2008-11-24
+Credits:        Robert Woolley, Mark Murray, Maxim Dounin, Ruslan Ermilov
+Affects:        All supported versions of FreeBSD.
+Corrected:      2008-11-24 17:39:39 UTC (RELENG_7, 7.1-PRERELEASE)
+                2008-11-24 17:39:39 UTC (RELENG_7_0, 7.0-RELEASE-p6)
+                2008-11-24 17:39:39 UTC (RELENG_6, 6.4-STABLE)
+                2008-11-24 17:39:39 UTC (RELENG_6_4, 6.4-RELEASE)
+                2008-11-24 17:39:39 UTC (RELENG_6_3, 6.3-RELEASE-p6)
+CVE Name:       CVE-2008-5162
+
+For general information regarding FreeBSD Security Advisories,
+including descriptions of the fields above, security branches, and the
+following sections, please visit <URL:http://security.FreeBSD.org/>.
+
+I.   Background
+
+arc4random(9) is a generic-purpose random number generator based on the
+key stream generator of the RC4 cipher.  It is expected to be
+cryptographically strong, and used throughout the FreeBSD kernel for a
+variety of purposes, some of which rely on its cryptographic strength.
+arc4random(9) is periodically reseeded with entropy from the FreeBSD
+kernel's Yarrow random number generator, which gathers entropy from a
+variety of sources including hardware interrupts.  During the boot
+process, additional entropy is provided to the Yarrow random number
+generator from userland, helping to ensure that adequate entropy is
+present for cryptographic purposes.
+
+II.  Problem Description
+ 
+When the arc4random(9) random number generator is initialized, there may
+be inadequate entropy to meet the needs of kernel systems which rely on
+arc4random(9); and it may take up to 5 minutes before arc4random(9) is
+reseeded with secure entropy from the Yarrow random number generator.
+
+III. Impact
+
+All security-related kernel subsystems that rely on a quality random
+number generator are subject to a wide range of possible attacks for the
+300 seconds after boot or until 64k of random data is consumed.  The list
+includes:
+
+* GEOM ELI providers with onetime keys.  When a provider is configured in
+  a way so that it gets attached at the same time during boot (e.g. it
+  uses the rc subsystem to initialize) it might be possible for an
+  attacker to recover the encrypted data.
+
+* GEOM shsec providers.  The GEOM shsec subsytem is used to split a shared
+  secret between two providers so that it can be recovered when both of
+  them are present.  This is done by writing the random sequence to one
+  of providers while appending the result of the random sequence on the
+  other host to the original data.  If the provider was created within the
+  first 300 seconds after booting, it might be possible for an attacker
+  to extract the original data with access to only one of the two providers
+  between which the secret data is split.
+
+* System processes started early after boot may receive predictable IDs.
+
+* The 802.11 network stack uses arc4random(9) to generate initial vectors
+  (IV) for WEP encryption when operating in client mode and WEP
+  authentication challenges when operating in hostap mode, which may be
+  insecure.
+
+* The IPv4, IPv6 and TCP/UDP protocol implementations rely on a quality
+  random number generator to produce unpredictable IP packet identifiers,
+  initial TCP sequence numbers and outgoing port numbers.  During the
+  first 300 seconds after booting, it may be easier for an attacker to
+  execute IP session hijacking, OS fingerprinting, idle scanning, or in
+  some cases DNS cache poisoning and blind TCP data injection attacks.
+
+* The kernel RPC code uses arc4random(9) to retrieve transaction
+  identifiers, which might make RPC clients vulnerable to hijacking
+  attacks.
+
+IV.  Workaround
+
+No workaround is available for affected systems.
+
+V.   Solution
+
+NOTE WELL: Any GEOM shsec providers which were created or written to
+during the first 300 seconds after booting should be re-created after
+applying this security update.
+
+Perform one of the following:
+
+1) Upgrade your vulnerable system to 6-STABLE, or 7-STABLE, or to the
+RELENG_7_0, or RELENG_6_3 security branch dated after the correction
+date.
+
+2) To patch your present system:
+
+The following patches have been verified to apply to FreeBSD 6.3 and
+7.0 systems.
+
+a) Download the relevant patch from the location below, and verify the
+detached PGP signature using your PGP utility.
+
+[FreeBSD 7.x]
+# fetch http://security.FreeBSD.org/patches/SA-08:11/arc4random.patch
+# fetch http://security.FreeBSD.org/patches/SA-08:11/arc4random.patch.asc
+
+[FreeBSD 6.x]
+# fetch http://security.FreeBSD.org/patches/SA-08:11/arc4random6x.patch
+# fetch http://security.FreeBSD.org/patches/SA-08:11/arc4random6x.patch.asc
+
+b) Apply the patch.
+
+# cd /usr/src
+# patch < /path/to/patch
+
+c) Recompile your kernel as described in
+<URL:http://www.FreeBSD.org/handbook/kernelconfig.html> and reboot the
+system.
+
+VI.  Correction details
+
+The following list contains the revision numbers of each file that was
+corrected in FreeBSD.
+
+Branch                                                           Revision
+  Path
+-------------------------------------------------------------------------
+RELENG_6
+  src/sys/dev/random/randomdev.c                                 1.59.2.2
+  src/sys/dev/random/randomdev_soft.c                            1.11.2.3
+RELENG_6_4
+  src/UPDATING                                             1.416.2.40.2.2
+  src/sys/dev/random/randomdev.c                             1.59.2.1.8.2
+  src/sys/dev/random/randomdev_soft.c                        1.11.2.2.6.2
+RELENG_6_3
+  src/UPDATING                                            1.416.2.37.2.11
+  src/sys/conf/newvers.sh                                  1.69.2.15.2.10
+  src/sys/dev/random/randomdev.c                             1.59.2.1.6.1
+  src/sys/dev/random/randomdev_soft.c                        1.11.2.2.4.1
+RELENG_7
+  src/sys/dev/random/randomdev.c                                 1.61.2.1
+  src/sys/dev/random/randomdev_soft.c                            1.15.2.1
+RELENG_7_0
+  src/UPDATING                                             1.507.2.3.2.10
+  src/sys/conf/newvers.sh                                   1.72.2.5.2.10
+  src/sys/dev/random/randomdev.c                                 1.61.4.1
+  src/sys/dev/random/randomdev_soft.c                            1.15.4.1
+-------------------------------------------------------------------------
+
+VII. References
+
+http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-5162
+
+The latest revision of this advisory is available at
+http://security.FreeBSD.org/advisories/FreeBSD-SA-08:11.arc4random.asc
+_______________________________________________
+freebsd-announce at freebsd.org mailing list
+http://lists.freebsd.org/mailman/listinfo/freebsd-announce
+To unsubscribe, send any mail to "freebsd-announce-unsubscribe at freebsd.org"
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From jamesd at echeque.com  Sat Nov 29 03:18:36 2008
+From: jamesd at echeque.com (James A. Donald)
+Date: Sat, 29 Nov 2008 18:18:36 +1000
+Subject: e-gold and e-go1d
+In-Reply-To: <20081126133437.0b7e086e@cs.columbia.edu>
+References: <20081126133437.0b7e086e@cs.columbia.edu>
+Message-ID: <4930FADC.3060403@echeque.com>
+
+To implement Zooko's triangle, one has to detect names
+that may look alike, for example e-gold and e-go1d
+
+This is a lot of code.  Has someone already written such
+a collision detector that I could swipe?
+
+The algorithm is to map all lookalike glyphs to
+canonical glyphs - thus l and 1 are mapped to l, O and 0
+are mapped to O, lower case o and the Greek omicron are
+mapped to lower case o, and so on and so forth.  For
+each pair of strings, one then does a character by
+character diff, and pairs with suspiciously short diffs
+might be confused by end users.
+
+The program then asks the user for a qualification to
+distinguish one or both of the names, default being as
+first and second, or for the user to deprecate one of
+the entities as scam or spam, or for the user to say he
+does not care if new entries have the same or similar
+name as this particular existing entry.
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
+From krstic at solarsail.hcs.harvard.edu  Sat Nov 29 15:51:18 2008
+From: krstic at solarsail.hcs.harvard.edu (=?UTF-8?Q?Ivan_Krsti=C4=87?=)
+Date: Sat, 29 Nov 2008 21:51:18 +0100
+Subject: e-gold and e-go1d
+In-Reply-To: <4930FADC.3060403@echeque.com>
+References: <20081126133437.0b7e086e@cs.columbia.edu> <4930FADC.3060403@echeque.com>
+Message-ID: <E4336892-3F2D-4DE3-AFDD-5E583B048A44@solarsail.hcs.harvard.edu>
+
+On Nov 29, 2008, at 9:18 AM, James A. Donald wrote:
+> The algorithm is to map all lookalike glyphs to
+> canonical glyphs
+
+The definition of lookalike glyphs depends on the choice of font and  
+variant, and Unicode wraps the whole problem in a lovely layer of  
+hell. If I had to do this, I'd investigate rendering both strings in  
+the (same) target font and then quantifying the amount of overlap in  
+the bitmaps, as e.g. SWORD does for TLDs:
+
+     <http://icann.sword-group.com/icann-algorithm/Default.aspx>
+
+The above is proprietary; NIST's Paul Black has Python code available  
+for a slightly enhanced Levenshtein distance:
+
+     <http://hissa.nist.gov/~black/GTLD/>
+
+--
+Ivan Krsti? <krstic at solarsail.hcs.harvard.edu> | http://radian.org
+
+---------------------------------------------------------------------
+The Cryptography Mailing List
+Unsubscribe by sending "unsubscribe cryptography" to majordomo at metzdowd.com
+
+
