@@ -1,0 +1,256 @@
+[this version is not yet corrected to match what I actually said -- gnu]
+
+Subject: Freedom of Speech in Software (ApacheCon speech notes)
+Date: Wed, 14 Oct 1998 02:36:49 -0700
+From: John Gilmore <gnu@toad.com>
+
+Most people at this conference have spent some time looking
+at the concept of free software.  But closely allied to that
+concept is the concept of freedom of speech in software.   Free
+software (or open source software) cannot exist without freedom
+of speech in software.
+
+Freedom of speech means the absence of censorship.  Each speaker or
+author is free to speak or write on topics of their own choosing, to
+audiences of their own choosing, in their own choice of language and
+their own choice of words, without hindrance from the government.
+
+Software has been written for years without general examination of its
+free speech aspects.  So far, attempts to censor software have
+carefully been couched in other terms, such as "creation of patent
+rights", "restrictions on export of defense trade goods", or
+"outlawing circumvention of intellectual property protection
+technologies".  However, the constitutional theories about software
+that these special cases are creating will come to control
+whether the government can censor *all* kinds of software.
+
+Movies started off being treated by the courts as mere flickering
+light-machines run by businesses, that they were free to regulate.
+(Mutual Film in 1915).  It took almost 35 years to overturn that
+model, seeing them as a medium of expression for which regulation was
+forbidden.
+
+A straightforward look at software will show clearly how it deserves
+First Amendment protection.  Software is written by humans, like fully
+protected books or magazine articles.  It is designed to be read by
+humans -- any program which is NOT readable by humans quickly falls
+into disuse, since it can't be maintained.  Programs are filled with
+ordinary human language, in the form of comments and names.  Programs
+are copied and sold by "software publishers", just as books are copied
+and sold by ordinary publishers.
+
+
+Why haven't we noticed freedom of speech in software until now?
+
+The essence of free speech is the publication of communicative words.
+Software was originally published in such forms only in tiny
+quantities, such as in the Algorithms section of the Communications of
+the ACM magazine, since it was painful to manually punch these
+programs into cards for use with a computer.  Still, they were
+published for readers to examine and understand.
+
+The next major stage was publication on computer-readable media, such
+as floppy disks or tapes.  Such publication was expensive, and was
+frequently done by proprietary companies who only published binaries,
+not human-readable sources, though IBM's mainframe software was
+readily available in source code (in the days when IBM hardware was
+required to run it).  A few user's groups published freely available
+source code, such as SHARE, DECUS, and the Sun User Group.  The free
+speech issue did not tend to arise; like moving pictures, people
+thought of these tapes as "business machinery" rather than "creative
+works of authorship".
+
+With the spread of the Arpanet, Usenet, and eventual Internet and Web,
+there arose a natural publishing medium for programs.  FTP sites,
+newsgroups such as net.sources, and mailing lists allowed the
+creation, distribution, and widespread public collaboration in
+software source code.  The Unix system was a major piece of software
+that evolved this way, but its proprietary licensing limited authors'
+freedom to publish both the original Unix code and their modifications
+to it.
+
+In 1984, the GNU Project started building a large body of freely
+publishable code, and a large set of worldwide collaborators, using
+the Internet publishing and collaboration medium.  This set of people
+discovered some of the value of having freedom of speech in software.
+The quality, broad usability, and evolutionary speed of their "open
+source" software were much easier to create than in un-publishable
+proprietary software.
+
+
+Challenges to freedom of speech in software
+
+Joni Mitchell said "You don't know what you've got til it's gone".
+We noticed the topic of freedom of speech in software when the government
+started trying to remove our freedom.
+
+Software patents were the first attempt we noticed.  Open source
+advocates such as Richard Stallman founded the League for Programming
+Freedom to fight for their right to write and publish any program they
+wish to write.
+
+Phil Salin opposed software patents on free speech grounds, claiming a
+government monopoly over the use of certain ideas in software was
+exactly equivalent to censorship of literary ideas.  This was the
+first application of the concept of freedom of speech to software.
+
+    As writings, programs should be protected against any attempt by
+    government to license what can be written.  . . .  Such censorship and
+    restraint on freedom of expression of software writers is anathema in
+    a free society, and a violation of the First Amendment.
+
+    Phil Salin, Freedom of Speech in Software, July 1991
+
+The whole creation of "software patents" as a class of patentable
+items is an administrative fiction created by creative misreading of a
+1981 Supreme Court decision (Diamond v. Deihr), which actually only
+held that the use of software in a hardware invention did not render
+the whole thing unpatentable.
+
+These issues still haven't been examined by the courts.  As far as I
+know, no patent case that relies on First Amendment protection of
+software is in the pipeline.  There may be cases that rest on
+fixing the overbroad interpretation of Diamond v. Deihr.
+
+
+Export controls on cryptographic software are the second case where
+the government has tried to control the publication of software.
+
+The government regulates the publication of encryption software in
+machine-readable form, or communicating it privately to someone
+overseas, as a tool of war.  It is also trying hard to regulate the
+domestic use of encryption.
+
+The authors and users of Apache were touched by the censorship of
+software.  Apache used to contain "hooks" for inserting encryption
+libraries, though it did not contain any encryption software itself.
+The National Center for Supercomputing Applications (NCSA) wrote the
+"httpd" code that Apache was originally based on.  The National
+Security Agency informed NCSA in 1995 that it was illegal to publish
+httpd on the Web because it contained hooks for adding encryption.
+NCSA and the Apache developers removed these hooks under the threat of
+felony prosecutions.  (The illegality of these "hooks" is never
+mentioned anywhere in the regulations -- it's a fictional creation
+of the department that enforces them -- but since there is no
+viable method of appealing their decisions, it doesn't matter what
+the regulations say.)
+
+Gov't regulated publication of cryptographic software for many years.
+Eventually researcher Bernstein took a well documented claim to court
+in 1995.  Bernstein federal court decided in favor of free speech
+protection in 1996 and 1997. Government appealed; in 1998, being
+re-examined by 9th Circuit Court of Appeals.
+
+PGP was published on paper to avoid these regulations, is now legally
+sold overseas after scanning it in.
+
+EFF published its Cracking DES book on paper in order to get the
+software published legally.  Web publication in the United States is
+illegal.  We could have copyrighted the software, but that would not
+have permitted it to be published.  Instead we put it into the public
+domain, so that foreigners could freely scan it in and publish it on
+the Web.  Several of them have done so, which means the online text of
+the book is available to everyone.  Free software (not controlled by
+copyright) made it possible to have free speech (not controlled by
+governments).
+
+
+Should software be able to be freely published without restraint?
+
+The government claims that the answer is no.  They are arguing in
+several current cryptography court cases that since software is
+"functional", it can be regulated, despite also being a form of
+human-to-human communication.  Their essential argument is that if a
+machine can read and act on the information in a program, the program
+can be regulated by the government; it doesn't matter how many humans
+can also read it.  Reduced to the absurd, it means that as soon as a
+machine can read the New York Times, the Times will lose its First
+Amendment protection.
+
+If the government's opinion prevails in court, this means that
+Congress could decide what kinds of programs can or can't be written,
+sold, or published.  Governments could make the use of a particular
+operating system mandatory, or forbidden, at their whim.  Software
+which threatens sacred cows can be censored, and the authors and
+distributors of such softwre thrown in jail.  (Cryptography software
+is exactly one such threat to a sacred cow, the spy and wiretap
+bureacracy.)  The creation, possession, use, or distribution of
+encryption software could be outlawed.  The government could even
+prohibit software such as Apache or Mozilla, which permits minors to
+view indecent materials -- whether or not a prohibition against
+*publishing* those indecent materials would ever hold up in court.
+
+The example of cryptographic software shows the dangers of allowing
+arbitrary government control of software.  Today's crypto regulatory
+scheme requires that individuals or companies seek government
+permission BEFORE publishing certain kinds of software; gives them
+endless time to decide, keeping your software unpublished while they
+do; each requester gets a private decision on a case-by-case basis, so
+you may get a better or worse deal than your competitor; the agency
+makes decisions that are flatly contrary to the regulations; yet
+there is no way to challenge their decisions because the law and
+regulations attempt to forbid courts from examining or overturning
+them.  Oh, and the government can change its mind at any time, even
+after permitting publication -- shutting down your business by merely
+writing you a letter.
+
+If the courts uphold this scheme, Congress and the Executive Branch
+will be free to extend similar standardless and discretionary
+regulations to all kinds of software.  Today's export controls already
+claim to regulate software that does packet-switching (most or all
+IP implementations), disassembly from object to source code, and
+other readily available functions.  We haven't noticed because
+they have not applied these obscure regulations with the fervor that
+they show for regulating cryptography.
+
+
+What's the practical difference?
+
+If software really is protected by the free speech guarantees of the
+First Amendment, then there are many procedural protections.  Congress
+cannot delegate the power to censor protected expression to the
+Executive Branch; any decision to suppress publication must be made by
+a court, where there's an impartial opportunity for both sides.
+
+In any a constitutional scheme to regulate protected speech, there
+are many hurdles that the government must pass:
+
+	*  The government must clearly define what is legal and what
+	   is illegal, in a law that speakers can read, the
+	   government can use to decide particular cases, and judges
+	   can check.  There must be no room for administrative discretion.
+
+	*  The government must make a very quick decision on whether
+	   each bit of speech is forbidden or not.
+
+	*  To be effective for more than a few days, the decision must
+	   be backed up by a court, where the speaker can usefully
+	   challenge it.
+
+	*  The government must file the court case and bear the burden of
+	   proving that the speech is illegal.  The speaker need not
+	   file a lawsuit to be permitted to speak, nor be forced to
+	   prove that their speech is protected.
+
+	*  The government must prove to the court that the speech would
+	   "surely result in direct, immediate and irreparable damage
+	   to our Nation and its people."  (Pentagon Papers, 1971)
+
+
+Call to action
+
+It's easiest to forget about rights when we think we have them.
+Mostly, those who lack fundamental rights are the ones who notice
+their absence.
+
+As a cryptographer, I have personally noticed the lack of fundamental
+rights in software.  I've been doing something about it.  So far
+the Executive and Legislative branches have been unresponsive, and
+only the courts have taken my message to heart.
+
+Before you too lose your fundamental right to write and publish
+software, I encourage you to do something about it.  Think about how
+the First Amendment applies to the software that you or your company
+writes.  Push the Administration and the Congress to not only
+protect *commerce* in encryption software, but to protect *free
+expression* and *scientific inquiry* in encryption software.
