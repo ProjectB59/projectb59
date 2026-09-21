@@ -17,7 +17,7 @@ This archive ensures those conversations survive even if `lists.extropy.org` goe
 # Project B59 Research Archive
 
 Research, documentation, preservation work, website content, and original
-project development by Katja Korhonen.
+project development by Kat Norton.
 
 This repository is maintained as part of the Modulo 59 ecosystem.
 ---
