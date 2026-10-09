@@ -32,6 +32,9 @@ function byId(id){ return THREADS.filter(function(t){ return t.id===id; })[0]; }
 
 function pillsHtml(activeId){
   return THREADS.map(function(t){
+    if(t.id==='arcade'){
+      return '<a class="thread-pill" href="gaming/">Gaming History</a>';
+    }
     var cls = 'thread-pill'+(t.id===activeId?' on':'')+(t.terminus?' terminus':'');
     return '<a class="'+cls+'" href="#/thread/'+t.id+'">'+esc(t.name)+'</a>';
   }).join('');
