@@ -1,103 +1,33 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sierra On-Line · Project B59 Gaming Research</title>
-<meta name="description" content="Project B59's Sierra On-Line research collection: Mystery House, Space Quest, Buckazoids, Sierra News, Scott Murphy interviews, SierraWeb and Cypherpunks records, and open research leads.">
-<link rel="canonical" href="https://projectb59.com/sierra/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Project B59: The Vault">
-<meta property="og:title" content="Sierra On-Line · Project B59 Gaming Research">
-<meta property="og:description" content="A growing archive of Sierra On-Line history, from Mystery House and Space Quest to Buckazoids, SierraWeb, developer interviews, and surviving research trails.">
-<meta property="og:url" content="https://projectb59.com/sierra/">
-<meta property="og:image" content="https://projectb59.com/assets/vault/sierra-online-banner.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sierra On-Line · Project B59 Gaming Research">
-<meta name="twitter:description" content="Mystery House, Space Quest, Buckazoids, Sierra News, SierraWeb, interviews, and open research trails in one Sierra collection.">
-<meta name="twitter:image" content="https://projectb59.com/assets/vault/sierra-online-banner.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sierra On-Line · Project B59 Gaming History</title><meta name="description" content="Project B59's Sierra On-Line collection: company history, Space Quest, Buckazoids, Sierra publications, developer interviews, SierraWeb records, and active research leads.">
+<link rel="canonical" href="https://projectb59.com/sierra/"><meta property="og:type" content="website"><meta property="og:site_name" content="Project B59: The Vault"><meta property="og:title" content="Sierra On-Line · Project B59 Gaming History"><meta property="og:description" content="A Project B59 collection covering Sierra history, Space Quest, Buckazoids, publications, interviews, and SierraWeb records."><meta property="og:url" content="https://projectb59.com/sierra/"><meta property="og:image" content="https://projectb59.com/assets/vault/sierra-online-banner.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projectb59.com/assets/vault/sierra-online-banner.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"><style>
 :root{--bg:#08090b;--panel:#12141a;--paper:#e8e4d8;--dim:#a9a494;--mute:#6f6c62;--hair:rgba(232,228,216,.13);--amber:#e0b14a;--lime:#c6e06a;--cyan:#2CD4F2;--serif:"Newsreader",Georgia,serif;--mono:"IBM Plex Mono",monospace}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--paper);font-family:var(--serif);line-height:1.6}.scan{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.035;background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,#000 4px)}a{color:inherit}.wrap{max-width:1180px;margin:auto;padding:0 34px}
-.top{height:58px;border-bottom:1px solid var(--hair);display:flex;align-items:center}.top .wrap{width:100%;display:flex;justify-content:space-between;align-items:center}.brand,.back{font:500 11px var(--mono);letter-spacing:.11em;text-transform:uppercase}.brand{color:var(--amber)}.back{color:var(--dim);text-decoration:none}.back:hover{color:var(--lime)}
-.hero{min-height:620px;display:grid;align-items:end;background:linear-gradient(90deg,rgba(8,9,11,.96) 0%,rgba(8,9,11,.74) 38%,rgba(8,9,11,.15) 68%,rgba(8,9,11,.12) 100%),url("../assets/vault/sierra-online-banner.jpg") center/cover no-repeat;border-bottom:1px solid var(--hair)}
-.hero .wrap{width:100%;padding-bottom:70px}.kicker{font:500 12px var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--amber)}h1{font-size:clamp(48px,8vw,92px);line-height:.96;font-weight:500;margin:22px 0 12px;max-width:760px}.years{font:400 14px var(--mono);letter-spacing:.12em;color:var(--dim)}.lead{font-size:21px;max-width:720px;color:#d4d0c5;margin-top:26px}
-.note{border-left:2px solid var(--amber);padding:2px 0 2px 18px;margin:36px 0 0;max-width:760px;color:var(--dim);font-size:15px}.note strong{color:var(--paper);font-weight:500}
-.section{padding:72px 0;border-bottom:1px solid var(--hair)}.section h2{font-size:36px;font-weight:500;margin:4px 0 8px}.section-intro{color:var(--dim);max-width:760px;margin-bottom:30px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair)}.card{background:var(--bg);padding:27px 28px;min-height:190px;text-decoration:none;display:block;transition:.15s}.card:hover{background:var(--panel)}.date{font:500 11px var(--mono);letter-spacing:.13em;color:var(--amber);text-transform:uppercase}.card h3{font-size:24px;font-weight:500;margin:10px 0 8px}.card p{margin:0;color:var(--dim);font-size:15px}.type{display:inline-block;margin-top:17px;font:500 10px var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--cyan)}
-.evidence{display:grid;grid-template-columns:170px 1fr;gap:22px;padding:22px 0;border-top:1px solid var(--hair)}.evidence:first-of-type{margin-top:26px}.badge{font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lime)}.badge.open{color:var(--amber)}.evidence h3{font-size:21px;margin:0 0 5px;font-weight:500}.evidence p{margin:0;color:var(--dim);font-size:15px}
-footer{padding:38px 0 48px;font:400 11px var(--mono);letter-spacing:.04em;color:var(--mute)}footer a{color:var(--dim)}
-@media(max-width:720px){.wrap{padding:0 20px}.hero{min-height:560px;background-position:62% center}.hero .wrap{padding-bottom:46px}.lead{font-size:18px}.grid{grid-template-columns:1fr}.evidence{grid-template-columns:1fr;gap:7px}}
-</style>
-</head>
-<body>
-<div class="scan"></div>
-<header class="top"><div class="wrap"><div class="brand">Project B59 · Gaming Research</div><a class="back" href="../#/thread/arcade">← Arcade Years</a></div></header>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--paper);font-family:var(--serif);line-height:1.6}.wrap{max-width:1180px;margin:auto;padding:0 34px}a{color:inherit}.top{height:58px;border-bottom:1px solid var(--hair);display:flex;align-items:center}.top .wrap{width:100%;display:flex;justify-content:space-between;align-items:center}.brand,.nav{font:500 11px var(--mono);letter-spacing:.11em;text-transform:uppercase}.brand{color:var(--amber)}.nav{color:var(--dim);text-decoration:none}.nav:hover{color:var(--lime)}.kicker{font:500 12px var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--amber)}h1{font-size:clamp(48px,8vw,92px);line-height:.96;font-weight:500;margin:22px 0 12px}.years{font:400 14px var(--mono);letter-spacing:.12em;color:var(--dim)}.lead{font-size:21px;max-width:760px;color:#d4d0c5;margin-top:26px}.section{padding:68px 0;border-bottom:1px solid var(--hair)}.section h2{font-size:36px;font-weight:500;margin:4px 0 8px}.section-intro{color:var(--dim);max-width:780px;margin-bottom:28px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair)}.card{background:var(--bg);padding:26px 28px;min-height:175px;text-decoration:none;display:block}.card[href]:hover{background:var(--panel)}.date{font:500 11px var(--mono);letter-spacing:.13em;color:var(--amber);text-transform:uppercase}.card h3{font-size:24px;font-weight:500;margin:10px 0 8px}.card p{margin:0;color:var(--dim);font-size:15px}.type{display:inline-block;margin-top:16px;font:500 10px var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--cyan)}.evidence{display:grid;grid-template-columns:170px 1fr;gap:22px;padding:22px 0;border-top:1px solid var(--hair)}.badge{font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lime)}.badge.open{color:var(--amber)}.evidence h3{font-size:21px;margin:0 0 5px;font-weight:500}.evidence p{margin:0;color:var(--dim);font-size:15px}.note{border-left:2px solid var(--amber);padding:2px 0 2px 18px;margin-top:28px;max-width:780px;color:var(--dim);font-size:15px}.source-list{font:400 12px var(--mono);color:var(--dim);line-height:1.8;border-top:1px solid var(--hair);padding-top:18px}.action{display:inline-block;margin-top:18px;border:1px solid var(--hair);padding:10px 14px;font:500 11px var(--mono);text-decoration:none;color:var(--lime)}footer{padding:38px 0 48px;font:400 11px var(--mono);letter-spacing:.04em;color:var(--mute)}footer a{color:var(--dim)}@media(max-width:720px){.wrap{padding:0 20px}.grid{grid-template-columns:1fr}.evidence{grid-template-columns:1fr;gap:7px}.lead{font-size:18px}}
 
-<section class="hero">
-  <div class="wrap">
-    <div class="kicker">Featured collection</div>
-    <h1>Sierra On-Line</h1>
-    <div class="years">1980 — 1997 · FOUNDING ERA</div>
-    <p class="lead">A growing research collection covering Sierra's early history, Space Quest, Buckazoids, company publications, developer interviews, SierraWeb records, and the source trails that connect them.</p>
-    <div class="note"><strong>Why 1980–1997?</strong> The collection is centered on the company built by Ken and Roberta Williams. Sierra was acquired by CUC International in 1996, ending its independence; the transition continued through the following year as the Williams era closed.</div>
-  </div>
-</section>
-
-<section class="section"><div class="wrap">
-  <div class="kicker">Origins</div>
-  <h2>From a kitchen table to Sierra On-Line</h2>
-  <p class="section-intro">The Sierra branch begins with On-Line Systems and the games, people, publications, and company records that shaped the personal-computer adventure era.</p>
-  <div class="grid">
-    <a class="card" href="https://archive.org/details/Hi-Res_Adventure_1_Mystery_House_1980_On-Line_Systems" target="_blank" rel="noopener"><div class="date">1980</div><h3>Mystery House</h3><p>Roberta Williams' first graphical adventure, released by On-Line Systems. A starting point for the company that became Sierra On-Line.</p><span class="type">Game · source trail ↗</span></a>
-    <a class="card" href="https://www.historylink.org/File/20912" target="_blank" rel="noopener"><div class="date">1980s–1990s</div><h3>Roberta Williams</h3><p>HistoryLink's biographical account of Williams, Sierra's growth, the 1996 acquisition, and the end of the independent company.</p><span class="type">Biography · research source ↗</span></a>
-    <a class="card" href="https://www.mocagh.org/sierra/sierranews-spring90.pdf" target="_blank" rel="noopener"><div class="date">Spring 1990</div><h3>Sierra News</h3><p>A company publication from Sierra's own archive trail, useful for seeing the company through its contemporary material rather than later retellings.</p><span class="type">Primary publication · PDF ↗</span></a>
-    <a class="card" href="../#/record/B59-904.007"><div class="date">1976–1977 / archived study</div><h3>Colossal Cave</h3><p>Project B59's existing game-history record on Colossal Cave and the adventure-game lineage that Sierra later helped popularize.</p><span class="type">Vault record</span></a>
-  </div>
+.hero{min-height:620px;display:grid;align-items:end;background:linear-gradient(90deg,rgba(8,9,11,.96) 0%,rgba(8,9,11,.72) 39%,rgba(8,9,11,.14) 70%),url("../assets/vault/sierra-online-banner.jpg") center/cover no-repeat;border-bottom:1px solid var(--hair)}.hero .wrap{width:100%;padding-bottom:68px}</style></head><body>
+<header class="top"><div class="wrap"><div class="brand">Project B59 · Gaming History</div><div><a class="nav" href="../gaming/">Gaming History</a> · <a class="nav" href="../#/thread/arcade">Arcade Years</a></div></header>
+<section class="hero"><div class="wrap"><div class="kicker">Featured collection</div><h1>Sierra On-Line</h1><div class="years">1980 — 1997 · KEN & ROBERTA WILLIAMS ERA</div><p class="lead">Sierra On-Line helped define the personal-computer adventure era. This collection gathers Project B59’s Sierra research, including company history, Space Quest, Buckazoids, Sierra publications, developer interviews, SierraWeb records, and active research leads.</p></div></section>
+<section class="section" id="origins"><div class="wrap"><div class="kicker">Origins</div><h2>On-Line Systems to Sierra On-Line</h2><p class="section-intro">The collection begins with Mystery House in 1980 and follows the company through the independent Sierra years under Ken and Roberta Williams. The 1996 CUC acquisition and the transition that followed mark the closing boundary used for this collection.</p><div class="grid">
+<div class="card"><div class="date">1980</div><h3>Mystery House</h3><p>Roberta Williams' graphical adventure, released through On-Line Systems, is one of the starting points for the company that became Sierra On-Line.</p><span class="type">Project B59 research note</span></div>
+<div class="card"><div class="date">Spring 1990</div><h3>Sierra News</h3><p>A surviving company publication gives a contemporary view of Sierra's games, staff, products, and growth from inside the company itself.</p><span class="type">Primary publication in research set</span></div>
+<div class="card"><div class="date">Company history</div><h3>Roberta Williams</h3><p>Project B59 tracks biographical and company-history material separately from the game records so later summaries can distinguish recollection, reporting, and primary documentation.</p><span class="type">Research set</span></div>
+<a class="card" href="../#/record/B59-904.007"><div class="date">Adventure-game lineage</div><h3>Colossal Cave</h3><p>The Vault already contains a Project B59 record on Colossal Cave and the adventure-game history that predates Sierra.</p><span class="type">Open internal vault record →</span></a>
+</div></div></section>
+<section class="section" id="space-quest"><div class="wrap"><div class="kicker">Space Quest</div><h2>Developers, references, and Buckazoids</h2><p class="section-intro">Space Quest has its own research branch inside the Sierra collection. Interviews, reference material, gameplay evidence, and contemporary coverage are kept as separate sources rather than flattened into one retelling.</p><div class="grid">
+<div class="card"><div class="date">Developer interviews</div><h3>Scott Murphy</h3><p>Project B59 is preserving two surviving Scott Murphy interview sources from the older Space Quest web archive trail.</p><span class="type">Project B59 research notes</span></div>
+<div class="card"><div class="date">Series reference</div><h3>Space Quest FAQ 2.0</h3><p>An older fan-maintained reference preserves period terminology and series information useful for checking later claims.</p><span class="type">Project B59 research note</span></div>
+<a class="card" href="buckazoids/"><div class="date">1986 → 1991 → 2025</div><h3>Buckazoids</h3><p>The dedicated internal research page separates the original fictional currency, the Space Quest IV coin display, the 59 / 2,009 balance evidence, and the modern rediscovery trail.</p><span class="type">Open Project B59 research page →</span></a>
+<div class="card"><div class="date">Evidence rule</div><h3>Original game history first</h3><p>The fictional Sierra currency and the later community token are documented separately so the archive does not collapse two different histories into one claim.</p><span class="type">Project B59 methodology</span></div>
+</div></div></section>
+<section class="section" id="sierraweb"><div class="wrap"><div class="kicker">SierraWeb / Cypherpunks</div><h2>Surviving records from 1995 and 1997</h2><p class="section-intro">Project B59 has identified three surviving mailing-list records documenting a SierraWeb account associated with the Cypherpunks mailing-list address. The evidence is strong enough to preserve the records, but not to infer an institutional Sierra–Cypherpunks relationship.</p>
+<div class="evidence"><div class="badge">27 Aug 1995</div><div><h3>Sierra On-Line FAQ</h3><p>Automated SierraWeb account material was sent to <span style="font-family:var(--mono)">cypherpunks@toad.com</span>.</p></div></div>
+<div class="evidence"><div class="badge">27 Aug 1995</div><div><h3>Sierra On-Line Authentication Key</h3><p>A matching automated message begins “Welcome cypherpunks to SierraWeb” and supplies an authentication / verification key.</p></div></div>
+<div class="evidence"><div class="badge">13 Apr 1997</div><div><h3>SierraWeb account message</h3><p>A later Sierra On-Line message records a SierraWeb account using “cypherpunks” as both username and password.</p></div></div>
+<div class="note"><strong>Evidence boundary:</strong> these records establish that the account and automated messages existed. They do not identify who registered or used the account, and they do not establish a formal relationship between Sierra On-Line and the Cypherpunks.</div>
 </div></section>
-
-<section class="section"><div class="wrap">
-  <div class="kicker">Space Quest</div>
-  <h2>Buckazoids, developers, and the series archive</h2>
-  <p class="section-intro">Space Quest is a major branch of this collection. The research keeps the 1986 introduction of Buckazoids separate from the familiar 1991 Space Quest IV coin artwork and from the modern 2025 rediscovery.</p>
-  <div class="grid">
-    <a class="card" href="https://wiw.org/~jess/domainscott.html" target="_blank" rel="noopener"><div class="date">Interview archive</div><h3>Scott Murphy at The Broomcloset</h3><p>A surviving interview with one of the Two Guys from Andromeda and a direct source for Space Quest development history.</p><span class="type">Interview ↗</span></a>
-    <a class="card" href="https://www.wiw.org/~jess/scott.html" target="_blank" rel="noopener"><div class="date">Interview archive</div><h3>Scott Murphy interview</h3><p>A second period interview preserved in the old Wilco's Domain research trail.</p><span class="type">Interview ↗</span></a>
-    <a class="card" href="https://wiw.org/~jess/SQFAQ20.txt" target="_blank" rel="noopener"><div class="date">Space Quest FAQ 2.0</div><h3>Series FAQ</h3><p>An older fan-maintained reference that preserves details, terminology, and contemporary Space Quest knowledge.</p><span class="type">Reference source ↗</span></a>
-    <div class="card"><div class="date">1986 → 1991 → 2025</div><h3>Buckazoids research</h3><p>Currency introduced in the original Space Quest; the familiar gold coin image appears in Space Quest IV; the artwork returns to public attention through a 2025 r/Bitcoin post. Full Project B59 record in preparation.</p><span class="type">Research collection</span></div>
-  </div>
+<section class="section" id="open-research"><div class="wrap"><div class="kicker">Open research</div><h2>Leads kept separate from established history</h2><p class="section-intro">Project B59 preserves unresolved leads so they can be investigated without being promoted into facts.</p>
+<div class="evidence"><div class="badge open">Attributed / unresolved</div><div><h3>Deleted Colossal Cave Facebook reply</h3><p>A screenshot preserves a reply from the official Colossal Cave account claiming Hal Finney was a “secret third Guy from Andromeda.” The original comment was deleted and its direct permalink has not been recovered. The statement is preserved as an attributed lead, not as established history.</p></div></div>
+<div class="evidence"><div class="badge open">Open question</div><div><h3>Final Buckazoid artist</h3><p>Community research and comments from Mark Crowe narrow the question but do not yet establish a final attribution for the coin artwork.</p></div></div>
 </div></section>
-
-<section class="section"><div class="wrap">
-  <div class="kicker">Space Quest IV · 1991</div>
-  <h2>The number on the Buckazoid display changes</h2>
-  <p class="section-intro">Gameplay evidence resolves one recurring question about the Space Quest IV image.</p>
-  <div class="evidence"><div class="badge">Documented</div><div><h3>59 is the starting balance</h3><p>The familiar inventory display begins at 59 Buckazoids.</p></div></div>
-  <div class="evidence"><div class="badge">Documented</div><div><h3>Later gameplay shows 2,009</h3><p>The same coin graphic appears with a balance of <strong>2,009</strong>. The changing value shows that the number is an inventory balance, not a fixed denomination engraved into the coin artwork.</p></div></div>
-  <div class="evidence"><div class="badge">Documented</div><div><h3>The ATM pays 2,001</h3><p>Walkthrough material documents a 2,001-Buckazoid ATM payout. Because a later balance reaches 2,009, 2,001 should not be described as the maximum possible balance.</p></div></div>
-</div></section>
-
-<section class="section"><div class="wrap">
-  <div class="kicker">SierraWeb / Cypherpunks</div>
-  <h2>Surviving records from 1995 and 1997</h2>
-  <p class="section-intro">These records are preserved because they document an unusual early-web contact point. They show that the Cypherpunks mailing-list address was used for a SierraWeb account. They do not identify who registered or used the account.</p>
-  <div class="grid">
-    <a class="card" href="https://mailing-list-archive.cryptoanarchy.wiki/archive/1995/08/72bb0e7d29ca0b38975b4aeb85b78be12c7af58d479a5921e7e68d821f2f11dd/" target="_blank" rel="noopener"><div class="date">27 Aug 1995</div><h3>Sierra On-Line FAQ</h3><p>Automated SierraWeb material sent to cypherpunks@toad.com.</p><span class="type">Primary mailing-list record ↗</span></a>
-    <a class="card" href="https://mailing-list-archive.cryptoanarchy.wiki/archive/1995/08/bb634e155265e35c7cdddffcdac598fdab4063b0bdff5f884de2948be58a6b05/" target="_blank" rel="noopener"><div class="date">27 Aug 1995</div><h3>Sierra On-Line Authentication Key</h3><p>The surviving message begins “Welcome cypherpunks to SierraWeb” and supplies the account verification/authentication key.</p><span class="type">Primary mailing-list record ↗</span></a>
-    <a class="card" href="https://mailing-list-archive.cryptoanarchy.wiki/archive/1997/04/2c7ddfc96d99a1c9eab5321ce7d1c1679b886eb89f98ac2b4ab07f4a67935ee2/" target="_blank" rel="noopener"><div class="date">13 Apr 1997</div><h3>SierraWeb account record</h3><p>A Sierra On-Line message to the list records a SierraWeb account using “cypherpunks” as both username and password.</p><span class="type">Primary mailing-list record ↗</span></a>
-    <div class="card"><div class="date">Evidence boundary</div><h3>What the records establish</h3><p>The account and messages existed. The surviving records do not establish an institutional Sierra–Cypherpunks relationship or identify the person behind the registration.</p><span class="type">Project B59 research note</span></div>
-  </div>
-</div></section>
-
-<section class="section"><div class="wrap">
-  <div class="kicker">Modern rediscovery</div>
-  <h2>The old game returns to public view</h2>
-  <div class="evidence"><div class="badge">Documented</div><div><h3>27 March 2025 · r/Bitcoin</h3><p>A post titled “BTC in a game from 1991?” circulated the Space Quest IV Buckazoid graphic to a new audience and became a major starting point for the modern research trail.</p></div></div>
-  <div class="evidence"><div class="badge open">Attributed / open question</div><div><h3>Deleted Colossal Cave Facebook reply</h3><p>A screenshot preserves a reply from the official Colossal Cave account claiming Hal Finney was a “secret third Guy from Andromeda.” The original Facebook comment was deleted and its direct permalink has not been recovered. Project B59 treats the statement as an attributable lead, not an established historical fact.</p></div></div>
-</div></section>
-
-<footer><div class="wrap">Project B59 · historical research and preservation archive · <a href="../">The Vault</a> · <a href="https://modulo59.com" target="_blank" rel="noopener">Part of the Modulo 59 network</a> · <a href="../rights.html">Rights / takedown</a></div></footer>
-</body>
-</html>
+<footer><div class="wrap">Project B59 · Sierra On-Line collection · <a href="../gaming/">Gaming History</a> · <a href="../">The Vault</a> · Part of the Modulo 59 network</div></footer></body></html>
