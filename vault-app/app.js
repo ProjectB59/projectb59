@@ -263,7 +263,7 @@ function renderResults(){
       '<div class="meta">'+
         '<span><b>'+esc(r.author||'Unknown')+'</b></span>'+
         (r.hash?'<span>hash <b>'+esc(r.hash.slice(0,4))+'…'+esc(r.hash.slice(-4))+'</b></span>':'')+
-        (r.local?'<span class="off-badge">● hosted copy</span>':(r.external_url?'<span class="pend-badge">↗ linked, copyrighted</span>':'<span class="pend-badge">○ source pending</span>'))+
+        (r.local?'<span class="off-badge">● hosted copy</span>':(r.external_url?'<span class="pend-badge">↗ external source</span>':'<span class="pend-badge">○ source pending</span>'))+
       '</div></div></article>';
   }).join('') || '<div class="empty">Nothing matches. Clear a filter or try the Archivist.</div>';
   el.querySelectorAll('.rec').forEach(function(a){
@@ -272,6 +272,19 @@ function renderResults(){
 }
 
 // ── Record detail ──────────────────────────────────────────
+function rightsLabel(r){
+  var s = r.rights_status || (r.local ? 'preserved-source' : 'external-reference');
+  var labels = {
+    'public-domain':'Public domain',
+    'licensed':'Licensed',
+    'permission':'Permission',
+    'preserved-research':'Preserved for research',
+    'rights-review':'Rights review',
+    'external-reference':'External reference',
+    'preserved-source':'Preserved source'
+  };
+  return labels[s] || s.replace(/-/g,' ');
+}
 function plainCitation(r){
   if(r.citation) return r.citation;
   var bits = [r.author||'Unknown']; if(r.date) bits.push('('+r.date.slice(0,4)+')');
@@ -315,6 +328,7 @@ function openRecord(id){
     '<dl class="d-meta">'+
       (r.citation?'<dt>Citation</dt><dd>'+esc(r.citation)+'</dd>':'')+
       (r.provenance?'<dt>Provenance</dt><dd>'+esc(r.provenance)+'</dd>':'')+
+      '<dt>Rights status</dt><dd>'+esc(rightsLabel(r))+' · <a href="rights.html?record='+encodeURIComponent(r.id)+'" style="color:var(--cyan)">rights / takedown</a></dd>'+
       (r.hash?'<dt>SHA-256</dt><dd class="d-hash">'+esc(r.hash)+'</dd>':'')+
       (r.external_url?'<dt>Source</dt><dd><a href="'+esc(r.external_url)+'" target="_blank" rel="noopener" style="color:var(--cyan)">'+esc(r.external_url)+' ↗</a></dd>':'')+
       (files?'<dt>Files</dt><dd><ul class="d-files">'+files+'</ul></dd>':'')+
@@ -326,6 +340,7 @@ function openRecord(id){
       (r.local?'<a class="btn-ghost" href="'+gh+'" target="_blank" rel="noopener">Source on GitHub ↗</a>':'')+
       '<button type="button" id="d-cite-btn">Cite</button>'+
       '<button type="button" id="d-link-btn">Copy link</button>'+
+      '<a class="btn-ghost" href="rights.html?record='+encodeURIComponent(r.id)+'">Rights / takedown</a>'+
       '<span class="d-sia">Sia upload: queued</span>'+
     '</div>'+
     '<div class="d-cite" id="d-cite" style="display:none">'+
