@@ -19,8 +19,8 @@ var THREADS = [
   {id:'crypto-wars', name:'Crypto Wars', short:'Export is munitions', years:'1991-2000',
    blurb:'Clipper, ITAR, Bernstein, export-grade SSL. The decade when the US treated math as a weapon and lost.',
    photo:'assets/vault/thread-crypto-wars.jpg', filter:function(r){ return (r._colls||[]).indexOf('wars')>=0; }},
-  {id:'arcade', name:'Arcade Years', short:'The past is playable', years:'1971+',
-   blurb:'Coin-drop machines, Habitat tokens, MUD economies. Digital scarcity was a game design problem long before it was a monetary one.',
+  {id:'arcade', name:'Arcade Years', short:'The past is playable', years:'1962+',
+   blurb:'Games, virtual worlds, digital economies, and the people who built them, from Spacewar! and Colossal Cave through Sierra, Habitat, networked games, and modern preservation.',
    photo:'assets/vault/thread-arcade.jpg', filter:function(r){ return classOf(r)==='9'; }},
   {id:'bitcoin', name:'Bitcoin', short:'The terminus', years:'2008-2009', terminus:true,
    blurb:'Whitepaper, list post, genesis block, v0.1. The five threads knot here. After this the vault keeps copies, not arguments.',
@@ -58,6 +58,7 @@ function open(id){
       '</div>'+
       '<div class="thread-pills">'+pillsHtml(t.id)+'</div>'+
     '</section>'+
+    (t.id==='arcade' ? '<div class="wrap" style="padding:34px 0 0"><a href="sierra/" style="display:block;border:1px solid var(--hair);background:var(--navy2);padding:24px 26px;text-decoration:none"><span class="mono" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)">Featured collection · 1980–1997</span><h2 style="font-family:var(--serif);font-size:28px;font-weight:500;margin:8px 0 4px;color:var(--paper)">Sierra On-Line</h2><p style="margin:0;color:var(--paper-dim);max-width:760px">Mystery House, Space Quest, Buckazoids, Sierra publications, developer interviews, SierraWeb records, and open research trails.</p><span class="mono" style="display:block;margin-top:13px;font-size:11px;color:var(--lime)">Open Sierra collection →</span></a></div>' : '')+
     '<div class="wrap" style="padding:36px 0 60px">'+
       '<p class="mono" style="font-size:11px;color:var(--paper-mute)">'+records.length+' sealed record'+(records.length===1?'':'s')+'</p>'+
       '<div id="thread-records" style="margin-top:8px"></div>'+
