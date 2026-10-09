@@ -23,8 +23,8 @@ var THREADS = [
    blurb:'Games, virtual worlds, digital economies, and the people who built them, from Spacewar! and Colossal Cave through Sierra, Habitat, networked games, and modern preservation.',
    photo:'assets/vault/thread-arcade.jpg', filter:function(r){ return classOf(r)==='9'; }},
   {id:'bitcoin', name:'Bitcoin', short:'The terminus', years:'2008-2009', terminus:true,
-   blurb:'Whitepaper, list post, genesis block, v0.1. The five threads knot here. After this the vault keeps copies, not arguments.',
-   photo:'assets/vault/thread-bitcoin.jpg', filter:function(r){ return r.id==='B59-000'; }}
+   blurb:'Whitepaper, first announcement, early discussion, genesis block, v0.1, and the surviving early correspondence around Bitcoin\'s launch.',
+   photo:'assets/vault/thread-bitcoin.jpg', filter:function(r){ return r.id==='B59-000' || /^B59-400\./.test(r.id); }}
 ];
 
 function classOf(r){ return (window.B59 && window.B59.classOf) ? window.B59.classOf(r) : null; }
