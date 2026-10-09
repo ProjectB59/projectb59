@@ -148,6 +148,54 @@
   .thread-node.end:hover .badge{border-color:var(--amber);color:var(--amber)}
   .thread-node.end:hover .lbl{color:var(--amber)}
 
+  /* homepage entry doors */
+  .entry-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);margin-bottom:12px}
+  .entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:1180px}
+  .entry-door{position:relative;min-height:420px;overflow:hidden;border:1px solid var(--hair);text-decoration:none;background:var(--navy2);isolation:isolate}
+  .entry-door::before{content:"";position:absolute;inset:0;background-position:center;background-size:cover;transition:transform .55s cubic-bezier(.2,.75,.2,1),filter .45s ease;z-index:-2}
+  .entry-door::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,11,.12),rgba(8,9,11,.18) 38%,rgba(8,9,11,.88) 100%);z-index:-1;transition:background .35s ease}
+  .entry-door.timeline::before{background-image:url("assets/vault/timeline-to-bitcoin-banner.jpg")}
+  .entry-door.gaming::before{background-image:url("assets/vault/gaming-history-banner.jpg")}
+  .entry-door:hover::before,.entry-door:focus-visible::before{transform:scale(1.035);filter:brightness(1.08)}
+  .entry-door:hover::after,.entry-door:focus-visible::after{background:linear-gradient(180deg,rgba(8,9,11,.04),rgba(8,9,11,.12) 36%,rgba(8,9,11,.80) 100%)}
+  .entry-door-inner{position:absolute;left:0;right:0;bottom:0;padding:34px 36px}
+  .entry-door .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--lime)}
+  .entry-door.gaming .eyebrow{color:var(--amber)}
+  .entry-door h2{font-family:var(--serif);font-weight:500;font-size:clamp(34px,4vw,52px);line-height:1;margin:10px 0 10px;color:var(--paper)}
+  .entry-door p{max-width:54ch;color:var(--paper-dim);font-size:15px;line-height:1.5}
+  .entry-door .enter{display:inline-block;margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--lime);transition:transform .2s ease}
+  .entry-door.gaming .enter{color:var(--amber)}
+  .entry-door:hover .enter,.entry-door:focus-visible .enter{transform:translateX(6px)}
+
+  /* interactive thread rail */
+  .thread-explore-head{margin-bottom:12px}
+  .thread-explore-head h2{font-family:var(--serif);font-size:28px;font-weight:500;margin-top:6px}
+  .thread-explore-head p{color:var(--paper-dim);font-size:14px;margin-top:4px}
+  .threads-wrap.projection-ready{padding-top:92px}
+  .thread-node{position:relative;cursor:pointer;transition:transform .18s ease,filter .18s ease}
+  .thread-node:hover,.thread-node:focus-visible{transform:translateY(-3px);outline:none}
+  .thread-node:hover .badge,.thread-node:focus-visible .badge{box-shadow:0 0 0 5px rgba(198,224,106,.035),0 0 22px rgba(198,224,106,.18)}
+  .thread-node.end:hover .badge,.thread-node.end:focus-visible .badge{box-shadow:0 0 0 5px rgba(224,177,74,.035),0 0 22px rgba(224,177,74,.18)}
+  .vault-projection{position:absolute;left:50%;bottom:calc(100% + 22px);width:190px;min-height:78px;padding:11px 12px 10px;transform:translate(-50%,10px) scale(.96);opacity:0;visibility:hidden;pointer-events:none;background:rgba(8,9,11,.92);border:1px solid rgba(198,224,106,.30);box-shadow:0 0 26px rgba(198,224,106,.10),inset 0 0 24px rgba(198,224,106,.025);backdrop-filter:blur(5px);transition:opacity .16s ease,transform .18s ease,visibility .18s;z-index:12;text-align:left}
+  .vault-projection::before{content:"";position:absolute;left:50%;top:100%;width:1px;height:24px;background:linear-gradient(to bottom,rgba(198,224,106,.55),transparent);box-shadow:0 0 8px rgba(198,224,106,.22)}
+  .vault-projection::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,transparent 2px,transparent 4px)}
+  @keyframes signal-flicker{0%{opacity:.2;filter:brightness(1.6)}18%{opacity:1}30%{opacity:.55}44%{opacity:1}100%{opacity:1;filter:brightness(1)}}
+  @keyframes beam-pulse{0%,100%{opacity:.45}50%{opacity:1}}
+  .thread-node:hover .vault-projection,.thread-node:focus-visible .vault-projection{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1);animation:signal-flicker .38s steps(2,end) 1}
+  .thread-node:hover .vault-projection::before,.thread-node:focus-visible .vault-projection::before{animation:beam-pulse .9s ease-in-out infinite}
+  .vault-projection .signal{font-family:var(--mono);font-size:8px;letter-spacing:.16em;color:var(--lime);text-transform:uppercase}
+  .vault-projection strong{display:block;margin-top:4px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper)}
+  .vault-projection p{margin-top:5px;font-family:var(--serif);font-size:12px;line-height:1.35;color:var(--paper-dim)}
+  .vault-projection .open{display:block;margin-top:7px;font-family:var(--mono);font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--lime)}
+  .thread-node.extropy .vault-projection{border-color:rgba(255,45,149,.30);box-shadow:0 0 26px rgba(255,45,149,.09),inset 0 0 24px rgba(44,212,242,.02)}
+  .thread-node.extropy .vault-projection .signal,.thread-node.extropy .vault-projection .open{color:#ff78bd}
+  .thread-node.cash .vault-projection{border-color:rgba(44,212,242,.32);box-shadow:0 0 26px rgba(44,212,242,.10)}
+  .thread-node.cash .vault-projection .signal,.thread-node.cash .vault-projection .open{color:var(--cyan)}
+  .thread-node.wars .vault-projection,.thread-node.gaming-thread .vault-projection,.thread-node.end .vault-projection{border-color:rgba(224,177,74,.34);box-shadow:0 0 26px rgba(224,177,74,.10)}
+  .thread-node.wars .vault-projection .signal,.thread-node.wars .vault-projection .open,.thread-node.gaming-thread .vault-projection .signal,.thread-node.gaming-thread .vault-projection .open,.thread-node.end .vault-projection .signal,.thread-node.end .vault-projection .open{color:var(--amber)}
+  @media(max-width:820px){.entry-grid{grid-template-columns:1fr}.entry-door{min-height:340px}.threads-wrap.projection-ready{padding-top:0}.vault-projection{display:none}.thread-node:hover,.thread-node:focus-visible{transform:none}}
+  @media(prefers-reduced-motion:reduce){.entry-door::before,.entry-door .enter,.thread-node,.vault-projection{transition:none}}
+
   /* what/why/how + stats, matches the reference's dl/grid layout */
   .gterm-line{display:grid;gap:32px;max-width:1080px}
   .gterm-line dt{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--lime)}
@@ -628,7 +676,7 @@
       <div class="fade-y"></div>
       <div class="hero-photo-inner">
         <p class="hero-kicker">Research · Archive · Preserve</p>
-        <h1>Project B59 traces the people, systems, experiments, and digital cultures surrounding the emergence of <em>Bitcoin.</em></h1>
+        <h1>Project B59 preserves the histories of <em>gaming, cryptography, digital culture,</em> and the early internet.</h1>
         <p class="hero-sub">A classified, hash-sealed reading room. Every record has an accession number, a class, and a SHA-256 vault seal.</p>
         <p class="hero-cap">Reading room · CRT and stacks</p>
       </div>
@@ -649,36 +697,64 @@
       </div>
     </div>
 
-    <div class="wrap" style="padding:8px 0 40px">
-      <div style="margin-bottom:26px;max-width:760px">
-        <p class="hero-kicker">Timeline to Bitcoin</p>
-        <h2 style="margin-top:8px;font-family:var(--serif);font-size:28px;font-weight:500;color:var(--paper)">Five parallel histories, one shared era</h2>
-        <p style="margin-top:8px;color:var(--paper-dim);line-height:1.55">Follow the cypherpunks, Extropians, digital-cash experiments, crypto wars, and gaming &amp; virtual worlds into the Bitcoin era. Together they show the technical, social, and cultural landscape surrounding Bitcoin’s emergence.</p>
+    <div class="wrap" style="padding:8px 0 58px">
+      <div class="entry-label">Choose a way in</div>
+      <div class="entry-grid">
+        <a class="entry-door timeline" href="#/timeline">
+          <div class="entry-door-inner">
+            <div class="eyebrow">Interactive chronology</div>
+            <h2>Timeline to Bitcoin</h2>
+            <p>Cryptography, cypherpunks, digital-cash experiments, policy battles, early Bitcoin records, and the people around them.</p>
+            <span class="enter">Enter the timeline →</span>
+          </div>
+        </a>
+        <a class="entry-door gaming" href="gaming/">
+          <div class="entry-door-inner">
+            <div class="eyebrow">Research · preservation · playable history</div>
+            <h2>Gaming History</h2>
+            <p>Arcades, PCs, consoles, Sierra, Atari, virtual worlds, digital economies, developers, and game preservation.</p>
+            <span class="enter">Enter gaming history →</span>
+          </div>
+        </a>
       </div>
-      <div class="threads-wrap">
+    </div>
+
+    <div class="wrap" style="padding:8px 0 40px">
+      <div class="thread-explore-head">
+        <p class="hero-kicker">Explore by Thread</p>
+        <h2>Shortcut into the Vault</h2>
+        <p>Hover a signal to identify it. Click to open the thread or collection.</p>
+      </div>
+      <div class="threads-wrap projection-ready">
         <div class="threads-line"></div>
         <div class="threads">
           <a class="thread-node" href="#/thread/cypherpunks">
+            <span class="vault-projection"><span class="signal">signal acquired</span><strong>Cypherpunks · 1992+</strong><p>Mailing lists, privacy tools, digital cash, and network freedom.</p><span class="open">enter thread →</span></span>
             <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 14c-5 0-9 4-9 9v5h-3v22h24V28h-3v-5c0-5-4-9-9-9zm0 3c3.3 0 6 2.7 6 6v5H26v-5c0-3.3 2.7-6 6-6z"/></svg></span>
             <span class="subdot"></span><span class="lbl">Cypherpunks</span><span class="yrs">1992+</span>
           </a>
-          <a class="thread-node" href="#/thread/extropians">
+          <a class="thread-node extropy" href="#/thread/extropians">
+            <span class="vault-projection"><span class="signal">signal acquired</span><strong>Extropians · 1988+</strong><p>Radical futures, self-transformation, cryptography, and digital markets.</p><span class="open">enter thread →</span></span>
             <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 30a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0-16c8 0 16 7.2 16 16s-8 16-16 16S16 39.8 16 30 24 14 32 14zm14 16c0-3.6-1.8-7.1-5-10.2M21 19.8C17.8 22.9 16 26.4 16 30m5 10.2C21.8 43.1 26.6 46 32 46s10.2-2.9 11-5.8"/></svg></span>
             <span class="subdot"></span><span class="lbl">Extropians</span><span class="yrs">1988+</span>
           </a>
-          <a class="thread-node" href="#/thread/digital-cash">
+          <a class="thread-node cash" href="#/thread/digital-cash">
+            <span class="vault-projection"><span class="signal">signal acquired</span><strong>Digital Cash · 1982–2008</strong><p>Ecash, b-money, bit gold, hashcash, RPOW, and electronic money experiments.</p><span class="open">enter thread →</span></span>
             <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 12c11 0 20 8 20 18s-9 18-20 18S12 40 12 30s9-18 20-18zm-6 18c0 4 2.7 7 6 7s6-3 6-7-2.7-7-6-7-6 3-6 7z"/></svg></span>
             <span class="subdot"></span><span class="lbl">Digital Cash</span><span class="yrs">1982-2008</span>
           </a>
-          <a class="thread-node" href="#/thread/crypto-wars">
+          <a class="thread-node wars" href="#/thread/crypto-wars">
+            <span class="vault-projection"><span class="signal">signal acquired</span><strong>Crypto Wars · 1991–2000</strong><p>Encryption policy, export controls, Clipper, ITAR, and civil-liberties battles.</p><span class="open">enter thread →</span></span>
             <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 10l18 6v14c0 10-7.5 18.5-18 22-10.5-3.5-18-12-18-22V16l18-6z"/></svg></span>
             <span class="subdot"></span><span class="lbl">Crypto Wars</span><span class="yrs">1991-2000</span>
           </a>
-          <a class="thread-node" href="gaming/">
+          <a class="thread-node gaming-thread" href="gaming/">
+            <span class="vault-projection"><span class="signal">signal acquired</span><strong>Gaming History · 1962+</strong><p>Games, companies, virtual worlds, digital economies, and preservation.</p><span class="open">open collection →</span></span>
             <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M22 38c0-8 4.5-14 10-14s10 6 10 14v8H22v-8zm10-18a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM18 48h28v4H18z"/></svg></span>
-            <span class="subdot"></span><span class="lbl">Gaming &amp; Virtual Worlds</span><span class="yrs">1962+</span>
+            <span class="subdot"></span><span class="lbl">Gaming History</span><span class="yrs">1962+</span>
           </a>
           <a class="thread-node end" href="#/thread/bitcoin">
+            <span class="vault-projection"><span class="signal">signal acquired</span><strong>Bitcoin · 2008–2009</strong><p>The whitepaper, launch, early discussion, genesis block, and first correspondence.</p><span class="open">enter thread →</span></span>
             <span class="badge"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M24 16h12c6 0 10 3.2 10 8.2 0 3.2-1.8 5.6-4.6 6.8 3.4 1 5.6 3.8 5.6 7.4 0 5.4-4.2 9.6-11.2 9.6H24V16zm6 4.8v8.4h5.4c2.8 0 4.4-1.4 4.4-4.2s-1.6-4.2-4.4-4.2H30zm0 13.2v10.2h6.2c3.2 0 5.2-1.8 5.2-5.1s-2-5.1-5.2-5.1H30z"/></svg></span>
             <span class="subdot"></span><span class="lbl">Bitcoin</span><span class="yrs">2008-2009</span>
           </a>
@@ -702,10 +778,10 @@
 
     <div class="wrap" style="padding:8px 0 52px">
       <div class="room-head">
-        <div><p class="hero-kicker">Explore the Vault</p><h2 style="margin-top:6px">Collections &amp; research areas</h2></div>
+        <div><p class="hero-kicker">Featured Collections</p><h2 style="margin-top:6px">More ways into the archive</h2></div>
       </div>
       <div class="room-grid">
-        <a class="room-card" href="gaming/"><div class="id">GAMING HISTORY</div><h3>Games, companies, systems &amp; virtual worlds</h3><p>Arcade Years, Sierra On-Line, Atari, PC Years, Console Years, virtual worlds, and game preservation.</p></a>
+        <a class="room-card" href="sierra/buckazoids/"><div class="id">SIERRA RESEARCH</div><h3>Buckazoids</h3><p>The fictional currency from its 1986 introduction through the Space Quest IV coin display, 59 / 2,009 evidence, and the modern research trail.</p></a>
         <a class="room-card" href="sierra/"><div class="id">FEATURED COLLECTION</div><h3>Sierra On-Line</h3><p>Mystery House, Space Quest, Buckazoids, Sierra publications, developer interviews, and SierraWeb research.</p></a>
         <a class="room-card" href="#/extropy"><div class="id">COLLECTION</div><h3>The Extropian Vault</h3><p>The Extropy lists and records connecting transhumanism, cryptography, digital markets, and early internet culture.</p></a>
         <a class="room-card" href="#/cryptowars"><div class="id">EXHIBIT</div><h3>The Crypto Wars</h3><p>Primary sources from the fights over encryption, export controls, Clipper, ITAR, and the right to publish cryptographic code.</p></a>
