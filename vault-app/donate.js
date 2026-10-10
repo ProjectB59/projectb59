@@ -9,6 +9,8 @@
 (function () {
   'use strict';
   var ADDR = '6RUfvE1XvnQQnZfbPNvvPGciR7biJ9ECo24E6kFqzSvw';
+  var BTC_ADDR = 'bc1q50l8lg6avn7k0kul9wgvwa6lz30ppkaa8knjd0';
+  var LIGHTNING_ADDR = 'purplehare46@aqua.net';
 
   // Restyled to the vault's own theme tokens; a quiet pill to match the radio,
   // opposite corner so the two never overlap.
@@ -52,22 +54,23 @@
       text-transform: uppercase; letter-spacing: .12em; font-weight: 600;
     }
     #bz-donate-modal p { font-size: 13px; color: var(--paper-dim, #9AA0AE); margin: 0 0 18px; line-height: 1.6; }
-    #bz-donate-addr {
+    .bz-donate-addr {
       display: block; word-break: break-all;
       background: var(--navy, #0A0E1A); border: 1px solid var(--hair, rgba(237,234,224,.14));
-      color: var(--cyan, #2CD4F2); font-size: 13px; padding: 14px; margin-bottom: 16px;
+      color: var(--cyan, #2CD4F2); font-size: 13px; padding: 14px; margin: 6px 0 10px;
       user-select: all;
     }
+    .bz-donate-label { display:block; margin-top:14px; color:var(--lime,#AEC44E); font-size:11px; text-transform:uppercase; letter-spacing:.08em; text-align:left; }
     .bz-donate-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .bz-donate-act {
       font-family: inherit; font-size: 12px;
       padding: 11px 18px; cursor: pointer;
       text-transform: uppercase; letter-spacing: .04em; text-decoration: none; border: 1px solid;
     }
-    #bz-donate-copy { background: var(--lime, #AEC44E); color: var(--navy, #0A0E1A); border-color: var(--lime, #AEC44E); font-weight: 600; }
-    #bz-donate-copy:hover { filter: brightness(1.08); }
-    #bz-donate-wallet { background: transparent; color: var(--paper, #EDEAE0); border-color: var(--hair, rgba(237,234,224,.14)); }
-    #bz-donate-wallet:hover { border-color: var(--cyan, #2CD4F2); color: var(--cyan, #2CD4F2); }
+    .bz-donate-copy { background: var(--lime, #AEC44E); color: var(--navy, #0A0E1A); border-color: var(--lime, #AEC44E); font-weight: 600; }
+    .bz-donate-copy:hover { filter: brightness(1.08); }
+    .bz-donate-wallet { background: transparent; color: var(--paper, #EDEAE0); border-color: var(--hair, rgba(237,234,224,.14)); }
+    .bz-donate-wallet:hover { border-color: var(--cyan, #2CD4F2); color: var(--cyan, #2CD4F2); }
     #bz-donate-close {
       margin-top: 18px; font-family: inherit; font-size: 12px;
       color: var(--paper-dim, #9AA0AE); background: none; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: .06em;
@@ -81,7 +84,7 @@
   var btn = document.createElement('button');
   btn.id = 'bz-donate-btn';
   btn.type = 'button';
-  btn.innerHTML = '&#9829; Support Project B59 &middot; SOL + BUCKAZOIDS <span class="bz-wallet-short">&middot; 6RUf&hellip;zSvw</span>';
+  btn.innerHTML = '&#9829; Support Project B59 &middot; SOL + BUCKAZOIDS + BTC <span class="bz-wallet-short">&middot; 6RUf&hellip;zSvw</span>';
   document.body.appendChild(btn);
 
   var overlay = document.createElement('div');
@@ -89,12 +92,22 @@
   overlay.innerHTML =
     '<div id="bz-donate-modal">' +
       '<h3>&#9829; Support Project B59</h3>' +
-      '<p>Every source in this archive is hosted, hashed, and kept free. Send SOL or Buckazoids to help keep it running:</p>' +
-      '<code id="bz-donate-addr">' + ADDR + '</code>' +
+      '<p>Every source in this archive is hosted, hashed, and kept free. Tips help keep it running.</p>' +
+      '<span class="bz-donate-label">SOL + BUCKAZOIDS</span>' +
+      '<code id="bz-donate-addr" class="bz-donate-addr">' + ADDR + '</code>' +
       '<div class="bz-donate-row">' +
-        '<button id="bz-donate-copy" class="bz-donate-act">Copy Address</button>' +
-        '<a id="bz-donate-wallet" class="bz-donate-act" href="solana:' + ADDR + '">Open Wallet</a>' +
+        '<button id="bz-donate-copy" class="bz-donate-act bz-donate-copy">Copy Address</button>' +
+        '<a class="bz-donate-act bz-donate-wallet" href="solana:' + ADDR + '">Open Wallet</a>' +
       '</div>' +
+      '<span class="bz-donate-label">Bitcoin on-chain</span>' +
+      '<code class="bz-donate-addr">' + BTC_ADDR + '</code>' +
+      '<div class="bz-donate-row">' +
+        '<button id="bz-copy-btc" class="bz-donate-act bz-donate-copy">Copy BTC</button>' +
+        '<a class="bz-donate-act bz-donate-wallet" href="bitcoin:' + BTC_ADDR + '">Open Wallet</a>' +
+      '</div>' +
+      '<span class="bz-donate-label">Bitcoin / Lightning tips</span>' +
+      '<code class="bz-donate-addr">' + LIGHTNING_ADDR + '</code>' +
+      '<div class="bz-donate-row"><button id="bz-copy-lightning" class="bz-donate-act bz-donate-copy">Copy Lightning</button></div>' +
       '<button id="bz-donate-close">Close</button>' +
     '</div>';
   document.body.appendChild(overlay);
@@ -108,14 +121,18 @@
   document.getElementById('bz-donate-close').addEventListener('click', close);
   overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
 
-  document.getElementById('bz-donate-copy').addEventListener('click', function () {
-    var b = this;
-    navigator.clipboard.writeText(ADDR).then(function () {
-      b.textContent = 'Copied!';
-      setTimeout(function () { b.textContent = 'Copy Address'; }, 1600);
-    }).catch(function () {
-      var r = document.createRange(); r.selectNode(document.getElementById('bz-donate-addr'));
-      window.getSelection().removeAllRanges(); window.getSelection().addRange(r);
+  function wireCopy(id, value) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('click', function () {
+      var b = this, original = b.textContent;
+      navigator.clipboard.writeText(value).then(function () {
+        b.textContent = 'Copied!';
+        setTimeout(function () { b.textContent = original; }, 1600);
+      }).catch(function () {});
     });
-  });
+  }
+  wireCopy('bz-donate-copy', ADDR);
+  wireCopy('bz-copy-btc', BTC_ADDR);
+  wireCopy('bz-copy-lightning', LIGHTNING_ADDR);
 })();
