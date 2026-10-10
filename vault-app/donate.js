@@ -20,16 +20,18 @@
       z-index: 99998;
       display: inline-flex; align-items: center; gap: 7px;
       font-family: var(--mono, 'IBM Plex Mono', monospace);
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: .04em;
-      color: var(--paper-dim, #9AA0AE);
-      background: var(--navy2, #0E1426);
-      border: 1px solid var(--hair, rgba(237,234,224,.14));
-      padding: 8px 14px;
+      color: var(--paper, #EDEAE0);
+      background: rgba(14,20,38,.96);
+      border: 1px solid var(--lime, #AEC44E);
+      padding: 9px 13px;
       cursor: pointer;
       transition: color .15s, border-color .15s;
     }
-    #bz-donate-btn:hover { color: var(--lime, #AEC44E); border-color: var(--lime, #AEC44E); }
+    #bz-donate-btn:hover { color: var(--lime, #AEC44E); border-color: var(--cyan, #2CD4F2); }
+    #bz-donate-btn .bz-wallet-short { color: var(--cyan, #2CD4F2); opacity: .9; }
+    @media (max-width: 720px) { #bz-donate-btn .bz-wallet-short { display:none; } }
     #bz-donate-overlay {
       position: fixed; inset: 0; z-index: 100000;
       background: rgba(6,9,18,.82);
@@ -79,7 +81,7 @@
   var btn = document.createElement('button');
   btn.id = 'bz-donate-btn';
   btn.type = 'button';
-  btn.innerHTML = '&#9829; Support the vault';
+  btn.innerHTML = '&#9829; Support Project B59 &middot; SOL + BUCKAZOIDS <span class="bz-wallet-short">&middot; 6RUf&hellip;zSvw</span>';
   document.body.appendChild(btn);
 
   var overlay = document.createElement('div');
