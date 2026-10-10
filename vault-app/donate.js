@@ -8,7 +8,7 @@
  */
 (function () {
   'use strict';
-  var ADDR = 'Dra35HtSDPBPh4cV58jmTuQSWsyHpR7ZVh8HfxM9tSq7';
+  var ADDR = '6RUfvE1XvnQQnZfbPNvvPGciR7biJ9ECo24E6kFqzSvw';
 
   // Restyled to the vault's own theme tokens; a quiet pill to match the radio,
   // opposite corner so the two never overlap.
