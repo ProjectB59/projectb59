@@ -103,6 +103,8 @@
   function close() { overlay.classList.remove('open'); }
 
   btn.addEventListener('click', open);
+  var navSupport = document.getElementById('support-nav-link');
+  if (navSupport) navSupport.addEventListener('click', open);
   document.getElementById('bz-donate-close').addEventListener('click', close);
   overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
 
