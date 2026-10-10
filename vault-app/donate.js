@@ -87,6 +87,17 @@
   btn.innerHTML = '&#9829; Support Project B59 &middot; SOL + BUCKAZOIDS + BTC <span class="bz-wallet-short">&middot; 6RUf&hellip;zSvw</span>';
   document.body.appendChild(btn);
 
+  function placeSupportButton() {
+    var radio = document.getElementById('bz-radio');
+    var radioPill = document.getElementById('bz-radio-pill');
+    var radioHeight = radio && radio.classList.contains('open') ? radio.offsetHeight : 0;
+    var pillHeight = radioPill && radioPill.offsetParent !== null ? radioPill.offsetHeight : 0;
+    btn.style.bottom = (Math.max(radioHeight, pillHeight) + 18) + 'px';
+  }
+  placeSupportButton();
+  window.addEventListener('resize', placeSupportButton);
+  new MutationObserver(placeSupportButton).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+
   var overlay = document.createElement('div');
   overlay.id = 'bz-donate-overlay';
   overlay.innerHTML =
