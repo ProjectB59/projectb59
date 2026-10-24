@@ -1,5 +1,5 @@
 // Project B59: Modulo59 IRC, a tiny embedded web client for OUR OWN IRC
-// network (Ergo on the claudecraft droplet). Unlike Libera, this is our
+// network (Ergo on our node server). Unlike Libera, this is our
 // server, so it can be embedded directly: Ergo's websocket allows the
 // projectb59.com origin, and we speak the IRCv3 protocol over it.
 //
@@ -8,7 +8,7 @@
 // with a normal client. window.B59M59IRC = { mount, setChannel, disconnect }.
 (function(){
 'use strict';
-var WS_URL = 'wss://claudecraft.nodeb59.com/webirc';
+var WS_URL = 'wss://node.nodeb59.com/webirc';
 var CHANNELS = ['#modulo59', '#arcade', '#vault'];
 var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
 
