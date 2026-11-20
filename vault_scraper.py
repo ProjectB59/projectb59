@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-ProjectB59 Vault Scraper — Extropy-Chat Archive
-================================================
+ProjectB59 Vault Scraper: Extropy-Chat Archive
+===============================================
 Downloads, filters, and archives the extropy-chat mailing list,
-preserving messages by Hal Finney and other cypherpunks / early
+preserving messages by Hal Finney and other cypherpunks and early
 digital-cash pioneers for permanent offline storage.
 
 Usage:
@@ -12,25 +12,26 @@ Usage:
 
 Output:
     vault_data/
-        index.json          — full message index
-        authors.json        — author profiles + message counts
-        messages/           — one .json per message
-        html/               — mirrored original HTML pages
+        index.json          full message index
+        authors.json        author profiles and message counts
+        messages/           one .json per message
+        html/               mirrored original HTML pages
 """
 
-import os
 import json
 import time
 import re
-import hashlib
 import argparse
+from collections import Counter
 from datetime import datetime
+from email.utils import parsedate_to_datetime
+from html import unescape
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
+from urllib.parse import unquote, urljoin, urlparse
 
 try:
     import requests
-    from bs4 import BeautifulSoup
+    from bs4 import BeautifulSoup, Comment
 except ImportError:
     print("Install deps first:  pip install requests beautifulsoup4 lxml")
     raise
@@ -41,7 +42,7 @@ except ImportError:
 
 BASE_URL = "https://lists.extropy.org/pipermail/extropy-chat/"
 
-# People we definitely want to capture — match is case-insensitive substring
+# People we definitely want to capture. Match is case-insensitive substring.
 PRIORITY_AUTHORS = [
     # Core cypherpunks
     "hal finney", "finney",
@@ -79,8 +80,28 @@ PRIORITY_AUTHORS = [
 OUTPUT_DIR = Path("vault_data")
 MESSAGES_DIR = OUTPUT_DIR / "messages"
 HTML_DIR = OUTPUT_DIR / "html"
-DELAY = 0.5          # seconds between requests — be polite
+DELAY = 0.5          # seconds between requests, be polite
 MAX_RETRIES = 3
+
+_MONTH_NUM = {
+    name: i
+    for i, name in enumerate(
+        [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December",
+        ],
+        1,
+    )
+}
+_MONTH_LINK = re.compile(
+    r"^(?:(?:\./|\.\./)*)?(\d{4}-[A-Za-z]+)(?:/(?:author|thread|subject|date|index)\.html|/?)?$",
+    re.I,
+)
+_ARTICLE_HREF = re.compile(r"^(?:(?:\./|\.\./)*)?(\d+)\.html$")
+_DATE_HINT = re.compile(
+    r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b|\b\d{4}\b",
+    re.I,
+)
 
 
 # ──────────────────────────────────────────────
@@ -96,13 +117,13 @@ session.headers.update({
 def fetch(url: str, retries=MAX_RETRIES) -> str | None:
     for attempt in range(retries):
         try:
-            r = session.get(url, timeout=20)
+            r = session.get(url, timeout=30)
             r.raise_for_status()
             time.sleep(DELAY)
             return r.text
         except Exception as e:
             if attempt == retries - 1:
-                print(f"  ✗ Failed to fetch {url}: {e}")
+                print(f"  x Failed to fetch {url}: {e}")
                 return None
             time.sleep(DELAY * (attempt + 1))
     return None
@@ -113,208 +134,441 @@ def is_priority(author_name: str, subject: str = "") -> bool:
     return any(kw in text for kw in PRIORITY_AUTHORS)
 
 
-def slug(text: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+def month_sort_key(label: str) -> tuple:
+    year, _, name = label.partition("-")
+    try:
+        year_n = int(year)
+    except ValueError:
+        year_n = 0
+    return (year_n, _MONTH_NUM.get(name, 0), label)
+
+
+def clean_text(value: str) -> str:
+    return " ".join((value or "").split())
+
+
+def date_sort_key(value: str) -> tuple:
+    """Sort pipermail dates like 'Fri Nov 13 07:07:23 UTC 2026' in time order."""
+    text = value or ""
+    try:
+        return (0, parsedate_to_datetime(text))
+    except (TypeError, ValueError, IndexError, OverflowError):
+        return (1, text)
+
+
+def norm_msgid(value: str) -> str:
+    """Return a message id without surrounding brackets."""
+    if not value:
+        return ""
+    text = unescape(unquote(value)).strip()
+    match = re.search(r"<([^<>]+)>", text)
+    if match:
+        return match.group(1).strip()
+    return text.strip("<>").strip()
+
+
+def mailto_params(href: str) -> dict:
+    """Parse a mailto query without turning '+' into a space."""
+    query = urlparse(href).query
+    params = {}
+    for part in query.split("&"):
+        if not part or "=" not in part:
+            continue
+        key, val = part.split("=", 1)
+        params[unquote(key)] = unquote(val)
+    return params
+
+
+def article_from_href(href: str) -> str | None:
+    href = (href or "").split("#", 1)[0].strip()
+    name = href.rsplit("/", 1)[-1]
+    match = _ARTICLE_HREF.fullmatch(name)
+    if not match:
+        return None
+    return match.group(1)
 
 
 # ──────────────────────────────────────────────
-# STEP 1 — Discover all monthly archive URLs
+# STEP 1: Discover all monthly archive URLs
 # ──────────────────────────────────────────────
 
 def discover_months() -> list[dict]:
-    """Return list of {label, url} for every month in the archive."""
-    print("Discovering archive months …")
+    """Return {label, url, author_index, thread_index} for every month."""
+    print("Discovering archive months ...")
     html = fetch(BASE_URL)
     if not html:
         raise RuntimeError("Cannot reach archive index")
 
     soup = BeautifulSoup(html, "lxml")
-    months = []
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-        # Monthly archives look like "2004-January/" or end in /thread.html
-        if re.match(r"\d{4}-\w+/?$", href):
-            label = href.rstrip("/")
-            months.append({
-                "label": label,
-                "url": urljoin(BASE_URL, href),
-                "author_index": urljoin(BASE_URL, href.rstrip("/") + "/author.html"),
-            })
-
-    # Deduplicate preserving order
+    labels = []
     seen = set()
-    unique = []
-    for m in months:
-        if m["label"] not in seen:
-            seen.add(m["label"])
-            unique.append(m)
+    for tag in soup.find_all("a", href=True):
+        href = tag["href"].strip()
+        # Live pipermail links look like "2024-January/author.html".
+        # Older indexes sometimes link the month directory itself.
+        match = _MONTH_LINK.match(href)
+        if not match:
+            continue
+        label = match.group(1)
+        if label in seen:
+            continue
+        seen.add(label)
+        labels.append(label)
 
-    print(f"  Found {len(unique)} months")
-    return unique
+    labels.sort(key=month_sort_key)
+    months = []
+    for label in labels:
+        months.append({
+            "label": label,
+            "url": urljoin(BASE_URL, label + "/"),
+            "author_index": urljoin(BASE_URL, label + "/author.html"),
+            "thread_index": urljoin(BASE_URL, label + "/thread.html"),
+        })
+
+    print(f"  Found {len(months)} months")
+    return months
 
 
 # ──────────────────────────────────────────────
-# STEP 2 — Parse author index for each month
+# STEP 2: Parse author index and thread index
 # ──────────────────────────────────────────────
 
 def parse_author_index(month: dict) -> list[dict]:
-    """Return list of message stubs from one month's author index."""
+    """Return message stubs from one month's author index."""
     html = fetch(month["author_index"])
     if not html:
         return []
+    return parse_author_index_html(html, month)
 
+
+def parse_author_index_html(html: str, month: dict) -> list[dict]:
     soup = BeautifulSoup(html, "lxml")
     messages = []
+    seen = set()
+
+    for tag in soup.find_all("a", href=True):
+        article = article_from_href(tag.get("href", ""))
+        if not article or article in seen:
+            continue
+        seen.add(article)
+        subject = clean_text(tag.get_text(" ", strip=True))
+        author = _author_after_link(tag)
+        messages.append({
+            "article": article,
+            "author": author,
+            "subject": subject,
+            "url": urljoin(month["author_index"], article + ".html"),
+            "month": month["label"],
+            "priority": is_priority(author, subject),
+        })
+
+    if messages:
+        return messages
+
+    # Older pipermail author indexes put the name in <b>, then subject links.
+    return _parse_legacy_author_index(soup, month)
+
+
+def _author_after_link(tag) -> str:
+    """Author is the italic name after the subject link, before the next message."""
+    for el in tag.next_elements:
+        name = getattr(el, "name", None)
+        if name == "a" and article_from_href(el.get("href", "")):
+            return ""
+        if name == "i":
+            return clean_text(el.get_text(" ", strip=True))
+    return ""
+
+
+def _parse_legacy_author_index(soup, month: dict) -> list[dict]:
+    messages = []
+    seen = set()
     current_author = None
-
-    for tag in soup.find_all(["b", "i", "a"]):
-        # Bold = author name in pipermail author index
+    for tag in soup.find_all(["b", "a"]):
         if tag.name == "b":
-            current_author = tag.get_text(strip=True)
-        elif tag.name == "a" and current_author:
-            href = tag.get("href", "")
-            if href.endswith(".html") and not href.startswith("http"):
-                msg_url = urljoin(month["author_index"], href)
-                messages.append({
-                    "author": current_author,
-                    "subject": tag.get_text(strip=True),
-                    "url": msg_url,
-                    "month": month["label"],
-                    "priority": is_priority(current_author, tag.get_text()),
-                })
-
+            text = clean_text(tag.get_text(" ", strip=True))
+            if text and "sorted by" not in text.lower():
+                current_author = text
+            continue
+        if not current_author:
+            continue
+        href = tag.get("href", "")
+        article = article_from_href(href)
+        if not article or article in seen:
+            continue
+        if href.startswith("http"):
+            continue
+        seen.add(article)
+        subject = clean_text(tag.get_text(" ", strip=True))
+        messages.append({
+            "article": article,
+            "author": current_author,
+            "subject": subject,
+            "url": urljoin(month["author_index"], article + ".html"),
+            "month": month["label"],
+            "priority": is_priority(current_author, subject),
+        })
     return messages
 
 
+def parse_thread_index(month: dict) -> dict[str, str]:
+    """Map pipermail article number to its parent article number."""
+    html = fetch(month["thread_index"])
+    if not html:
+        return {}
+    return parse_thread_parents(html)
+
+
+def parse_thread_parents(html: str) -> dict[str, str]:
+    """Read pipermail thread comments such as <!--1 ts.10-ts.11- -->."""
+    soup = BeautifulSoup(html, "lxml")
+    parents = {}
+    for comment in soup.find_all(string=lambda text: isinstance(text, Comment)):
+        parts = _thread_comment_articles(str(comment))
+        if len(parts) >= 2 and parts[-1] and parts[-2]:
+            parents[parts[-1]] = parts[-2]
+    return parents
+
+
+def _thread_comment_articles(text: str) -> list[str]:
+    text = text.strip()
+    match = re.match(r"\d+\s+(.+)$", text)
+    if not match:
+        return []
+    articles = []
+    for piece in match.group(1).split("-"):
+        piece = piece.strip()
+        if "." not in piece:
+            continue
+        article = piece.rsplit(".", 1)[1].strip()
+        if article.isdigit():
+            articles.append(article)
+    return articles
+
+
 # ──────────────────────────────────────────────
-# STEP 3 — Fetch and parse individual message
+# STEP 3: Fetch and parse individual message
 # ──────────────────────────────────────────────
 
 def parse_message(stub: dict) -> dict | None:
     html = fetch(stub["url"])
     if not html:
         return None
+    msg = parse_message_html(html, stub)
+    msg["_html"] = html
+    return msg
 
+
+def parse_message_html(html: str, stub: dict) -> dict:
     soup = BeautifulSoup(html, "lxml")
-
-    # Extract headers from the <ul> block pipermail uses
-    headers = {}
-    for li in soup.find_all("li"):
-        text = li.get_text(separator=" ", strip=True)
-        for key in ("From", "To", "Subject", "Date", "Message-ID", "In-Reply-To", "References"):
-            if text.startswith(key + ":"):
-                headers[key] = text[len(key)+1:].strip()
-
-    # Body is in <pre> tags
+    headers = _header_fields(soup)
+    author = headers.get("From") or _page_author(soup) or stub.get("author", "")
+    subject = headers.get("Subject") or _page_subject(soup) or stub.get("subject", "")
+    date = headers.get("Date") or _page_date(soup)
+    in_reply_to = norm_msgid(headers.get("In-Reply-To") or _mailto_header(soup, "In-Reply-To"))
+    references = norm_msgid(headers.get("References") or "")
     body_tag = soup.find("pre")
     body = body_tag.get_text() if body_tag else ""
-
-    # Next/prev in thread
-    thread_links = {}
-    for a in soup.find_all("a", href=True):
-        txt = a.get_text(strip=True).lower()
-        if "next" in txt:
-            thread_links["next"] = urljoin(stub["url"], a["href"])
-        elif "prev" in txt:
-            thread_links["prev"] = urljoin(stub["url"], a["href"])
-
-    msg_id = headers.get("Message-ID", hashlib.md5(stub["url"].encode()).hexdigest())
+    article = stub.get("article") or article_from_href(urlparse(stub["url"]).path) or ""
+    own_id = norm_msgid(headers.get("Message-ID") or "")
 
     return {
-        "id": msg_id,
+        "id": own_id,
+        "article": article,
         "url": stub["url"],
         "month": stub["month"],
-        "author": headers.get("From", stub["author"]),
-        "author_short": stub["author"],
-        "subject": headers.get("Subject", stub["subject"]),
-        "date": headers.get("Date", ""),
-        "in_reply_to": headers.get("In-Reply-To", ""),
-        "references": headers.get("References", ""),
+        "author": clean_text(author),
+        "author_short": clean_text(stub.get("author") or author),
+        "subject": clean_text(subject),
+        "date": clean_text(date),
+        "in_reply_to": in_reply_to,
+        "references": references,
         "body": body.strip(),
-        "priority": stub["priority"],
-        "thread_links": thread_links,
-        # Save raw HTML too
-        "_html": html,
+        "priority": stub.get("priority", False),
+        "thread_links": _thread_links(soup, stub["url"]),
     }
 
 
+def _header_fields(soup) -> dict:
+    """Read From/Date/Message-ID lines when a page still has them."""
+    headers = {}
+    keys = ("From", "To", "Subject", "Date", "Message-ID", "In-Reply-To", "References")
+    for li in soup.find_all("li"):
+        text = clean_text(li.get_text(" ", strip=True))
+        # get_text can insert a space before the colon ("From :").
+        compact = re.sub(r"\s+:", ":", text, count=1)
+        for key in keys:
+            prefix = key + ":"
+            if compact.startswith(prefix):
+                headers[key] = compact[len(prefix):].strip()
+    return headers
+
+
+def _page_author(soup) -> str:
+    h1 = soup.find("h1")
+    nodes = h1.find_all_next("b") if h1 else soup.find_all("b")
+    for tag in nodes:
+        text = clean_text(tag.get_text(" ", strip=True))
+        lower = text.lower()
+        if not text or "sorted by" in lower or lower.startswith("more info"):
+            continue
+        return text
+    return ""
+
+
+def _page_subject(soup) -> str:
+    h1 = soup.find("h1")
+    if not h1:
+        return ""
+    return clean_text(h1.get_text(" ", strip=True))
+
+
+def _page_date(soup) -> str:
+    for tag in soup.find_all("i"):
+        text = clean_text(tag.get_text(" ", strip=True))
+        if text and _DATE_HINT.search(text):
+            return text
+    return ""
+
+
+def _mailto_header(soup, name: str) -> str:
+    wanted = name.lower()
+    for tag in soup.find_all("a", href=True):
+        href = tag["href"]
+        if not href.lower().startswith("mailto:"):
+            continue
+        for key, val in mailto_params(href).items():
+            if key.lower() == wanted and val.strip():
+                return val.strip()
+    return ""
+
+
+def _thread_links(soup, page_url: str) -> dict:
+    links = {}
+    for tag in soup.find_all("link", href=True):
+        rels = [r.lower() for r in (tag.get("rel") or [])]
+        target = urljoin(page_url, tag["href"])
+        if "next" in rels:
+            links["next"] = target
+        elif "prev" in rels or "previous" in rels:
+            links["prev"] = target
+    for tag in soup.find_all("a", href=True):
+        text = tag.get_text(" ", strip=True).lower()
+        target = urljoin(page_url, tag["href"])
+        if "next" in text and "next" not in links:
+            links["next"] = target
+        elif "prev" in text and "prev" not in links:
+            links["prev"] = target
+    return links
+
+
+def assign_message_ids(messages: list[dict], parent_of: dict[str, str]) -> None:
+    """Fill id from children citing this article, else a stable pipermail id.
+
+    Message pages do not include their own Message-ID. A reply's mailto
+    In-Reply-To is the parent id. The thread index says which article is
+    the parent, so the parent's id can be recovered from its children.
+    """
+    votes: dict[str, Counter] = {}
+    for msg in messages:
+        parent = parent_of.get(msg.get("article", ""))
+        cited = msg.get("in_reply_to") or ""
+        if parent and cited:
+            votes.setdefault(parent, Counter())[cited] += 1
+
+    learned = {article: counts.most_common(1)[0][0] for article, counts in votes.items()}
+    for msg in messages:
+        if msg.get("id"):
+            continue
+        article = msg.get("article") or "unknown"
+        msg["id"] = learned.get(article) or f"pipermail-{msg.get('month', 'month')}-{article}"
+
+
 # ──────────────────────────────────────────────
-# STEP 4 — Build thread trees
+# STEP 4: Build thread trees
 # ──────────────────────────────────────────────
 
 def build_threads(messages: list[dict]) -> list[dict]:
-    """Group messages into conversation threads by subject + In-Reply-To."""
-    by_id = {m["id"]: m for m in messages}
-    threads: dict[str, list] = {}
-    root_subjects: dict[str, str] = {}
+    """Group messages into conversation threads by In-Reply-To."""
+    by_id = {}
+    for msg in messages:
+        by_id.setdefault(msg["id"], msg)
 
-    for m in messages:
-        parent_id = m.get("in_reply_to", "").strip().strip("<>")
-        # Clean up subject for threading
-        subject_clean = re.sub(r"^(re:\s*)+", "", m["subject"], flags=re.IGNORECASE).strip()
-
-        if parent_id and parent_id in by_id:
-            thread_id = by_id[parent_id].get("_thread_id", parent_id)
-        else:
-            thread_id = m["id"]
-
-        m["_thread_id"] = thread_id
-        m["_subject_clean"] = subject_clean
-        threads.setdefault(thread_id, []).append(m)
+    groups: dict[str, list] = {}
+    for msg in messages:
+        subject_clean = re.sub(r"^(re:\s*)+", "", msg.get("subject", ""), flags=re.IGNORECASE).strip()
+        msg["_subject_clean"] = subject_clean
+        root_id = _thread_root_id(msg, by_id)
+        msg["_thread_id"] = root_id
+        groups.setdefault(root_id, []).append(msg)
 
     result = []
-    for tid, msgs in threads.items():
+    for tid, msgs in groups.items():
         root = next((m for m in msgs if m["id"] == tid), msgs[0])
         has_priority = any(m["priority"] for m in msgs)
         result.append({
             "thread_id": tid,
-            "subject": root.get("_subject_clean", root["subject"]),
-            "month": root["month"],
+            "subject": root.get("_subject_clean", root.get("subject", "")),
+            "month": root.get("month", ""),
             "message_count": len(msgs),
             "has_priority": has_priority,
-            "messages": sorted(msgs, key=lambda m: m.get("date", "")),
+            "messages": sorted(msgs, key=lambda m: date_sort_key(m.get("date", ""))),
         })
 
-    return sorted(result, key=lambda t: t["messages"][0].get("date", ""))
+    return sorted(result, key=lambda t: date_sort_key(t["messages"][0].get("date", "")))
+
+
+def _thread_root_id(msg: dict, by_id: dict) -> str:
+    seen = set()
+    current = msg
+    while current["id"] not in seen:
+        seen.add(current["id"])
+        parent_id = current.get("in_reply_to") or ""
+        parent = by_id.get(parent_id)
+        if not parent or parent["id"] == current["id"]:
+            return current["id"]
+        current = parent
+    return current["id"]
 
 
 # ──────────────────────────────────────────────
-# STEP 5 — Save everything
+# STEP 5: Save everything
 # ──────────────────────────────────────────────
 
-def save_message(msg: dict):
+def save_html(msg: dict) -> None:
     html = msg.pop("_html", None)
-    fname = slug(msg["id"][:60]) + ".json"
-    path = MESSAGES_DIR / fname
-    path.write_text(json.dumps(msg, indent=2, ensure_ascii=False))
+    if not html:
+        return
+    name = f"{msg.get('month', 'month')}-{msg.get('article', 'msg')}.html"
+    (HTML_DIR / name).write_text(html, encoding="utf-8")
 
-    if html:
-        hpath = HTML_DIR / (slug(msg["id"][:60]) + ".html")
-        hpath.write_text(html, encoding="utf-8")
+
+def save_message(msg: dict) -> None:
+    name = f"{msg.get('month', 'month')}-{msg.get('article', 'msg')}.json"
+    (MESSAGES_DIR / name).write_text(json.dumps(msg, indent=2, ensure_ascii=False))
 
 
 def build_author_stats(messages: list[dict]) -> dict:
     authors: dict[str, dict] = {}
-    for m in messages:
-        name = m["author_short"]
+    for msg in messages:
+        name = msg["author_short"]
         if name not in authors:
             authors[name] = {
                 "name": name,
                 "message_count": 0,
-                "priority": m["priority"],
+                "priority": msg["priority"],
                 "months": set(),
                 "subjects": [],
             }
         authors[name]["message_count"] += 1
-        authors[name]["months"].add(m["month"])
+        authors[name]["months"].add(msg["month"])
         if len(authors[name]["subjects"]) < 10:
-            authors[name]["subjects"].append(m["subject"])
+            authors[name]["subjects"].append(msg["subject"])
 
-    # Convert sets for JSON
-    for a in authors.values():
-        a["months"] = sorted(a["months"])
+    for author in authors.values():
+        author["months"] = sorted(author["months"])
 
-    return dict(sorted(authors.items(), key=lambda x: -x[1]["message_count"]))
+    return dict(sorted(authors.items(), key=lambda item: -item[1]["message_count"]))
 
 
 # ──────────────────────────────────────────────
@@ -322,6 +576,7 @@ def build_author_stats(messages: list[dict]) -> dict:
 # ──────────────────────────────────────────────
 
 def main():
+    global DELAY
     parser = argparse.ArgumentParser(description="ProjectB59 Vault Scraper")
     parser.add_argument("--priority-only", action="store_true",
                         help="Only download messages from priority authors")
@@ -329,14 +584,17 @@ def main():
                         help="Limit to N most recent months (0 = all)")
     parser.add_argument("--start-year", type=int, default=0,
                         help="Only archive months from this year onward")
+    parser.add_argument("--delay", type=float, default=DELAY,
+                        help="Seconds to wait between requests (default: 0.5)")
     args = parser.parse_args()
+    if args.delay < 0:
+        parser.error("--delay must be zero or greater")
+    DELAY = args.delay
 
-    # Setup dirs
     OUTPUT_DIR.mkdir(exist_ok=True)
     MESSAGES_DIR.mkdir(exist_ok=True)
     HTML_DIR.mkdir(exist_ok=True)
 
-    # Discover months
     months = discover_months()
 
     if args.start_year:
@@ -345,31 +603,39 @@ def main():
     if args.months:
         months = months[-args.months:]
 
-    print(f"Processing {len(months)} months …\n")
+    print(f"Processing {len(months)} months ...\n")
 
     all_messages = []
-    priority_count = 0
+    parent_of: dict[str, str] = {}
 
     for i, month in enumerate(months):
         print(f"[{i+1}/{len(months)}] {month['label']}")
         stubs = parse_author_index(month)
+        parent_of.update(parse_thread_index(month))
         print(f"  {len(stubs)} messages found", end="")
 
         priority_stubs = [s for s in stubs if s["priority"]]
         print(f", {len(priority_stubs)} priority")
 
         target = priority_stubs if args.priority_only else stubs
-
-        for stub in target:
+        saved = 0
+        for n, stub in enumerate(target, 1):
             msg = parse_message(stub)
-            if msg:
-                save_message(msg)
-                all_messages.append(msg)
-                if msg["priority"]:
-                    priority_count += 1
+            if not msg:
+                continue
+            save_html(msg)
+            all_messages.append(msg)
+            saved += 1
+            if n % 25 == 0 or n == len(target):
+                print(f"  fetched {n}/{len(target)}")
+        print(f"  kept {saved}")
 
-    # Build index
-    print(f"\nBuilding index ({len(all_messages)} messages, {priority_count} priority) …")
+    assign_message_ids(all_messages, parent_of)
+    for msg in all_messages:
+        save_message(msg)
+
+    priority_count = sum(1 for msg in all_messages if msg["priority"])
+    print(f"\nBuilding index ({len(all_messages)} messages, {priority_count} priority) ...")
     threads = build_threads(all_messages)
     author_stats = build_author_stats(all_messages)
 
@@ -388,16 +654,16 @@ def main():
     )
 
     print(f"""
-╔══════════════════════════════════════════╗
-║  Vault scrape complete                   ║
-╠══════════════════════════════════════════╣
-║  Messages archived : {len(all_messages):<20} ║
-║  Priority authors  : {priority_count:<20} ║
-║  Threads           : {len(threads):<20} ║
-║  Output            : {str(OUTPUT_DIR):<20} ║
-╚══════════════════════════════════════════╝
++------------------------------------------+
+|  Vault scrape complete                   |
++------------------------------------------+
+|  Messages archived : {len(all_messages):<20} |
+|  Priority authors  : {priority_count:<20} |
+|  Threads           : {len(threads):<20} |
+|  Output            : {str(OUTPUT_DIR):<20} |
++------------------------------------------+
 
-Next step: open vault.html in a browser to explore the archive.
+Next step: from this folder run `python -m http.server` and open index.html.
     """)
 
 
