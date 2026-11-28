@@ -21,7 +21,7 @@ function buildChannels(){
   }
   var chans = [
     { name:'#vault-lobby', topic:'Welcome to the B59 boards, type /help for commands', msgs:[
-      { nick:'bot_admin', time:'', text:'This is an archive replay, not a live connection: real mailing list posts and essays from the vault, restaged as channel logs.', sys:true },
+      { nick:'bot_admin', time:'', text:'This is an archive replay, not a live connection: real mailing list posts and essays from the archive, restaged as channel logs.', sys:true },
       { nick:'bot_admin', time:'', text:'Timestamps are the original post dates, not the time you are reading this.', sys:true },
       { nick:'bot_admin', time:'', text:'Join a channel on the left. Click any message to open its record in the archive.', sys:true },
       { nick:'bot_admin', time:'', text:'Commands: /list  /join #channel  /whois nick  /topic  /clear  /help', sys:true }
@@ -123,7 +123,7 @@ function whois(n){
     nick_szabo:'Nick Szabo: smart contracts, bit gold, trusted third parties are security holes. 312 archived messages.',
     max_more:'Max More: Extropy Institute founder; the philosophy layer of the frontier.',
     eliezer_yudkowsky:'Eliezer Yudkowsky: early AI safety; prolific Extropy-list presence. 1,204 archived messages.',
-    bot_admin:'bot_admin: the vault daemon. It never sleeps, it only archives.'
+    bot_admin:'bot_admin: the archive daemon. It never sleeps, it only archives.'
   };
   sysMsg(bios[n] || (n+': archived correspondent. Records under this name are in the archive; try searching it.'));
 }

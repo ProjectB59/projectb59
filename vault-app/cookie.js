@@ -22,7 +22,7 @@
   var msg = document.createElement('div');
   msg.style.cssText = 'flex:1 1 320px;min-width:260px;';
   msg.innerHTML =
-    '🔒 The Vault keeps only <b>essential local storage</b> for your preferences ' +
+    '🔒 The Archive keeps only <b>essential local storage</b> for your preferences ' +
     '(radio, settings). It loads Google Fonts and, if you open them, third-party embeds ' +
     '(the Channel 59 stream and live IRC) that may set their own cookies. ' +
     '<b>No tracking, no analytics, and we never sell your data.</b> ' +

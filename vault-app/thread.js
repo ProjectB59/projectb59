@@ -44,7 +44,7 @@ function open(id){
   var t = byId(id);
   var host = document.getElementById('thread-body');
   if(!t){
-    host.innerHTML = '<div class="wrap" style="padding:80px 0;text-align:center"><h1 style="font-family:var(--serif);font-size:28px">Unknown thread</h1><a href="#/archive" class="mono" style="color:var(--lime)">Back to the vault</a></div>';
+    host.innerHTML = '<div class="wrap" style="padding:80px 0;text-align:center"><h1 style="font-family:var(--serif);font-size:28px">Unknown thread</h1><a href="#/archive" class="mono" style="color:var(--lime)">Back to the archive</a></div>';
     return;
   }
   var R = (window.B59 && window.B59.records) || [];
