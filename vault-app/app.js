@@ -140,7 +140,7 @@ function renderFacets(){
   });
   html += '</ul></div>';
   html += '<div class="facet"><h3>Availability</h3><ul>'+
-    '<li data-off="1" class="'+(state.off?'act':'')+'">Hosted copy in vault <span class="n">'+R.filter(function(r){return r.local;}).length+'</span></li></ul></div>';
+    '<li data-off="1" class="'+(state.off?'act':'')+'">Hosted copy in archive <span class="n">'+R.filter(function(r){return r.local;}).length+'</span></li></ul></div>';
   el.innerHTML = html;
   el.querySelectorAll('[data-cls]').forEach(function(li){
     li.addEventListener('click', function(){ state.cls = li.getAttribute('data-cls')||null; renderFacets(); renderResults(); });
@@ -335,7 +335,7 @@ function openRecord(id){
     '</dl>'+
     '<div class="d-tags">'+(r.tags||[]).map(function(t){ return '<span>'+esc(t)+'</span>'; }).join('')+'</div>'+
     '<div class="d-actions">'+
-      (readable?'<a class="btn-lime" href="#/read/'+r.id+'">Read in the vault</a>':'')+
+      (readable?'<a class="btn-lime" href="#/read/'+r.id+'">Read in the archive</a>':'')+
       (r.local?r.local.map(function(p,i){ return '<a class="'+(readable?'btn-ghost':'btn-lime')+'" href="'+encodeURI(p)+'" target="_blank" rel="noopener">'+(readable?'Open original':'Read document')+(r.local.length>1?' '+(i+1):'')+' ↗</a>'; }).join(''):'')+
       (r.local?'<a class="btn-ghost" href="'+gh+'" target="_blank" rel="noopener">Source on GitHub ↗</a>':'')+
       '<button type="button" id="d-cite-btn">Cite</button>'+
@@ -474,7 +474,7 @@ function paintExDetail(){
         '<a href="'+monthUrl(t.month,'author')+'" target="_blank" rel="noopener">Browse '+esc(t.month)+' by author ↗</a>'+
       '</div>'+
       previewFor(t.month)+
-      '<div class="ex-hint" style="text-align:left;margin-top:10px">Full message text lives on the source archive at lists.extropy.org. Run <span style="color:var(--lime)">vault_scraper.py</span> to pull the complete thread (bodies, headers and all) into this vault for permanent offline reading.</div>';
+      '<div class="ex-hint" style="text-align:left;margin-top:10px">Full message text lives on the source archive at lists.extropy.org. Run <span style="color:var(--lime)">vault_scraper.py</span> to pull the complete thread (bodies, headers and all) into this archive for permanent offline reading.</div>';
     return;
   }
   // month selected

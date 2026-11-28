@@ -89,7 +89,7 @@ var PEOPLE = [
  bio:['Philosopher who founded the Extropy Institute and wrote "The Principles of Extropy," the statement of practical optimism, self-direction, and technological progress that gave the extropian community, and much of the cypherpunk milieu around it, a shared vocabulary.'],
  ext:[]},
 {slug:'satoshi-nakamoto', name:'Satoshi Nakamoto', role:'Creator of Bitcoin', dates:'', aliases:['Satoshi Nakamoto'],
- bio:['Pseudonymous author of "Bitcoin: A Peer-to-Peer Electronic Cash System" (2008), the vault’s keystone record, B59-000. Corresponded with Wei Dai, James Donald, Hal Finney, and Martti Malmi through 2009 and 2010 before withdrawing from the project.'],
+ bio:['Pseudonymous author of "Bitcoin: A Peer-to-Peer Electronic Cash System" (2008), the archive’s keystone record, B59-000. Corresponded with Wei Dai, James Donald, Hal Finney, and Martti Malmi through 2009 and 2010 before withdrawing from the project.'],
  ext:[]},
 {slug:'martti-malmi', name:'Martti Malmi', role:'Second Bitcoin developer', dates:'', aliases:['Martti Malmi'],
  bio:['Known online as Sirius, the second person to contribute code to Bitcoin. His 2009 to 2011 email correspondence with Satoshi Nakamoto, released in 2024 as evidence in the COPA v. Wright trial, is preserved here in full.'],
@@ -130,14 +130,14 @@ function recordsFor(person){
 function roster(){
   var host = document.getElementById('people-body');
   document.getElementById('person-heading').textContent = 'People';
-  document.getElementById('person-sub').textContent = 'Everyone the vault’s own materials are traced back to. Each profile links their records here and their primary sources elsewhere.';
+  document.getElementById('person-sub').textContent = 'Everyone the archive’s own materials are traced back to. Each profile links their records here and their primary sources elsewhere.';
   var cards = PEOPLE.map(function(p){
     var recs = recordsFor(p);
     return '<div class="p-card" data-slug="'+p.slug+'">'+
       (p.dates?'<div class="mono" style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-mute)">'+esc(p.dates)+'</div>':'')+
       '<div class="nm">'+esc(p.name)+'</div>'+
       '<div class="role">'+esc(p.role)+'</div>'+
-      '<div class="stat"><b>'+recs.length+'</b> record'+(recs.length===1?'':'s')+' in the vault</div>'+
+      '<div class="stat"><b>'+recs.length+'</b> record'+(recs.length===1?'':'s')+' in the archive</div>'+
     '</div>';
   }).join('');
   host.innerHTML = '<div class="roster-grid">'+cards+'</div>';

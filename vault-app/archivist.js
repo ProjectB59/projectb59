@@ -44,7 +44,7 @@ function search(qText){
 
 function answerText(qText, matches){
   if(!matches.length){
-    return 'Nothing in the vault matches that directly. Try different terms, or browse by tag in the Archive view.';
+    return 'Nothing in the archive matches that directly. Try different terms, or browse by tag in the Archive view.';
   }
   var lines = matches.map(function(r){
     var bits = [r.id, r.title];
